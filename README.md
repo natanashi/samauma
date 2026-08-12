@@ -8,6 +8,7 @@ O protótipo reúne:
 - caso demonstrativo completo, do cadastro à regularização;
 - perfis separados para servidor, operador, destino e auditoria;
 - coleta, pesagem, conciliação, alerta e trilha imutável simulados;
+- painel analítico interativo com filtros, KPIs, tendências, funil, composição, territórios e insights;
 - mapa demonstrativo sobre a geografia real de Porto Velho;
 - conformidade, coleta, pesagem e destinação;
 - carteira, rateio e oportunidades para cooperativas;
