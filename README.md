@@ -5,6 +5,9 @@ Protótipo demonstrativo de um sistema municipal para gestão de grandes gerador
 O protótipo reúne:
 
 - cadastro e priorização de grandes geradores;
+- caso demonstrativo completo, do cadastro à regularização;
+- perfis separados para servidor, operador, destino e auditoria;
+- coleta, pesagem, conciliação, alerta e trilha imutável simulados;
 - mapa demonstrativo sobre a geografia real de Porto Velho;
 - conformidade, coleta, pesagem e destinação;
 - carteira, rateio e oportunidades para cooperativas;
@@ -23,9 +26,8 @@ A versão publicada pode ser aberta pelo GitHub Pages do projeto.
 
 ## Execução local
 
-O projeto está contido em um único arquivo `index.html`. Abra-o em um navegador com acesso à internet para carregar as fontes, o mapa e as bibliotecas externas.
+Abra o arquivo `index.html` em um navegador com acesso à internet para carregar as fontes, o mapa e as bibliotecas externas. A lógica da jornada demonstrativa está em `demo.js`.
 
 ## Status
 
 Protótipo para demonstração e validação. Uma implantação real exige participação da SEMA, SMTI, SEMEC, SEINFRA, ARDPV, PGM, operadores, destinos e organizações de catadores.
-
