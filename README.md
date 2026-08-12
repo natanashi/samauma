@@ -9,6 +9,7 @@ O protótipo reúne:
 - perfis separados para servidor, operador, destino e auditoria;
 - coleta, pesagem, conciliação, alerta e trilha imutável simulados;
 - painel analítico interativo com filtros, KPIs, tendências, funil, composição, territórios e insights;
+- tutorial contextual completo e específico para cada módulo;
 - mapa demonstrativo sobre a geografia real de Porto Velho;
 - conformidade, coleta, pesagem e destinação;
 - carteira, rateio e oportunidades para cooperativas;
