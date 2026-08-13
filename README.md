@@ -1,35 +1,36 @@
 # SAMAÚMA
 
-Protótipo demonstrativo de um sistema municipal para gestão de grandes geradores de resíduos e inclusão produtiva de catadores em Porto Velho, Rondônia.
+Protótipo demonstrativo de uma central municipal de oportunidades recicláveis para Porto Velho, Rondônia.
 
-O protótipo reúne:
+O SAMAÚMA conecta geradores, cooperativas, catadores e Município numa operação rastreável: a demanda é publicada, a cooperativa avalia a oportunidade, o catador executa a coleta, o destino registra a pesagem e o sistema relaciona evidências, renda e impacto.
 
-- cadastro e priorização de grandes geradores;
-- caso demonstrativo completo, do cadastro à regularização;
-- perfis separados para servidor, operador, destino e auditoria;
-- coleta, pesagem, conciliação, alerta e trilha imutável simulados;
-- painel analítico interativo com filtros, KPIs, tendências, funil, composição, territórios e insights;
-- tutorial contextual completo e específico para cada módulo;
-- mapa demonstrativo sobre a geografia real de Porto Velho;
-- conformidade, coleta, pesagem e destinação;
-- carteira, rateio e oportunidades para cooperativas;
-- piloto de implantação em 90 dias;
-- arquitetura institucional de integrações e governança dos dados.
+## Experiência principal
+
+- **Início:** proposta, cadeia operacional, resultados e escopo do piloto.
+- **Oportunidades:** mapa de Porto Velho, compatibilidade, capacidade, rota e receita projetada.
+- **Operação completa:** fluxo interativo da demanda ao rateio e ao dossiê final.
+- **SAMAÚMA Campo:** experiência móvel com salvamento offline e sincronização simulados.
+- **Impacto:** metas e indicadores para decidir se o piloto deve escalar.
+- **Modo banca:** roteiro guiado e reiniciável para apresentação em aproximadamente três minutos.
+
+Cadastro, conformidade, carteira, integrações, metodologia, selo proposto e cenários contratuais continuam disponíveis em **Gestão e governança**, sem sobrecarregar a navegação principal.
 
 ## Aviso importante
 
-As organizações, pessoas, identificadores e valores operacionais apresentados na interface são fictícios ou demonstrativos. O projeto não acessa sistemas oficiais e não representa integração homologada pela Prefeitura de Porto Velho.
+As organizações, pessoas, documentos, pontos, rotas e valores operacionais são fictícios ou demonstrativos. O mapa utiliza a geografia real de Porto Velho exclusivamente para demonstrar a experiência do produto.
 
-O mapa usa a geografia real de Porto Velho apenas para demonstrar a experiência do produto.
+O protótipo não acessa sistemas oficiais, não movimenta dinheiro e não representa integração, contratação, decisão administrativa ou procedimento homologado pela Prefeitura de Porto Velho.
 
-## Visualização
+## Executar localmente
 
-A versão publicada pode ser aberta pelo GitHub Pages do projeto.
+Sirva esta pasta por HTTP para habilitar o cache offline:
 
-## Execução local
+```bash
+python -m http.server 4173
+```
 
-Abra o arquivo `index.html` em um navegador com acesso à internet para carregar as fontes, o mapa e as bibliotecas externas. A lógica da jornada demonstrativa está em `demo.js`.
+Depois abra `http://localhost:4173`.
 
-## Status
+## Publicação
 
-Protótipo para demonstração e validação. Uma implantação real exige participação da SEMA, SMTI, SEMEC, SEINFRA, ARDPV, PGM, operadores, destinos e organizações de catadores.
+O projeto é publicado pelo GitHub Pages em: <https://natanashi.github.io/samauma/>

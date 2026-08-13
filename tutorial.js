@@ -1,23 +1,24 @@
 /* Tutorial contextual: explica somente o módulo que já está aberto. */
 const CONTEXT_TOURS={
   pan:[
-    {sel:'.hero',t:'A proposta em uma frase',d:'Esta abertura resume o objetivo do SAMAÚMA: retirar grandes geradores do fluxo inadequado, melhorar a rastreabilidade e ampliar trabalho digno para catadores.',w:'O júri entende o problema, a solução e os beneficiários antes de ver detalhes técnicos.'},
-    {sel:'.ofc',t:'Números de referência',d:'Esta faixa reúne parâmetros externos e regras utilizadas pelo protótipo. Ela separa referências públicas dos resultados calculados no cenário.',w:'Evita apresentar uma projeção como se fosse resultado já realizado pelo Município.'},
-    {sel:'.grp',index:0,t:'Gestão dos grandes geradores',d:'Estes módulos cobrem descoberta, cadastro, notificação, conformidade, base contratual e a jornada demonstrativa completa.',w:'É a frente que organiza o trabalho da Prefeitura e reduz o custo público potencialmente absorvido.'},
-    {sel:'.grp',index:1,t:'Inclusão produtiva',d:'A segunda frente transforma demanda regularizada em coleta, triagem, serviço remunerado e renda rastreável para organizações de catadores.',w:'O impacto social não aparece como efeito colateral; ele está integrado ao desenho operacional.'},
-    {sel:'.grp',index:2,t:'Indicadores e governança',d:'A camada transversal explica os resultados, as fontes, os limites e o caminho de integração com sistemas oficiais.',w:'Mostra que o protótipo foi pensado para evoluir sem inventar acesso a bases governamentais.'}
+    {sel:'.winning-hero',t:'A proposta em uma frase',d:'O SAMAÚMA transforma material disponível em oportunidade rastreável de trabalho, renda e destinação correta.',w:'A banca entende imediatamente o beneficiário e o resultado, antes de ver detalhes administrativos.'},
+    {sel:'.promise-strip',t:'Uma cadeia curta e verificável',d:'Encontrar, conectar, executar e comprovar são as quatro responsabilidades centrais do produto.',w:'O sistema deixa de parecer um conjunto de painéis e passa a ter começo, meio e fim.'},
+    {sel:'.impact-snapshot',t:'Resultados com natureza declarada',d:'Os cartões diferenciam dado declarado, projeção, cenário e resultado verificado. Os números continuam explicitamente demonstrativos.',w:'Essa transparência evita promessas disfarçadas de resultados oficiais.'},
+    {sel:'.actor-grid',t:'Catador no centro da operação',d:'Gerador publica, cooperativa decide, catador executa e Município acompanha sem concentrar todas as ações num único perfil.',w:'O protagonismo deixa de ser apenas discurso e aparece na divisão real do trabalho.'},
+    {sel:'.pilot-brief',t:'Um primeiro passo possível',d:'O piloto propõe uma cooperativa, dez catadores, trinta geradores e dois corredores durante noventa dias.',w:'A proposta cabe numa decisão concreta e pode ser testada sem substituir os sistemas oficiais.'}
   ],
   demo:[
-    {sel:'.case-head',t:'Um caso de ponta a ponta',d:'A demonstração acompanha um estabelecimento fictício desde o cadastro técnico até a decisão de regularização.',w:'Em poucos minutos é possível provar o núcleo funcional do sistema para o júri.'},
-    {sel:'.rolebar',t:'Separação de responsabilidades',d:'Servidor, operador, destino e auditoria possuem visões e ações diferentes. Quem produz a evidência não valida a própria informação.',w:'Essa separação reduz conflito de interesse e aproxima o protótipo de um sistema público real.'},
-    {sel:'.journey',t:'Sete etapas encadeadas',d:'Cadastro, SEI, autodeclaração, coleta, pesagem, conciliação e decisão formam uma cadeia única. A etapa dourada indica onde o caso está.',w:'O fluxo impede que uma decisão apareça sem os documentos e eventos que a sustentam.'},
+    {sel:'.case-head',t:'Uma operação, não uma apresentação',d:'A banca pode executar uma coleta fictícia da publicação ao rateio e ao dossiê final.',w:'Interação de ponta a ponta prova que a proposta possui lógica operacional.'},
+    {sel:'.rolebar',t:'Quatro responsabilidades reais',d:'Gerador, cooperativa, catador e servidor acessam somente as ações pelas quais respondem.',w:'Quem produz a evidência não valida sozinho a própria informação.'},
+    {sel:'.journey',t:'Oito etapas até renda e impacto',d:'Demanda, aceite, coleta offline, pesagem, divergência, correção, liquidação e impacto formam uma cadeia única.',w:'A história não termina na fiscalização; termina em trabalho pago e resultado comprovável.'},
     {sel:'.case-panel',index:0,t:'Área de trabalho do perfil',d:'O conteúdo muda conforme a etapa e o perfil ativo. Formulários e decisões aparecem apenas para quem tem a responsabilidade correspondente.',w:'Demonstra controle de acesso e experiência orientada à tarefa, sem exigir autenticação real no hackathon.'},
-    {sel:'.case-panel',index:1,t:'Resumo probatório',d:'Declaração, coleta, pesagem e divergência ficam lado a lado, cada uma com seu identificador e sua origem.',w:'Permite explicar rapidamente por que o sistema abriu um alerta e qual prova precisa ser corrigida.'},
+    {sel:'.case-panel',index:1,t:'Resumo operacional',d:'Declaração, coleta, pesagem e diferença ficam lado a lado, preservando sua origem.',w:'Permite descobrir rapidamente onde surgiu a inconsistência.'},
     {sel:'.case-panel',index:2,t:'Trilha que não apaga o passado',d:'Cada ação cria um novo evento com horário, responsável e código. Retificações entram como novos registros, preservando os originais.',w:'A auditoria consegue reconstruir tudo o que aconteceu sem depender da memória dos usuários.'}
   ],
   ind:[
+    {sel:'.impact-decision',t:'A decisão que o painel precisa apoiar',d:'Antes dos gráficos, o sistema explicita hipótese, metas e prazo do piloto.',w:'Indicador só é útil quando muda uma decisão — escalar, ajustar ou interromper.'},
     {sel:'.bi-toolbar',t:'Filtros que governam todo o painel',d:'Período, ramo e natureza da evidência alteram o mesmo recorte analítico. O contador à direita confirma quantos registros estão sendo analisados.',w:'Evita comparar indicadores calculados sobre universos diferentes.'},
-    {sel:'.bi-kpis',t:'Oito indicadores executivos',d:'Os cartões resumem universo, campo, regularização, massa, qualidade, economia, recicláveis e renda. Cada um informa se o valor é estimado, verificado ou calculado.',w:'Uma reunião de gestão começa pelas decisões essenciais, sem exigir leitura de tabelas extensas.'},
+    {sel:'.bi-kpis',t:'Oito indicadores de impacto',d:'Os cartões resumem oportunidades, campo, fluxos comprovados, massa, qualidade, eficiência, recicláveis e renda. Cada valor informa sua natureza.',w:'A gestão enxerga impacto social e capacidade operacional junto da conformidade.'},
     {sel:'.bi-grid-main',index:0,t:'Tendência e conversão',d:'A série mostra a evolução demonstrativa ao longo do tempo; o funil revela onde os casos deixam de avançar até a comprovação final.',w:'Ajuda a diferenciar crescimento do cadastro de melhoria efetiva na regularização.'},
     {sel:'.bi-grid-three',t:'Três leituras complementares',d:'Situação cadastral responde “quantos”; massa por ramo responde “onde está o volume”; composição responde “qual rota de tratamento faz sentido”.',w:'Quantidade de estabelecimentos e massa de resíduos são problemas diferentes e não devem ser confundidos.'},
     {sel:'.bi-grid-main',index:1,t:'Territórios e insights',d:'O ranking territorial prioriza bairros por massa estimada. Ao lado, o sistema traduz os gráficos em mensagens objetivas para a equipe.',w:'Transforma visualização em pauta concreta de fiscalização, educação ambiental e capacidade operacional.'},
@@ -54,10 +55,11 @@ const CONTEXT_TOURS={
     {sel:'.box',index:3,t:'Critérios de sucesso e parada',d:'Precisão, tempo, rastreabilidade, qualidade, segurança jurídica e aceitação definem se o piloto pode avançar.',w:'A regra de parada mostra responsabilidade: risco ambiental ou vazamento interrompem o fluxo afetado.'}
   ],
   verif:[
-    {sel:'.row.c4',t:'Carga e custo do ciclo',d:'Os cartões resumem tarefas atribuídas, concluídas, valor unitário e custo total da rodada de campo.',w:'A equipe conhece esforço e orçamento antes de distribuir novas visitas.'},
-    {sel:'#taskList',closest:'.box',t:'Tarefas de campo',d:'Cada endereço é atribuído sem revelar a classificação estimada. O agente registra apenas se observou volume alto ou baixo.',w:'O modo cego reduz viés de confirmação e preserva a competência do fiscal.'},
-    {sel:'.blind',closest:'.box',t:'Salvaguardas',d:'Impedimento por conflito, limite probatório e regra de remuneração ficam visíveis junto da operação.',w:'Inclusão produtiva não pode transferir poder de polícia nem criar incentivo para confirmar suspeitas.'},
-    {sel:'.row.c21 .box',index:2,t:'Aprendizado do modelo',d:'O sistema compara observações com as estimativas e registra quantas confirmaram o porte previsto.',w:'A verificação serve também para recalibrar coeficientes e reduzir erros futuros.'}
+    {sel:'.field-head',t:'Campo desenhado para a realidade',d:'A aplicação assume conexão instável e limita o registro ao necessário para executar e comprovar a tarefa.',w:'A tecnologia se adapta ao trabalho; não exige que o trabalhador se adapte a um escritório.'},
+    {sel:'.field-phone',t:'Uma ação por vez',d:'Rota, parada, evidências e botão principal aparecem numa tela curta e legível.',w:'Reduz erro de preenchimento e tempo parado durante a coleta.'},
+    {sel:'.sync-event',index:1,t:'Fila offline visível',d:'O evento fica salvo no dispositivo, recebe identificador e sincroniza depois sem duplicidade.',w:'Perder sinal não pode significar perder trabalho ou remuneração.'},
+    {sel:'.control-list',t:'Segurança e privacidade',d:'O protótipo explicita retentativa, conflito, acessibilidade e uso pontual da localização.',w:'Rastrear a coleta não significa vigiar permanentemente a pessoa.'},
+    {sel:'.field-advanced',t:'Fiscalização fora do caminho principal',d:'A verificação municipal complementar continua disponível, mas não compete com a jornada do catador.',w:'Mantém profundidade técnica sem sobrecarregar a demonstração principal.'}
   ],
   cart:[
     {sel:'.wal',t:'Extrato individual',d:'O resumo mostra recebimento, coletas, massa e verificações para uma pessoa cooperada fictícia.',w:'Histórico compreensível ajuda o trabalhador a acompanhar o rateio e comprovar renda.'},
@@ -67,8 +69,10 @@ const CONTEXT_TOURS={
     {sel:'.box',index:2,t:'Rateio aberto',d:'A tabela detalha massa, serviços, material e total por pessoa cooperada.',w:'Transparência da regra reduz conflito interno e gera histórico para editais e crédito.'}
   ],
   oper:[
-    {sel:'.row.c4',t:'Capacidade antes da oferta',d:'A faixa superior mostra capacidade instalada, massa comprometida, receita potencial e janelas de contratação.',w:'O sistema não encaminha mais material do que a organização consegue receber com segurança.'},
-    {sel:'#leads',closest:'.box',t:'Demanda compatível',d:'A lista exibe somente recicláveis segregados, dentro do raio e compatíveis com a licença e a capacidade.',w:'A cooperativa não recebe massa total, orgânicos, rejeitos ou resíduos de saúde.'},
+    {sel:'.opportunity-head',t:'O produto encontra trabalho possível',d:'A tela reúne material, capacidade e renda provável sem transformar recomendação em contratação automática.',w:'A cooperativa continua decidindo o que consegue atender com segurança.'},
+    {sel:'#oppMap',t:'Mapa de oportunidades',d:'Os pontos fictícios usam a geografia real de Porto Velho e mostram compatibilidade de cada demanda.',w:'Distância e agrupamento de rota afetam diretamente custo e renda.'},
+    {sel:'.route-pick',t:'Recomendação explicável',d:'A melhor rota informa massa, percurso, receita e capacidade após o aceite.',w:'A banca consegue entender por que uma oportunidade foi priorizada.'},
+    {sel:'#leads',closest:'.box',t:'Fila que leva à ação',d:'A lista mostra recicláveis compatíveis e permite abrir a operação completa para avaliar e aceitar.',w:'O mapa não é decorativo: ele inicia o fluxo de trabalho.'},
     {sel:'.row.c21 .box',index:1,t:'Ordem de encaminhamento',d:'Resíduo municipal e gerador privado seguem fundamentos diferentes. Para privados, a escolha do fornecedor continua livre.',w:'O benefício social precisa respeitar contratação pública e liberdade econômica.'},
     {sel:'.row.c21 .box',index:2,t:'Preço com memória de cálculo',d:'Frequência e distância alimentam combustível, mão de obra, desgaste, equilíbrio e preço sugerido.',w:'A proposta deixa de ser um valor arbitrário e pode ser discutida com transparência.'}
   ],
