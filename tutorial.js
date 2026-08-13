@@ -2,7 +2,7 @@
 const CONTEXT_TOURS={
   pan:[
     {sel:'.winning-hero',t:'A proposta em uma frase',d:'O SAMAÚMA transforma material disponível em oportunidade rastreável de trabalho, renda e destinação correta.',w:'A banca entende imediatamente o beneficiário e o resultado, antes de ver detalhes administrativos.'},
-    {sel:'.promise-strip',t:'Uma cadeia curta e verificável',d:'Encontrar, conectar, executar e comprovar são as quatro responsabilidades centrais do produto.',w:'O sistema deixa de parecer um conjunto de painéis e passa a ter começo, meio e fim.'},
+    {sel:'.ecosystem-bridge',t:'Dois núcleos, uma mesma cadeia',d:'O SAMAÚMA Regula organiza grandes geradores; o SAMAÚMA Circular transforma somente a fração reciclável autorizada em oportunidade para cooperativas.',w:'A fiscalização não compete com a inclusão produtiva: uma alimenta a outra com responsabilidades separadas.'},
     {sel:'.impact-snapshot',t:'Resultados com natureza declarada',d:'Os cartões diferenciam dado declarado, projeção, cenário e resultado verificado. Os números continuam explicitamente demonstrativos.',w:'Essa transparência evita promessas disfarçadas de resultados oficiais.'},
     {sel:'.audience-gates',t:'Dois caminhos de aprendizagem',d:'Quem atua na cooperativa encontra oportunidades, campo e renda; quem está na Prefeitura encontra cadastro, conformidade e cenários.',w:'A separação por público explica o sistema sem quebrar a jornada integrada.'},
     {sel:'.actor-grid',t:'Catador no centro da operação',d:'Gerador publica, cooperativa decide, catador executa e Município acompanha sem concentrar todas as ações num único perfil.',w:'O protagonismo deixa de ser apenas discurso e aparece na divisão real do trabalho.'},
@@ -33,8 +33,23 @@ const CONTEXT_TOURS={
   ],
   selo:[
     {sel:'.demo-banner',t:'Instrumento proposto, não vigente',d:'O aviso impede que o selo demonstrativo seja confundido com procedimento oficial já adotado por Porto Velho.',w:'Transparência sobre o estágio da proposta aumenta a credibilidade da apresentação.'},
-    {sel:'.row.c12 .box',index:0,t:'Validação antes da emissão',d:'A seleção relaciona estabelecimento e operador compatível. A cooperativa só aparece quando a fração reciclável e a capacidade permitem.',w:'O selo não pode ser apenas uma imagem; ele precisa decorrer de regras verificáveis.'},
-    {sel:'.row.c12 .box',index:1,t:'Registro verificável',d:'Após a emissão, a área reúne identificação, validade, operador e QR demonstrativo para consulta do estado do registro.',w:'Em produção, o QR apontaria para uma página pública oficial, sem expor pendências internas.'}
+    {sel:'.seal-management-note',t:'Competência exclusiva da gestão',d:'O interessado declara e acompanha; o servidor municipal verifica os requisitos e pratica o ato demonstrativo.',w:'Separar interessado e autoridade impede autorregularização e torna a decisão auditável.'},
+    {sel:'.seal-management-view .row.c12 .box',index:0,t:'Análise antes da emissão',d:'Cadastro, processo, coleta, pesagem e destino precisam estar conciliados. O servidor pode emitir ou registrar uma pendência.',w:'O selo decorre de evidências e decisão humana, não de um botão automático.'},
+    {sel:'.seal-management-view .row.c12 .box',index:1,t:'Resultado atribuído',d:'Emissão, suspensão e demais decisões registram a autoridade responsável e preservam os atos anteriores.',w:'O histórico permite comprovar quem decidiu, quando e com base em quais evidências.'},
+    {sel:'.seal-authority',t:'Quatro responsabilidades separadas',d:'Gerador declara, operador comprova, sistema concilia e SEMA decide.',w:'Cada participante atua somente dentro de sua competência.'}
+  ],
+  reg:[
+    {sel:'.demo-banner',t:'Caso seguro para demonstração',d:'CNPJ, inscrição, documentos, estabelecimento e processo são fictícios. O SEI continua indicado como sistema oficial da decisão.',w:'A banca consegue testar o produto sem confundir a simulação com cadastro ou ato vigente.'},
+    {sel:'.reg-journey',t:'O ciclo regulatório completo',d:'Autodeclaração, protocolo, análise, decisão e conexão circular aparecem como etapas distintas e verificáveis.',w:'Isso recupera o núcleo original de gestão de grandes geradores sem transformar a tela em apresentação.'},
+    {sel:'.reg-card',index:0,t:'Uma tarefa por responsabilidade',d:'O gerador envia e responde; a gestão analisa e decide. O conteúdo muda conforme o perfil e a situação do processo.',w:'O interessado nunca regulariza ou emite o próprio selo.'},
+    {sel:'.reg-card',index:1,t:'Histórico que preserva o original',d:'Protocolo, pendência, complemento e decisão entram como eventos separados com identificadores demonstrativos.',w:'Corrigir uma informação não apaga o que foi declarado anteriormente.'},
+    {sel:'.circular-callout',t:'A ponte para trabalho e renda',d:'Depois da regularização, o sistema explica a compatibilidade do reciclável. A demanda só é publicada quando o gerador privado autoriza.',w:'Esse é o diferencial: melhorar a gestão municipal e criar oportunidade sem impor contratação privada.'}
+  ],
+  selo_holder:[
+    {sel:'.demo-banner',t:'Instrumento proposto, não vigente',d:'O aviso confirma que este registro é demonstrativo e ainda depende de regulamentação municipal.',w:'O grande gerador não pode confundir a simulação com um ato oficial vigente.'},
+    {sel:'.seal-holder-status',t:'Situação reconhecida pela Prefeitura',d:'O interessado acompanha o estado, o processo relacionado, a data da decisão e a validade.',w:'A situação vem da unidade municipal competente; a empresa apenas consulta.'},
+    {sel:'.seal-holder-view .row.c12 .box',index:0,t:'Selo somente para consulta',d:'O gerador pode baixar o registro e abrir a verificação pública, sem emitir, renovar, suspender ou cancelar.',w:'A interface reflete a separação real de permissões.'},
+    {sel:'.seal-holder-view .row.c12 .box',index:1,t:'Provas relacionadas',d:'Processo, última coleta, destino e situação do selo ficam reunidos para acompanhamento.',w:'O interessado enxerga o que comprova sua situação sem alterar a decisão administrativa.'}
   ],
   conf:[
     {sel:'.row.c3',t:'Resumo da conformidade',d:'Os cartões mostram alertas, operadores que devem reportar e percentual de destinação comprovada.',w:'A Prefeitura consegue acompanhar o sistema por exceção, concentrando esforço onde há ausência ou divergência.'},
@@ -100,7 +115,7 @@ const CONTEXT_TOURS={
 
 let contextualTourKey='pan',contextualTourIndex=0,contextualTourFocus=null;
 
-function contextualTourSteps(){return CONTEXT_TOURS[contextualTourKey]||CONTEXT_TOURS.pan;}
+function contextualTourSteps(){const key=contextualTourKey==='selo'&&typeof currentSystemProfile!=='undefined'&&currentSystemProfile==='gerador'?'selo_holder':contextualTourKey;return CONTEXT_TOURS[key]||CONTEXT_TOURS.pan;}
 function contextualTourView(){return document.getElementById('v-'+contextualTourKey);}
 function contextualFind(step){
   const view=contextualTourView();if(!view)return null;

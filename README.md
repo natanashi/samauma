@@ -2,15 +2,19 @@
 
 Protótipo demonstrativo de uma central municipal de oportunidades recicláveis para Porto Velho, Rondônia.
 
-O SAMAÚMA conecta geradores, cooperativas, catadores e Município numa operação rastreável: a demanda é publicada, a cooperativa avalia a oportunidade, o catador executa a coleta, o destino registra a pesagem e o sistema relaciona evidências, renda e impacto.
+O SAMAÚMA possui dois núcleos conectados. O **SAMAÚMA Regula** identifica e acompanha grandes geradores do cadastro à decisão municipal. O **SAMAÚMA Circular** transforma recicláveis compatíveis e autorizados em oportunidades para cooperativas, com coleta, pesagem, renda e destinação rastreáveis.
 
 O produto é exclusivamente web: o mesmo endereço abre no navegador do computador, tablet ou celular. Não existe dependência de aplicativo nativo, loja de aplicativos ou celular pessoal.
 
 Na entrada, a pessoa escolhe um perfil demonstrativo — catador, cooperativa, grande gerador, operador, gestão municipal ou auditoria. A navegação passa a exibir apenas as tarefas daquele papel. O modo banca é a única experiência que libera deliberadamente a visão completa do protótipo.
 
+As responsabilidades também são separadas dentro dos módulos: o grande gerador declara demandas e consulta situação, comprovantes e selo já emitido; somente o perfil de gestão municipal pode analisar requisitos, registrar pendência, emitir ou suspender o instrumento demonstrativo.
+
 ## Experiência principal
 
 - **Início:** proposta, cadeia operacional, resultados e escopo do piloto.
+- **Regularização:** autodeclaração, contrato/PGRS demonstrativos, pendência, complementação, decisão municipal e conexão circular.
+- **Consulta pública:** verificação demonstrativa do selo, validade, operador e última comprovação sem divulgar pendências internas.
 - **Oportunidades:** mapa de Porto Velho, compatibilidade, capacidade, rota e receita projetada.
 - **Operação completa:** fluxo interativo da demanda ao rateio e ao dossiê final.
 - **Operação em campo:** sistema web responsivo com acesso por aparelho compartilhado, celular pessoal opcional, terminal do galpão ou registro assistido.
