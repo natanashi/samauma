@@ -443,6 +443,17 @@ body[data-profile]:not([data-profile="banca"]) .rolebar,body[data-profile]:not([
 /* correções de contenção do workspace operacional responsivo */
 .field-main>*{min-width:0}.field-web-workspace{min-width:0;max-width:100%}
 @media(max-width:820px){.field-main{grid-template-columns:minmax(0,1fr)}.field-stepper{display:flex;max-width:100%;overflow-x:auto}.field-stepper>div{flex:0 0 100px;min-width:0}}
+/* resumo estável mesmo quando a área útil é estreita dentro do desktop */
+.field-route-summary{grid-template-columns:repeat(3,minmax(0,1fr))}
+.field-route-main{grid-column:1/-1;min-width:0;padding:15px 16px}
+.field-route-main small{white-space:normal;word-break:normal;overflow-wrap:normal;line-height:1.35}
+.field-route-main h3{font-size:18px;line-height:1.2;word-break:normal;overflow-wrap:normal}
+.field-route-main p{line-height:1.45;word-break:normal;overflow-wrap:normal}
+.field-route-stat{min-width:0;padding:12px 8px;border-top:1px solid #e1e6e3}
+.field-route-stat:first-of-type{border-left:0}
+.field-route-stat b{white-space:nowrap;font-size:16px;line-height:1.15}
+.field-route-stat span{white-space:nowrap;font-size:7.5px}
+@media(max-width:520px){.field-route-summary{grid-template-columns:repeat(3,minmax(0,1fr))}.field-route-main{grid-column:1/-1}.field-route-stat{border-left:1px solid #e1e6e3;text-align:center}.field-route-stat:first-of-type{border-left:0}.field-web-head{padding:12px}.field-web-head b{font-size:11px}.field-stepper{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));overflow:visible}.field-stepper>div{min-width:0;padding:8px 3px}.field-stepper b{font-size:7.2px;letter-spacing:-.02em}.field-work-body{padding:12px}}
 </style>
 </head>
 <body>
