@@ -4,6 +4,7 @@ const CONTEXT_TOURS={
     {sel:'.winning-hero',t:'A proposta em uma frase',d:'O SAMAÚMA transforma material disponível em oportunidade rastreável de trabalho, renda e destinação correta.',w:'A banca entende imediatamente o beneficiário e o resultado, antes de ver detalhes administrativos.'},
     {sel:'.promise-strip',t:'Uma cadeia curta e verificável',d:'Encontrar, conectar, executar e comprovar são as quatro responsabilidades centrais do produto.',w:'O sistema deixa de parecer um conjunto de painéis e passa a ter começo, meio e fim.'},
     {sel:'.impact-snapshot',t:'Resultados com natureza declarada',d:'Os cartões diferenciam dado declarado, projeção, cenário e resultado verificado. Os números continuam explicitamente demonstrativos.',w:'Essa transparência evita promessas disfarçadas de resultados oficiais.'},
+    {sel:'.audience-gates',t:'Dois caminhos de aprendizagem',d:'Quem atua na cooperativa encontra oportunidades, campo e renda; quem está na Prefeitura encontra cadastro, conformidade e cenários.',w:'A separação por público explica o sistema sem quebrar a jornada integrada.'},
     {sel:'.actor-grid',t:'Catador no centro da operação',d:'Gerador publica, cooperativa decide, catador executa e Município acompanha sem concentrar todas as ações num único perfil.',w:'O protagonismo deixa de ser apenas discurso e aparece na divisão real do trabalho.'},
     {sel:'.pilot-brief',t:'Um primeiro passo possível',d:'O piloto propõe uma cooperativa, dez catadores, trinta geradores e dois corredores durante noventa dias.',w:'A proposta cabe numa decisão concreta e pode ser testada sem substituir os sistemas oficiais.'}
   ],
@@ -49,16 +50,18 @@ const CONTEXT_TOURS={
   ],
   pilot:[
     {sel:'.hero',t:'Provar antes de escalar',d:'O piloto de 90 dias começa sem autuação automática e mede precisão, custo, aceitação e capacidade operacional.',w:'Reduz o risco de implantar tecnologia antes de validar processo, competência e comportamento dos usuários.'},
-    {sel:'.row.c4',t:'Escopo controlado',d:'Duração, amostra, ramos e regra de segurança delimitam exatamente o que será testado.',w:'Um piloto bem definido produz evidência comparável e evita prometer implantação municipal imediata.'},
+    {sel:'.row.c4',t:'Escopo e acesso controlados',d:'Duração, participantes, quatro canais de acesso e regra de segurança delimitam o teste.',w:'Ninguém fica fora por não possuir celular ou pacote de dados.'},
     {sel:'.pilot-steps',t:'Três ciclos de aprendizagem',d:'Primeiro mede a linha de base, depois opera o fluxo assistido e, por fim, avalia se deve ajustar, escalar ou encerrar.',w:'Cada ciclo possui decisão e entrega, em vez de apenas uma lista de atividades.'},
     {sel:'.row.c21 .box',index:1,t:'Governança mínima',d:'SEMA, SMTI, ARDPV, SEINFRA, cooperativa e PGM possuem responsabilidades distintas no piloto.',w:'Tecnologia sozinha não resolve um processo que atravessa competências administrativas diferentes.'},
     {sel:'.box',index:3,t:'Critérios de sucesso e parada',d:'Precisão, tempo, rastreabilidade, qualidade, segurança jurídica e aceitação definem se o piloto pode avançar.',w:'A regra de parada mostra responsabilidade: risco ambiental ou vazamento interrompem o fluxo afetado.'}
   ],
   verif:[
-    {sel:'.field-head',t:'Campo desenhado para a realidade',d:'A aplicação assume conexão instável e limita o registro ao necessário para executar e comprovar a tarefa.',w:'A tecnologia se adapta ao trabalho; não exige que o trabalhador se adapte a um escritório.'},
-    {sel:'.field-phone',t:'Uma ação por vez',d:'Rota, parada, evidências e botão principal aparecem numa tela curta e legível.',w:'Reduz erro de preenchimento e tempo parado durante a coleta.'},
+    {sel:'.field-head',t:'Um sistema web, vários aparelhos',d:'O mesmo endereço funciona no navegador do celular, tablet ou computador e não exige instalação.',w:'A implantação mantém uma única tecnologia para campo e galpão.'},
+    {sel:'.digital-inclusion-note',t:'Celular pessoal não é requisito',d:'A ampla presença nacional de celular não comprova acesso individual, pacote de dados ou facilidade de uso entre catadores de Porto Velho.',w:'O piloto mede a realidade local antes de escolher e distribuir equipamentos.'},
+    {sel:'.field-channel-bar',t:'Quatro canais equivalentes',d:'Aparelho compartilhado, celular pessoal opcional, terminal do galpão e registro assistido produzem o mesmo evento rastreável.',w:'O acesso à renda não pode depender da posse de tecnologia.'},
+    {sel:'.field-phone',t:'Uma ação por vez no navegador',d:'Rota, parada, evidências e botão principal aparecem numa tela curta e legível.',w:'Reduz erro de preenchimento e funciona tanto em aparelho compartilhado quanto individual.'},
     {sel:'.sync-event',index:1,t:'Fila offline visível',d:'O evento fica salvo no dispositivo, recebe identificador e sincroniza depois sem duplicidade.',w:'Perder sinal não pode significar perder trabalho ou remuneração.'},
-    {sel:'.control-list',t:'Segurança e privacidade',d:'O protótipo explicita retentativa, conflito, acessibilidade e uso pontual da localização.',w:'Rastrear a coleta não significa vigiar permanentemente a pessoa.'},
+    {sel:'.field-contingency',t:'Contingência sem exclusão',d:'Se não houver aparelho ou bateria, uma ficha numerada é digitada depois no terminal web, preservando autores e justificativa.',w:'Uma falha tecnológica não pode apagar trabalho realizado.'},
     {sel:'.field-advanced',t:'Fiscalização fora do caminho principal',d:'A verificação municipal complementar continua disponível, mas não compete com a jornada do catador.',w:'Mantém profundidade técnica sem sobrecarregar a demonstração principal.'}
   ],
   cart:[

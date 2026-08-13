@@ -4,16 +4,22 @@ Protótipo demonstrativo de uma central municipal de oportunidades recicláveis 
 
 O SAMAÚMA conecta geradores, cooperativas, catadores e Município numa operação rastreável: a demanda é publicada, a cooperativa avalia a oportunidade, o catador executa a coleta, o destino registra a pesagem e o sistema relaciona evidências, renda e impacto.
 
+O produto é exclusivamente web: o mesmo endereço abre no navegador do computador, tablet ou celular. Não existe dependência de aplicativo nativo, loja de aplicativos ou celular pessoal.
+
 ## Experiência principal
 
 - **Início:** proposta, cadeia operacional, resultados e escopo do piloto.
 - **Oportunidades:** mapa de Porto Velho, compatibilidade, capacidade, rota e receita projetada.
 - **Operação completa:** fluxo interativo da demanda ao rateio e ao dossiê final.
-- **SAMAÚMA Campo:** experiência móvel com salvamento offline e sincronização simulados.
+- **Operação em campo:** sistema web responsivo com acesso por aparelho compartilhado, celular pessoal opcional, terminal do galpão ou registro assistido.
 - **Impacto:** metas e indicadores para decidir se o piloto deve escalar.
 - **Modo banca:** roteiro guiado e reiniciável para apresentação em aproximadamente três minutos.
 
-Cadastro, conformidade, carteira, integrações, metodologia, selo proposto e cenários contratuais continuam disponíveis em **Gestão e governança**, sem sobrecarregar a navegação principal.
+A navegação é organizada em quatro áreas legíveis: **Visão integrada**, **Catadores e cooperativas**, **Gestão de grandes geradores** e **Governança e referência**. Assim, cada público encontra seu trabalho sem perder a jornada compartilhada.
+
+## Inclusão digital
+
+O canal de campo não pressupõe que cada catador tenha smartphone, pacote de dados ou facilidade digital. A operação pode usar aparelho compartilhado da cooperativa, celular pessoal de forma opcional, terminal web no galpão ou registro assistido. Uma ficha numerada cobre contingências de aparelho e bateria e é digitada posteriormente com dupla identificação.
 
 ## Aviso importante
 
