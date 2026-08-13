@@ -1,0 +1,10 @@
+{
+  "name": "SAMAÚMA — Reciclagem Popular",
+  "short_name": "SAMAÚMA",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f2f3f1",
+  "theme_color": "#174e37",
+  "lang": "pt-BR",
+  "description": "Protótipo demonstrativo de oportunidades, operação e impacto da reciclagem popular em Porto Velho."
+}
