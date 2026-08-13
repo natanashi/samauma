@@ -17,7 +17,7 @@ As responsabilidades também são separadas dentro dos módulos: o grande gerado
 - **Consulta pública:** verificação demonstrativa do selo, validade, operador e última comprovação sem divulgar pendências internas.
 - **Oportunidades:** mapa de Porto Velho, compatibilidade, capacidade, rota e receita projetada.
 - **Operação completa:** fluxo interativo da demanda ao rateio e ao dossiê final.
-- **Operação em campo:** sistema web responsivo com acesso por aparelho compartilhado, celular pessoal opcional, terminal do galpão ou registro assistido.
+- **Operação em campo:** workspace web responsivo — sem moldura ou aplicativo separado — com chegada, QR, foto, massa, ocorrência, revisão, fila offline, sincronização e comprovante.
 - **Impacto:** metas e indicadores para decidir se o piloto deve escalar.
 - **Modo banca:** roteiro guiado e reiniciável para apresentação em aproximadamente três minutos.
 
