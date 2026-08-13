@@ -429,10 +429,39 @@ h1,h2,h3,.kpi .v,.tm .v,.of .v,.wal .v{font-family:'Source Sans 3','Segoe UI',Ar
 @media(max-width:1180px){.top .tmet{display:none}.winning-hero{grid-template-columns:1fr}.hero-result{max-width:420px}.actor-grid{grid-template-columns:repeat(2,1fr)}.actor-grid>div{border-bottom:1px solid #e1e5e3}.impact-snapshot{grid-template-columns:repeat(2,1fr)}.audience-gates{grid-template-columns:1fr}.impact-decision{grid-template-columns:repeat(4,1fr)}.impact-decision>div:first-child{grid-column:1/-1}}
 @media(max-width:820px){.govnav{display:contents}.govnav summary{display:none}.nav .nvl{display:flex;align-items:center;flex:0 0 auto;padding:8px 10px;border-left:1px solid rgba(255,255,255,.18);color:#f0c14b!important;white-space:nowrap}.judge-trigger{display:none}.winning-hero{padding:22px}.winning-hero h2{font-size:25px}.promise-strip{grid-template-columns:1fr 1fr;gap:9px}.promise-strip>i{display:none}.home-grid{grid-template-columns:1fr}.actor-grid{grid-template-columns:1fr 1fr}.case-income{grid-template-columns:1fr 1fr}.judgebar{grid-template-columns:70px 1fr}.judgebar .judge-actions{grid-column:1/-1;justify-content:flex-end}.impact-decision{grid-template-columns:1fr 1fr}.impact-decision>div:first-child{grid-column:1/-1}.opportunity-map-row{grid-template-columns:1fr}.field-main{grid-template-columns:1fr}.digital-inclusion-note{display:block}.digital-inclusion-note a{display:inline-block;margin-top:8px}.field-contingency{align-items:flex-start;flex-direction:column}}
 @media(max-width:520px){.impact-snapshot{grid-template-columns:1fr}.audience-card{grid-template-columns:38px 1fr}.audience-card button{grid-column:1/-1}.actor-grid{grid-template-columns:1fr}.actor-grid>div{border-right:0}.hero-actions{flex-direction:column}.promise-strip{grid-template-columns:1fr}.case-income{grid-template-columns:1fr}}
+
+/* ================= PORTA DE ENTRADA POR PERFIL ================= */
+.profile-gate{position:fixed;inset:0;z-index:4000;display:none;overflow:auto;background:#eef1ef;color:#20382c}.profile-gate.on{display:grid;grid-template-columns:minmax(300px,.8fr) minmax(610px,1.55fr)}.profile-gate-intro{position:sticky;top:0;display:flex;min-height:100vh;flex-direction:column;padding:42px clamp(28px,4vw,68px);background:linear-gradient(150deg,#0d3e2b 0%,#15583c 66%,#173e2c 100%);color:#fff}.profile-brand{display:flex;align-items:center;gap:14px}.profile-brand-mark{display:grid;place-items:center;width:48px;height:48px;border-bottom:4px solid #e3b538;background:#fff;color:#174e37;font:800 13px Georgia,serif}.profile-brand small{display:block;color:#a8c7b6;font-size:8px;font-weight:800;letter-spacing:1.15px}.profile-brand strong{display:block;margin-top:2px;font:700 23px Georgia,serif;letter-spacing:.4px}.profile-gate-intro h1{max-width:520px;margin-top:auto;font-size:clamp(31px,4vw,51px);line-height:1.03;letter-spacing:-1.6px}.profile-gate-intro>p{max-width:500px;margin-top:18px;color:#d0e0d7;font-size:14px;line-height:1.6}.profile-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:30px}.profile-flow div{padding:11px 8px;border-top:2px solid rgba(255,255,255,.23);color:#a8c2b4;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}.profile-flow b{display:block;margin-bottom:3px;color:#f1c44e;font-size:10px}.profile-demo-note{margin-top:auto;padding-top:28px;color:#9dbbac;font-size:9px;line-height:1.55}.profile-gate-main{display:flex;min-height:100vh;flex-direction:column;justify-content:center;padding:38px clamp(24px,4vw,64px)}.profile-gate-head span{color:#587166;font-size:8px;font-weight:800;letter-spacing:1px}.profile-gate-head h2{margin:5px 0 6px;font-size:26px;color:#173e2c}.profile-gate-head p{color:#6b7972;font-size:12px}.profile-grid{display:grid;grid-template-columns:repeat(2,minmax(250px,1fr));gap:9px;margin-top:22px}.profile-card{position:relative;display:grid;grid-template-columns:42px 1fr 22px;gap:12px;align-items:start;min-height:145px;padding:18px;border:1px solid #cbd4cf;border-top:3px solid var(--profile-color,#3b7057);background:#fff;text-align:left;box-shadow:0 2px 4px rgba(24,50,38,.04);cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s}.profile-card:hover,.profile-card:focus-visible{z-index:1;transform:translateY(-2px);border-color:var(--profile-color,#3b7057);box-shadow:0 12px 25px rgba(24,50,38,.12);outline:0}.profile-card-icon{display:grid;place-items:center;width:40px;height:40px;background:color-mix(in srgb,var(--profile-color,#3b7057) 11%,white);color:var(--profile-color,#3b7057);font:800 10px 'Source Sans 3',sans-serif}.profile-card small{display:block;color:#74827b;font-size:7px;font-weight:800;letter-spacing:.65px}.profile-card h3{margin:3px 0 5px;color:#233d30;font-size:14px}.profile-card p{color:#6b7972;font-size:9.5px;line-height:1.45}.profile-card ul{display:flex;gap:4px;flex-wrap:wrap;margin:9px 0 0;padding:0;list-style:none}.profile-card li{padding:3px 5px;background:#eef2f0;color:#54675d;font-size:7px;font-weight:700}.profile-card-arrow{display:grid;place-items:center;width:22px;height:22px;border:1px solid #d5dcd8;color:#486357;font-size:13px}.profile-gate-actions{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:14px;padding:13px 15px;border-left:4px solid #c69524;background:#fff}.profile-gate-actions div b{display:block;font-size:10.5px}.profile-gate-actions div span{color:#718078;font-size:9px}.profile-banca{white-space:nowrap}.profile-chip{display:flex;align-items:center;gap:8px;padding:5px 8px;border:1px solid #c8d2cd;background:#f6f8f7;color:#244536}.profile-chip i{display:grid;place-items:center;width:23px;height:23px;background:#174e37;color:#fff;font-size:7px;font-style:normal;font-weight:800}.profile-chip span{display:block;color:#728078;font-size:6.5px;font-weight:800;letter-spacing:.5px}.profile-chip b{display:block;font-size:9px;white-space:nowrap}.profile-chip button{margin-left:3px;padding:3px 6px;border:0;border-left:1px solid #d1d8d4;background:transparent;color:#315d79;font:700 8px 'Source Sans 3',sans-serif;cursor:pointer}.profile-nav-context{margin:10px 7px 6px;padding:10px 9px;border:1px solid rgba(255,255,255,.13);border-left:3px solid #f0c14b;background:rgba(255,255,255,.05)}.profile-nav-context span{display:block;color:#95b3a3;font-size:7px;font-weight:800;letter-spacing:.7px}.profile-nav-context b{display:block;margin-top:2px;color:#fff;font-size:11px}.profile-hidden{display:none!important}body[data-profile]:not([data-profile="banca"]) .nav>.nvl{display:none}.profile-restricted-note{display:none}
+body[data-profile]:not([data-profile="banca"]) .rolebar,body[data-profile]:not([data-profile="banca"]) .profile-demo-controls{display:none}.nav-text{min-width:0}.nav.audience-coop .nvi.on,.nav.audience-gov .nvi.on{background:#fff;color:#174e37;border-left-color:#f0c14b}
+@media(max-width:1180px){.profile-gate.on{grid-template-columns:320px 1fr}.profile-gate-intro{padding:32px}.profile-gate-intro h1{font-size:35px}.profile-grid{grid-template-columns:1fr}.profile-gate-main{justify-content:flex-start}.profile-card{min-height:0}.profile-chip{order:3}.top .profile-chip+button{margin-left:auto}}
+@media(max-width:820px){.profile-gate.on{display:block}.profile-gate-intro{position:relative;min-height:430px;padding:25px 22px}.profile-gate-intro h1{margin-top:70px;font-size:34px}.profile-flow{margin-top:22px}.profile-gate-main{padding:27px 16px}.profile-grid{grid-template-columns:1fr}.profile-card{grid-template-columns:40px 1fr 22px;padding:16px}.profile-gate-actions{align-items:flex-start;flex-direction:column}.profile-banca{width:100%}.profile-chip{order:0;margin-left:auto}.profile-chip span,.profile-chip b{display:none}.profile-chip button{font-size:9px}.top .profile-chip+button{margin-left:0}}
+@media(max-width:520px){.profile-flow{grid-template-columns:1fr 1fr}.profile-flow div{padding:8px 4px}.profile-gate-head h2{font-size:22px}.profile-card p{font-size:10px}.profile-card ul{display:none}}
 </style>
 </head>
 <body>
 <a href="#conteudo" class="skip">Ir para o conteúdo principal</a>
+
+<section class="profile-gate on" id="profileGate" role="dialog" aria-modal="true" aria-labelledby="profileGateTitle">
+  <div class="profile-gate-intro">
+    <div class="profile-brand"><div class="profile-brand-mark">PVH</div><div><small>PREFEITURA DE PORTO VELHO</small><strong>SAMAÚMA</strong></div></div>
+    <h1>Cada pessoa vê o trabalho que precisa realizar.</h1>
+    <p>Uma única cadeia de confiança, com experiências próprias para quem gera, coleta, organiza, comprova e fiscaliza os resíduos.</p>
+    <div class="profile-flow"><div><b>01</b>Disponibilizar</div><div><b>02</b>Coletar</div><div><b>03</b>Comprovar</div><div><b>04</b>Valorizar</div></div>
+    <div class="profile-demo-note"><b>AMBIENTE DEMONSTRATIVO</b><br>Perfis, organizações e dados operacionais fictícios. Geografia real de Porto Velho/RO.</div>
+  </div>
+  <div class="profile-gate-main">
+    <div class="profile-gate-head"><span>ACESSO DEMONSTRATIVO POR FUNÇÃO</span><h2 id="profileGateTitle">Como você participa da operação?</h2><p>Escolha um perfil para abrir somente as ferramentas relacionadas ao seu trabalho.</p></div>
+    <div class="profile-grid">
+      <button class="profile-card" style="--profile-color:#b07c18" onclick="selectSystemProfile('catador')"><i class="profile-card-icon">CAT</i><div><small>EXECUÇÃO EM CAMPO</small><h3>Catador</h3><p>Consultar a rota atribuída, registrar a coleta e acompanhar serviços e renda.</p><ul><li>Minha rota</li><li>Registro da coleta</li><li>Carteira</li></ul></div><i class="profile-card-arrow">›</i></button>
+      <button class="profile-card" style="--profile-color:#176343" onclick="selectSystemProfile('cooperativa')"><i class="profile-card-icon">COOP</i><div><small>GESTÃO DA OPERAÇÃO</small><h3>Cooperativa ou associação</h3><p>Avaliar oportunidades, organizar equipes, comprovar serviços e fazer o rateio.</p><ul><li>Oportunidades</li><li>Operação</li><li>Rateio</li></ul></div><i class="profile-card-arrow">›</i></button>
+      <button class="profile-card" style="--profile-color:#315d79" onclick="selectSystemProfile('gerador')"><i class="profile-card-icon">GER</i><div><small>ORIGEM DO MATERIAL</small><h3>Grande gerador</h3><p>Declarar uma demanda, acompanhar a coleta e consultar a prova de destinação.</p><ul><li>Nova demanda</li><li>Acompanhamento</li><li>Comprovante</li></ul></div><i class="profile-card-arrow">›</i></button>
+      <button class="profile-card" style="--profile-color:#397b72" onclick="selectSystemProfile('operador')"><i class="profile-card-icon">OP</i><div><small>COLETA, BALANÇA E DESTINO</small><h3>Operador ou unidade receptora</h3><p>Registrar eventos operacionais, pesagem, recebimento e evidências do destino.</p><ul><li>Coleta</li><li>Pesagem</li><li>Destino</li></ul></div><i class="profile-card-arrow">›</i></button>
+      <button class="profile-card" style="--profile-color:#174e37" onclick="selectSystemProfile('gestao')"><i class="profile-card-icon">PVH</i><div><small>DECISÃO PÚBLICA</small><h3>Gestão municipal</h3><p>Analisar cadastros e divergências, acompanhar resultados e decidir o piloto.</p><ul><li>Cadastros</li><li>Conformidade</li><li>Indicadores</li></ul></div><i class="profile-card-arrow">›</i></button>
+      <button class="profile-card" style="--profile-color:#695f83" onclick="selectSystemProfile('auditoria')"><i class="profile-card-icon">AUD</i><div><small>CONTROLE E TRANSPARÊNCIA</small><h3>Auditoria e controle</h3><p>Consultar indicadores, origem dos dados, metodologia e trilha de evidências.</p><ul><li>Impacto</li><li>Governança</li><li>Metodologia</li></ul></div><i class="profile-card-arrow">›</i></button>
+    </div>
+    <div class="profile-gate-actions"><div><b>Vai apresentar o projeto?</b><span>O modo banca libera a visão integrada e todos os módulos demonstrativos.</span></div><button class="btn profile-banca" onclick="selectSystemProfile('banca')">Abrir demonstração completa</button></div>
+  </div>
+</section>
 
 <div class="app">
   <aside class="side">
@@ -442,26 +471,27 @@ h1,h2,h3,.kpi .v,.tm .v,.of .v,.wal .v{font-family:'Source Sans 3','Segoe UI',Ar
       <div class="mun"><b>Secretaria Municipal de Meio Ambiente</b>Decreto Municipal nº 15.603/2018</div>
     </div>
     <nav class="nav" aria-label="Navegação principal">
+      <div class="profile-nav-context profile-hidden" id="profileNavContext"><span>ÁREA DE TRABALHO</span><b id="profileNavName">—</b></div>
       <div class="nvl g3"><i></i> Visão integrada</div>
-      <div class="nvi on" data-v="pan" data-audience="all"><span class="ic">⌂</span> Início</div>
-      <div class="nvi" data-v="demo" data-audience="all"><span class="ic">▶</span> Operação completa</div>
-      <div class="nvi" data-v="ind" data-audience="all"><span class="ic">▤</span> Impacto</div>
-      <div class="nvi" data-v="pilot" data-audience="all"><span class="ic">✓</span> Piloto de 90 dias</div>
+      <div class="nvi on" data-v="pan" data-audience="all"><span class="ic">⌂</span><span class="nav-text">Início</span></div>
+      <div class="nvi" data-v="demo" data-audience="all"><span class="ic">▶</span><span class="nav-text">Operação completa</span></div>
+      <div class="nvi" data-v="ind" data-audience="all"><span class="ic">▤</span><span class="nav-text">Impacto</span></div>
+      <div class="nvi" data-v="pilot" data-audience="all"><span class="ic">✓</span><span class="nav-text">Piloto de 90 dias</span></div>
 
       <div class="nvl g2"><i></i> Catadores e cooperativas</div>
-      <div class="nvi" data-v="oper" data-audience="coop"><span class="ic">◆</span> Oportunidades <span class="ct">4</span></div>
-      <div class="nvi" data-v="verif" data-audience="coop"><span class="ic">◎</span> Operação em campo <span class="ct" id="ctVer"></span></div>
-      <div class="nvi" data-v="cart" data-audience="coop"><span class="ic">◐</span> Carteira e rateio</div>
+      <div class="nvi" data-v="oper" data-audience="coop"><span class="ic">◆</span><span class="nav-text">Oportunidades</span><span class="ct">4</span></div>
+      <div class="nvi" data-v="verif" data-audience="coop"><span class="ic">◎</span><span class="nav-text">Operação em campo</span><span class="ct" id="ctVer"></span></div>
+      <div class="nvi" data-v="cart" data-audience="coop"><span class="ic">◐</span><span class="nav-text">Carteira e rateio</span></div>
 
       <div class="nvl g1"><i></i> Gestão de grandes geradores</div>
-      <div class="nvi" data-v="cad" data-audience="gov"><span class="ic">◉</span> Cadastro técnico <span class="ct" id="ctCad"></span></div>
-      <div class="nvi" data-v="conf" data-audience="gov"><span class="ic">◫</span> Conformidade <span class="ct">3</span></div>
-      <div class="nvi" data-v="selo" data-audience="gov"><span class="ic">▣</span> Selo proposto</div>
-      <div class="nvi" data-v="base" data-audience="gov"><span class="ic">◭</span> Cenários contratuais</div>
+      <div class="nvi" data-v="cad" data-audience="gov"><span class="ic">◉</span><span class="nav-text">Cadastro técnico</span><span class="ct" id="ctCad"></span></div>
+      <div class="nvi" data-v="conf" data-audience="gov"><span class="ic">◫</span><span class="nav-text">Conformidade</span><span class="ct">3</span></div>
+      <div class="nvi" data-v="selo" data-audience="gov"><span class="ic">▣</span><span class="nav-text">Selo proposto</span></div>
+      <div class="nvi" data-v="base" data-audience="gov"><span class="ic">◭</span><span class="nav-text">Cenários contratuais</span></div>
 
       <div class="nvl g3"><i></i> Governança e referência</div>
-      <div class="nvi" data-v="int" data-audience="reference"><span class="ic">⌘</span> Integrações e dados</div>
-      <div class="nvi" data-v="met" data-audience="reference"><span class="ic">◇</span> Metodologia e fontes</div>
+      <div class="nvi" data-v="int" data-audience="reference"><span class="ic">⌘</span><span class="nav-text">Integrações e dados</span></div>
+      <div class="nvi" data-v="met" data-audience="reference"><span class="ic">◇</span><span class="nav-text">Metodologia e fontes</span></div>
     </nav>
     <div class="ft" id="fonteDados"><b style="color:#f4c95d">AMBIENTE DEMONSTRATIVO</b><br>Organizações e pessoas fictícias<br>Geografia real de Porto Velho/RO</div>
   </aside>
@@ -470,6 +500,7 @@ h1,h2,h3,.kpi .v,.tm .v,.of .v,.wal .v{font-family:'Source Sans 3','Segoe UI',Ar
     <header class="top">
       <div class="tt"><div class="crumb">SAMAÚMA <span>/</span> Reciclagem popular</div><h2 id="vt">Início</h2><p id="vs">Oportunidade, operação, renda e impacto no mesmo fluxo</p></div>
       <span class="pill2 p-g3" id="vp">PANORAMA</span>
+      <div class="profile-chip" id="profileChip"><i id="profileChipIcon">—</i><div><span>PERFIL ATUAL</span><b id="profileChipName">Não selecionado</b></div><button onclick="openProfileGate()">Trocar</button></div>
       <button class="btn sm sec" onclick="tourIni()" aria-label="Explicar somente a tela atual">Explicar tela</button>
       <button class="btn sm judge-trigger" onclick="judgeModeStart()" aria-label="Iniciar demonstração guiada para a banca">Modo banca · 3 min</button>
       <div class="tmet">
@@ -543,7 +574,7 @@ h1,h2,h3,.kpi .v,.tm .v,.of .v,.wal .v{font-family:'Source Sans 3','Segoe UI',Ar
     <section class="view" id="v-demo">
       <div class="case-head">
         <div><div class="ey">OPERAÇÃO REAL SIMULADA · DADOS FICTÍCIOS</div><h3>Da oportunidade à renda, com prova de cada etapa</h3><p>Alterne os responsáveis e execute uma coleta completa. O protótipo registra decisões, funciona em campo e termina em pagamento e impacto.</p></div>
-        <div class="case-head-actions"><button class="btn sec" onclick="demoReset()">Reiniciar operação</button><button class="btn" id="demoGuideBtn" onclick="demoGuide()">Conduzir próxima etapa</button></div>
+        <div class="case-head-actions profile-demo-controls"><button class="btn sec" onclick="demoReset()">Reiniciar operação</button><button class="btn" id="demoGuideBtn" onclick="demoGuide()">Conduzir próxima etapa</button></div>
       </div>
 
       <div class="rolebar" aria-label="Alternar perfil demonstrativo">
@@ -1446,7 +1477,62 @@ const T={pan:['Início','Oportunidade, operação, renda e impacto no mesmo flux
  oper:['Oportunidades','Encontre material, avalie viabilidade e forme rotas para a cooperativa','RENDA E ROTAS','p-g2'],
  int:['Integrações e dados','Veja de onde vem cada dado, quem responde por ele e como será implantado','GOVERNANÇA','p-g3'],
  met:['Metodologia e fontes','Consulte as regras, parâmetros e limites do modelo','TRANSPARÊNCIA','p-g3']};
+
+/* A seleção de perfil é demonstrativa. Em produção, o servidor aplicaria estas
+   permissões após autenticação; ocultar itens no navegador não substitui RBAC. */
+const SYSTEM_PROFILES={
+  catador:{name:'Catador',short:'CAT',start:'verif',routes:['verif','cart'],audience:'coop'},
+  cooperativa:{name:'Cooperativa ou associação',short:'COOP',start:'oper',routes:['oper','verif','cart','demo','ind'],audience:'coop'},
+  gerador:{name:'Grande gerador',short:'GER',start:'demo',routes:['demo','selo'],audience:'gov'},
+  operador:{name:'Operador ou unidade receptora',short:'OP',start:'demo',routes:['demo','verif','conf'],audience:'coop'},
+  gestao:{name:'Gestão municipal',short:'PVH',start:'cad',routes:['cad','conf','ind','pilot','selo','base','int','met'],audience:'gov'},
+  auditoria:{name:'Auditoria e controle',short:'AUD',start:'ind',routes:['ind','int','met','pilot','conf'],audience:'reference'},
+  banca:{name:'Demonstração completa',short:'360',start:'pan',routes:Object.keys(T),audience:'all'}
+};
+const PROFILE_ROUTE_LABELS={
+  catador:{verif:'Minha rota e coletas',cart:'Minha carteira'},
+  cooperativa:{oper:'Oportunidades',verif:'Operação da equipe',cart:'Rateio e pagamentos',demo:'Acompanhar coleta',ind:'Resultados da cooperativa'},
+  gerador:{demo:'Minhas demandas',selo:'Comprovantes e selo'},
+  operador:{demo:'Coletas e pesagens',verif:'Fila de registros',conf:'Inconsistências'},
+  gestao:{cad:'Cadastro técnico',conf:'Conformidade',ind:'Indicadores municipais',pilot:'Piloto de 90 dias',selo:'Selo proposto',base:'Cenários contratuais',int:'Integrações e dados',met:'Metodologia e fontes'},
+  auditoria:{ind:'Painel de impacto',int:'Origem dos dados',met:'Metodologia e fontes',pilot:'Critérios do piloto',conf:'Trilha de conformidade'},
+  banca:{pan:'Início',demo:'Operação completa',ind:'Impacto',pilot:'Piloto de 90 dias',oper:'Oportunidades',verif:'Operação em campo',cart:'Carteira e rateio',cad:'Cadastro técnico',conf:'Conformidade',selo:'Selo proposto',base:'Cenários contratuais',int:'Integrações e dados',met:'Metodologia e fontes'}
+};
+let currentSystemProfile=null;
+
+function openProfileGate(){
+  if(document.getElementById('tour')?.classList.contains('on')&&typeof tourFim==='function')tourFim();
+  document.getElementById('profileGate').classList.add('on');
+  document.getElementById('profileGate').setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.querySelector('.profile-card')?.focus(),40);
+}
+function closeProfileGate(){
+  document.getElementById('profileGate').classList.remove('on');
+  document.getElementById('profileGate').setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+}
+function selectSystemProfile(profileKey){
+  const profile=SYSTEM_PROFILES[profileKey];if(!profile)return;
+  currentSystemProfile=profileKey;document.body.dataset.profile=profileKey;
+  document.querySelectorAll('.nav .nvi').forEach(item=>{
+    item.classList.toggle('profile-hidden',!profile.routes.includes(item.dataset.v));
+    const label=item.querySelector('.nav-text');if(label)label.textContent=PROFILE_ROUTE_LABELS[profileKey][item.dataset.v]||T[item.dataset.v]?.[0]||label.textContent;
+  });
+  document.querySelectorAll('.nav>.nvl').forEach(label=>label.classList.toggle('profile-hidden',profileKey!=='banca'));
+  const context=document.getElementById('profileNavContext');context.classList.remove('profile-hidden');
+  document.getElementById('profileNavName').textContent=profile.name;
+  document.getElementById('profileChipIcon').textContent=profile.short;
+  document.getElementById('profileChipName').textContent=profile.name;
+  document.querySelector('.nav').className='nav'+(profile.audience!=='all'?' audience-'+(profile.audience==='reference'?'gov':profile.audience):'');
+  if(typeof prepareDemoForProfile==='function')prepareDemoForProfile(profileKey);
+  closeProfileGate();irPara(profile.start);
+  toast('Área aberta: '+profile.name);
+}
 function irPara(v){
+  if(currentSystemProfile&&!SYSTEM_PROFILES[currentSystemProfile].routes.includes(v)){
+    toast('Este módulo pertence a outro perfil. Use “Trocar” para mudar de área.');return;
+  }
   if(document.getElementById('tour')?.classList.contains('on')&&typeof tourFim==='function')tourFim();
   document.querySelectorAll('.nvi').forEach(x=>x.classList.remove('on'));
   const n=document.querySelector(`.nvi[data-v="${v}"]`);if(n)n.classList.add('on');
@@ -2016,11 +2102,11 @@ function docRelatorio(){
 }
 
 window.addEventListener('load',()=>{
-  renderOficiais();renderCoef();initMap();novoCiclo();calcProp();setCaso(0);renderCarteira();renderConf();});
+  renderOficiais();renderCoef();initMap();novoCiclo();calcProp();setCaso(0);renderCarteira();renderConf();openProfileGate();});
 </script>
-<script src="demo.js?v=20260813"></script>
-<script src="opportunities.js?v=20260813"></script>
-<script src="dashboard.js?v=20260813"></script>
-<script src="tutorial.js?v=20260813"></script>
+<script src="demo.js?v=20260813b"></script>
+<script src="opportunities.js?v=20260813b"></script>
+<script src="dashboard.js?v=20260813b"></script>
+<script src="tutorial.js?v=20260813b"></script>
 </body>
 </html>
