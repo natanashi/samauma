@@ -1,5 +1,5 @@
-const CACHE='samauma-2026-v7';
-const SHELL=['./','./index.html','./demo.js?v=20260813b','./opportunities.js?v=20260813b','./dashboard.js?v=20260813b','./tutorial.js?v=20260813b','./manifest.webmanifest'];
+const CACHE='samauma-2026-v8';
+const SHELL=['./','./index.html','./demo.js?v=20260813c','./opportunities.js?v=20260813c','./dashboard.js?v=20260813c','./tutorial.js?v=20260813c','./manifest.webmanifest'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{

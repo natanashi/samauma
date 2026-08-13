@@ -1499,12 +1499,29 @@ const PROFILE_ROUTE_LABELS={
   banca:{pan:'Início',demo:'Operação completa',ind:'Impacto',pilot:'Piloto de 90 dias',oper:'Oportunidades',verif:'Operação em campo',cart:'Carteira e rateio',cad:'Cadastro técnico',conf:'Conformidade',selo:'Selo proposto',base:'Cenários contratuais',int:'Integrações e dados',met:'Metodologia e fontes'}
 };
 let currentSystemProfile=null;
+let applyingNavigationHistory=false;
 
-function openProfileGate(){
+function navigationUrl(state){
+  const base=location.pathname+location.search;
+  return state.screen==='gate'?base+'#acesso':base+'#perfil='+encodeURIComponent(state.profile)+'&modulo='+encodeURIComponent(state.route);
+}
+function saveNavigationState(state,replace=false){
+  if(applyingNavigationHistory)return;
+  history[replace?'replaceState':'pushState']({...state,samauma:true},'',navigationUrl(state));
+}
+function locationNavigationState(){
+  const raw=location.hash.replace(/^#/,'');
+  if(!raw||raw==='acesso')return {screen:'gate'};
+  const params=new URLSearchParams(raw),profile=params.get('perfil'),route=params.get('modulo');
+  if(SYSTEM_PROFILES[profile]?.routes.includes(route))return {screen:'app',profile,route};
+  return {screen:'gate'};
+}
+function openProfileGate(options={}){
   if(document.getElementById('tour')?.classList.contains('on')&&typeof tourFim==='function')tourFim();
   document.getElementById('profileGate').classList.add('on');
   document.getElementById('profileGate').setAttribute('aria-hidden','false');
   document.body.style.overflow='hidden';
+  if(options.history!==false)saveNavigationState({screen:'gate'},options.replace===true);
   setTimeout(()=>document.querySelector('.profile-card')?.focus(),40);
 }
 function closeProfileGate(){
@@ -1512,8 +1529,9 @@ function closeProfileGate(){
   document.getElementById('profileGate').setAttribute('aria-hidden','true');
   document.body.style.overflow='';
 }
-function selectSystemProfile(profileKey){
+function selectSystemProfile(profileKey,options={}){
   const profile=SYSTEM_PROFILES[profileKey];if(!profile)return;
+  const profileChanged=currentSystemProfile!==profileKey;
   currentSystemProfile=profileKey;document.body.dataset.profile=profileKey;
   document.querySelectorAll('.nav .nvi').forEach(item=>{
     item.classList.toggle('profile-hidden',!profile.routes.includes(item.dataset.v));
@@ -1525,11 +1543,13 @@ function selectSystemProfile(profileKey){
   document.getElementById('profileChipIcon').textContent=profile.short;
   document.getElementById('profileChipName').textContent=profile.name;
   document.querySelector('.nav').className='nav'+(profile.audience!=='all'?' audience-'+(profile.audience==='reference'?'gov':profile.audience):'');
-  if(typeof prepareDemoForProfile==='function')prepareDemoForProfile(profileKey);
-  closeProfileGate();irPara(profile.start);
-  toast('Área aberta: '+profile.name);
+  if(profileChanged&&typeof prepareDemoForProfile==='function')prepareDemoForProfile(profileKey);
+  const route=options.route&&profile.routes.includes(options.route)?options.route:profile.start;
+  closeProfileGate();irPara(route,{history:false});
+  if(options.history!==false)saveNavigationState({screen:'app',profile:profileKey,route},options.replace===true);
+  if(options.silent!==true)toast('Área aberta: '+profile.name);
 }
-function irPara(v){
+function irPara(v,options={}){
   if(currentSystemProfile&&!SYSTEM_PROFILES[currentSystemProfile].routes.includes(v)){
     toast('Este módulo pertence a outro perfil. Use “Trocar” para mudar de área.');return;
   }
@@ -1551,7 +1571,20 @@ function irPara(v){
   document.querySelector('.main').scrollTop=0;
   document.querySelector('.main .view.on').scrollTop=0;
   if(window.innerWidth<=820)window.scrollTo({top:0,behavior:'instant'});
+  if(options.history!==false&&currentSystemProfile)saveNavigationState({screen:'app',profile:currentSystemProfile,route:v},options.replace===true);
 }
+function applyNavigationState(state){
+  applyingNavigationHistory=true;
+  if(state?.screen==='app'&&SYSTEM_PROFILES[state.profile]?.routes.includes(state.route))selectSystemProfile(state.profile,{route:state.route,history:false,silent:true});
+  else openProfileGate({history:false});
+  applyingNavigationHistory=false;
+}
+function initializeNavigationHistory(){
+  const state=history.state?.samauma?history.state:locationNavigationState();
+  history.replaceState({...state,samauma:true},'',navigationUrl(state));
+  applyNavigationState(state);
+}
+window.addEventListener('popstate',event=>applyNavigationState(event.state?.samauma?event.state:locationNavigationState()));
 document.querySelectorAll('.nvi').forEach(n=>{
   n.onclick=()=>irPara(n.dataset.v);
   n.tabIndex=0;n.setAttribute('role','button');
@@ -2102,11 +2135,11 @@ function docRelatorio(){
 }
 
 window.addEventListener('load',()=>{
-  renderOficiais();renderCoef();initMap();novoCiclo();calcProp();setCaso(0);renderCarteira();renderConf();openProfileGate();});
+  renderOficiais();renderCoef();initMap();novoCiclo();calcProp();setCaso(0);renderCarteira();renderConf();initializeNavigationHistory();});
 </script>
-<script src="demo.js?v=20260813b"></script>
-<script src="opportunities.js?v=20260813b"></script>
-<script src="dashboard.js?v=20260813b"></script>
-<script src="tutorial.js?v=20260813b"></script>
+<script src="demo.js?v=20260813c"></script>
+<script src="opportunities.js?v=20260813c"></script>
+<script src="dashboard.js?v=20260813c"></script>
+<script src="tutorial.js?v=20260813c"></script>
 </body>
 </html>
