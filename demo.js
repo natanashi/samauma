@@ -105,8 +105,9 @@ function demoDownloadDossier(){
 }
 
 const JUDGE_STEPS=[
-  ['pan','O problema em uma frase','Resíduo disponível ainda não vira oportunidade rastreável de trabalho e renda.'],
-  ['oper','Onde está o material','O mapa operacional reúne demandas fictícias e mostra compatibilidade, distância, capacidade e receita.'],
+  ['pan','A solução em uma frase','O SAMAÚMA regulariza grandes geradores e transforma recicláveis autorizados em oportunidade rastreável de trabalho e renda.'],
+  ['reg','Primeiro, organizar o gerador','Autodeclaração, documentos, análise e selo formam um ciclo regulatório com responsabilidades separadas.'],
+  ['oper','Depois, conectar o reciclável','Somente a fração compatível e autorizada chega à cooperativa, com distância, capacidade e receita explicáveis.'],
   ['demo','Começa a operação','Agora a banca executa o fluxo — não apenas observa um painel.'],
   ['demo','O gerador publica','Material, janela, estimativa e remuneração entram com origem declarada.'],
   ['demo','A cooperativa decide','O sistema recomenda; a organização aceita somente se houver capacidade e viabilidade.'],
@@ -124,7 +125,7 @@ function judgeTick(){const sec=Math.floor((Date.now()-judgeStarted)/1000),m=Stri
 function judgeRender(){const step=JUDGE_STEPS[judgeStep];irPara(step[0]);document.getElementById('judgeTitle').textContent=step[1];document.getElementById('judgeDesc').textContent=step[2];document.getElementById('judgeNext').textContent=judgeStep===JUDGE_STEPS.length-1?'Concluir':'Próximo';}
 function judgeModeNext(){
   if(judgeStep===JUDGE_STEPS.length-1){judgeModeClose();return;}judgeStep++;
-  if(judgeStep===2)demoReset();if(judgeStep===3)demoPublish();if(judgeStep===4)demoAccept();if(judgeStep===5)demoRegisterCollection();if(judgeStep===6)demoRegisterWeight();if(judgeStep===7)demoReconcile();if(judgeStep===8)demoCorrect();if(judgeStep===9)demoSettle();judgeRender();
+  if(judgeStep===3)demoReset();if(judgeStep===4)demoPublish();if(judgeStep===5)demoAccept();if(judgeStep===6)demoRegisterCollection();if(judgeStep===7)demoRegisterWeight();if(judgeStep===8)demoReconcile();if(judgeStep===9)demoCorrect();if(judgeStep===10)demoSettle();judgeRender();
 }
 function judgeModeClose(){clearInterval(judgeTimer);document.getElementById('judgebar')?.classList.remove('on');}
 
