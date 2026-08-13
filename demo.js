@@ -16,6 +16,18 @@ function demoInitial(){return {
 };}
 function demoReset(){CASE_DEMO=demoInitial();renderDemo();toast('Operação reiniciada · nenhum dado oficial foi alterado');}
 function demoSetRole(role){CASE_DEMO.role=role;renderDemo();}
+function prepareDemoForProfile(profile){
+  CASE_DEMO=demoInitial();
+  const setup={
+    gerador:{stage:1,role:'gerador'},
+    operador:{stage:4,role:'cooperativa',declared:820,collected:785,synced:true},
+    cooperativa:{stage:2,role:'cooperativa',declared:820},
+    catador:{stage:3,role:'catador',declared:820},
+    gestao:{stage:5,role:'servidor',declared:820,collected:785,gross:3820,tare:3078,weighed:742,synced:true}
+  }[profile];
+  if(setup)Object.assign(CASE_DEMO,setup);
+  renderDemo();
+}
 function demoEvent(time,title,detail,id){CASE_DEMO.events.push({time,title,detail,id});}
 function demoHeader(title,desc){const r=DEMO_ROLES[CASE_DEMO.role];return `<div class="work-intro"><div><div class="role-name">${r.name}</div><h4>${title}</h4><p>${desc}</p></div><span class="permission">${r.perm}</span></div>`;}
 function demoUnavailable(expected){return `<div class="empty-action"><b>Esta ação pertence a ${expected}</b><p>Alterne o perfil responsável. Separar quem declara, executa e valida torna a evidência confiável.</p></div>`;}

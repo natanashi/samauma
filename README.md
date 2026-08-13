@@ -6,6 +6,8 @@ O SAMAÚMA conecta geradores, cooperativas, catadores e Município numa operaç�
 
 O produto é exclusivamente web: o mesmo endereço abre no navegador do computador, tablet ou celular. Não existe dependência de aplicativo nativo, loja de aplicativos ou celular pessoal.
 
+Na entrada, a pessoa escolhe um perfil demonstrativo — catador, cooperativa, grande gerador, operador, gestão municipal ou auditoria. A navegação passa a exibir apenas as tarefas daquele papel. O modo banca é a única experiência que libera deliberadamente a visão completa do protótipo.
+
 ## Experiência principal
 
 - **Início:** proposta, cadeia operacional, resultados e escopo do piloto.
