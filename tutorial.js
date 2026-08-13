@@ -87,10 +87,11 @@ const CONTEXT_TOURS={
     {sel:'.box',index:2,t:'Rateio aberto',d:'A tabela detalha massa, serviços, material e total por pessoa cooperada.',w:'Transparência da regra reduz conflito interno e gera histórico para editais e crédito.'}
   ],
   oper:[
-    {sel:'.opportunity-head',t:'O produto encontra trabalho possível',d:'A tela reúne material, capacidade e renda provável sem transformar recomendação em contratação automática.',w:'A cooperativa continua decidindo o que consegue atender com segurança.'},
-    {sel:'#oppMap',t:'Mapa de oportunidades',d:'Os pontos fictícios usam a geografia real de Porto Velho e mostram compatibilidade de cada demanda.',w:'Distância e agrupamento de rota afetam diretamente custo e renda.'},
-    {sel:'.route-pick',t:'Recomendação explicável',d:'A melhor rota informa massa, percurso, receita e capacidade após o aceite.',w:'A banca consegue entender por que uma oportunidade foi priorizada.'},
-    {sel:'#leads',closest:'.box',t:'Fila que leva à ação',d:'A lista mostra recicláveis compatíveis e permite abrir a operação completa para avaliar e aceitar.',w:'O mapa não é decorativo: ele inicia o fluxo de trabalho.'},
+    {sel:'.opportunity-head',t:'Autonomia antes da rota',d:'O catador consulta as oportunidades antes de entrar na execução. O sistema recomenda, mas não escolhe sozinho.',w:'A tecnologia deve ampliar a capacidade de decisão do trabalhador, não retirar sua autonomia.'},
+    {sel:'.opportunity-tabs',t:'Lista, mapa e rotas separadas',d:'Lista e mapa servem para descobrir demandas. “Minhas rotas” guarda somente o que foi aceito ou atribuído pela cooperativa.',w:'Separar descoberta, decisão e execução torna o sistema mais fácil de aprender e operar.'},
+    {sel:'.opportunity-filters',t:'Filtros ligados à realidade do trabalho',d:'Material, distância e período ajudam a encontrar uma coleta compatível com o veículo, o turno e a capacidade disponível.',w:'A melhor demanda não é apenas a maior: precisa ser viável para quem vai executá-la.'},
+    {sel:'.opportunity-card-list',t:'Escolha com informação suficiente',d:'Cada cartão mostra massa estimada, remuneração, distância, janela e o motivo da recomendação antes do aceite.',w:'O trabalhador consegue comparar oportunidades sem aceitar no escuro.'},
+    {sel:'.opportunity-card',t:'Recomendação explicável',d:'A etiqueta destaca a melhor combinação e os detalhes revelam os critérios usados. Nenhuma reserva acontece sem confirmação.',w:'Transparência reduz a sensação de decisão automática e permite contestar recomendações ruins.'},
     {sel:'.row.c21 .box',index:1,t:'Ordem de encaminhamento',d:'Resíduo municipal e gerador privado seguem fundamentos diferentes. Para privados, a escolha do fornecedor continua livre.',w:'O benefício social precisa respeitar contratação pública e liberdade econômica.'},
     {sel:'.row.c21 .box',index:2,t:'Preço com memória de cálculo',d:'Frequência e distância alimentam combustível, mão de obra, desgaste, equilíbrio e preço sugerido.',w:'A proposta deixa de ser um valor arbitrário e pode ser discutida com transparência.'}
   ],
