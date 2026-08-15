@@ -1,10 +1,10 @@
 {
-  "name": "SAMAÚMA — Reciclagem Popular",
+  "name": "SAMAÚMA — Sistema de Grandes Geradores e Inclusão Produtiva",
   "short_name": "SAMAÚMA",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f2f3f1",
-  "theme_color": "#174e37",
+  "background_color": "#fafcf9",
+  "theme_color": "#1f6b4a",
   "lang": "pt-BR",
-  "description": "Protótipo demonstrativo de oportunidades, operação e impacto da reciclagem popular em Porto Velho."
+  "description": "Protótipo demonstrativo: o gerador cria a demanda, o catador coleta, o destinatário recebe e confirma, e a Prefeitura acompanha o ciclo até o comprovante."
 }
