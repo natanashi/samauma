@@ -408,17 +408,18 @@ ${comprovanteHtml(demanda)}</body></html>`;
       }
     });
 
-    /* Linha de tabela e marca no mapa também abrem com o teclado. */
+    /* Porta da entrada, linha de tabela e marca no mapa abrem com o teclado. */
     document.addEventListener('keydown', evento => {
       if (evento.key === 'Escape' && !document.getElementById('sobreposicao').hidden) {
         this.fecharComprovante();
         return;
       }
       if (evento.key !== 'Enter' && evento.key !== ' ') return;
-      const alvo = evento.target.closest('[data-acao="abrir"], [data-acao="gerador"]');
+      const alvo = evento.target.closest('[data-acao="abrir"], [data-acao="gerador"], [data-acao="perfil"]');
       if (!alvo || alvo.tagName === 'BUTTON') return;
       evento.preventDefault();
-      if (alvo.dataset.acao === 'gerador') this.abrirGerador(alvo.dataset.id);
+      if (alvo.dataset.acao === 'perfil') this.entrar(alvo.dataset.perfil);
+      else if (alvo.dataset.acao === 'gerador') this.abrirGerador(alvo.dataset.id);
       else this.abrir(alvo.dataset.id);
     });
 
