@@ -239,8 +239,9 @@ const Store = {
   conciliar(id, { kgAceito, nota }) {
     const demanda = this._exigir(id, 'PENDENCIA');
     const anterior = demanda.verificadoKg;
+    const unidade = Catalogo.destino(demanda.destino.id);
     demanda.verificadoKg = kgAceito;
-    if (demanda.rejeitoKg > kgAceito) demanda.rejeitoKg = kgAceito;
+    demanda.rejeitoKg = unidade && unidade.aterro ? kgAceito : Math.min(demanda.rejeitoKg, kgAceito);
     demanda.conciliada = true;
     this._registrar(demanda, 'Divergência conciliada',
       `Massa aceita: ${Fmt.kg(kgAceito)} (registro anterior de ${Fmt.kg(anterior)} preservado na trilha).${nota ? ' ' + nota : ''}`,

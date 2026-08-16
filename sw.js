@@ -1,6 +1,6 @@
 /* Cache do protótipo. Sem dependências externas: o app inteiro cabe nestes arquivos. */
-const CACHE = 'samauma-2026-v23';
-const VERSAO = '?v=20260816a';
+const CACHE = 'samauma-2026-v44';
+const VERSAO = '?v=20260815z';
 
 const SHELL = [
   './',
@@ -27,7 +27,6 @@ const SHELL = [
 
   './src/telas/entrada.js' + VERSAO,
   './src/telas/gerador.js' + VERSAO,
-  './src/telas/catador.js' + VERSAO,
   './src/telas/destinatario.js' + VERSAO,
   './src/telas/prefeitura.js' + VERSAO,
   './src/telas/demanda.js' + VERSAO,
@@ -64,8 +63,10 @@ self.addEventListener('fetch', event => {
 
   event.respondWith(caches.match(event.request).then(guardado => guardado || fetch(event.request)
     .then(response => {
-      const copia = response.clone();
-      caches.open(CACHE).then(cache => cache.put(event.request, copia));
+      if (response.ok) {
+        const copia = response.clone();
+        caches.open(CACHE).then(cache => cache.put(event.request, copia));
+      }
       return response;
     })
     .catch(() => caches.match('./index.html'))));

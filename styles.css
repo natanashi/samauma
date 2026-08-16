@@ -13,6 +13,10 @@
 /* =========================================================== 1. FUNDAÇÕES */
 
 :root {
+  /* O site só existe em tema claro: impede o navegador de forçar escuro por
+     conta própria quando o sistema operacional está em modo escuro. */
+  color-scheme: light;
+
   /* As cinco cores do símbolo, na ordem em que o gradiente as encontra. */
   --azul: #2a6fa8;
   --teal: #2a8c7a;
@@ -117,8 +121,7 @@ ul, ol { list-style: none; }
 .medicao .quem,
 .serie .etiqueta,
 .faixa-perfil .medidas span,
-.micro-kpis span,
-.porta .papel {
+.micro-kpis span {
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1.4px;
@@ -140,9 +143,9 @@ ul, ol { list-style: none; }
    O recorte é o único lugar que conhece a geometria do PNG: se o arquivo mudar
    de proporção, ajuste estes três valores e nada mais. */
 :root {
-  --recorte-x: .18;   /* borda esquerda do círculo, em fração da largura */
-  --recorte-y: .01;   /* borda superior do círculo, em fração da largura */
-  --recorte-l: .64;   /* largura do círculo em fração da largura da imagem */
+  --recorte-x: .169;  /* borda esquerda do círculo, em fração da largura */
+  --recorte-y: .069;  /* borda superior do círculo, em fração da largura */
+  --recorte-l: .627;  /* largura do círculo em fração da largura da imagem */
 }
 
 .marca-completa,
@@ -224,38 +227,33 @@ ul, ol { list-style: none; }
 .portao-marca h1 {
   font-size: 34px; font-weight: 500;
   letter-spacing: 14px; text-indent: 14px;
+  margin-top: var(--e3);
   color: var(--tinta);
 }
-/* O fio do ciclo no lugar do logotipo: a identidade em 2 px, sem imagem. */
-.portao-marca h1::after {
-  content: ''; display: block;
-  width: 96px; height: 2px; margin: 12px auto 0;
-  border-radius: var(--r-pill); background: var(--ciclo);
-}
 .portao-marca .assinatura {
-  font-size: 12.5px; color: var(--tinta2); letter-spacing: .3px; margin-top: 12px;
+  font-size: 12.5px; color: var(--tinta2); letter-spacing: .3px; margin-top: 6px;
 }
 .portao-marca .tri { justify-content: center; }
 
 .portao-lead {
-  max-width: 620px; margin: var(--e5) auto 0;
+  max-width: 620px; margin: var(--e4) auto 0;
   text-align: center; font-size: 16px; color: var(--tinta2); line-height: 1.65;
 }
 
 .portao-grade {
   display: grid; gap: var(--e4);
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: var(--e5);
 }
 
-/* Cada porta é um passo do ciclo: ordem, papel, o que faz e por onde entra. */
+/* Cada porta é um passo do ciclo: ícone, o que faz e por onde entra. */
 .porta {
   position: relative;
   background: var(--carta);
   border: 1px solid var(--linha);
   border-radius: var(--r-g);
-  padding: var(--e4) var(--e4) var(--e4);
-  display: flex; flex-direction: column; gap: 10px;
+  padding: var(--e5) var(--e4) var(--e4);
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;
   box-shadow: var(--sombra-p);
   overflow: hidden;
   transition: var(--toque);
@@ -265,59 +263,26 @@ ul, ol { list-style: none; }
   background: var(--cor-perfil);
 }
 .porta:hover { transform: translateY(-3px); box-shadow: var(--sombra); border-color: var(--cor-perfil); }
-.porta:focus-visible {
-  outline: 2px solid var(--cor-perfil); outline-offset: 3px;
-  transform: translateY(-3px); box-shadow: var(--sombra); border-color: var(--cor-perfil);
-}
 
-.porta-topo { display: flex; align-items: center; gap: var(--e2); }
-.porta .ordem {
-  width: 22px; height: 22px; border-radius: var(--r-pill);
+.porta-icone {
+  width: 56px; height: 56px; border-radius: var(--r-pill);
   display: grid; place-items: center;
-  font-size: 11px; font-weight: 700; color: #fff; background: var(--cor-perfil);
+  background: var(--cor-perfil); color: #fff;
+  margin-bottom: 2px;
 }
+.porta-icone svg { width: 26px; height: 26px; }
 .porta h2 { font-size: 21px; color: var(--cor-perfil); font-weight: 600; letter-spacing: -.3px; }
-.porta > p { font-size: 13.5px; color: var(--tinta2); }
-.porta ul { display: flex; flex-direction: column; gap: 5px; margin-top: 2px; }
-.porta ul li {
-  font-size: 12.5px; color: var(--tinta2);
-  padding-left: 16px; position: relative;
-}
-.porta ul li::before {
-  content: ''; position: absolute; left: 0; top: 8px;
-  width: 6px; height: 6px; border-radius: var(--r-pill);
-  border: 1.5px solid var(--cor-perfil);
-}
-/* A entrada é a própria porta: um convite discreto no rodapé do cartão. */
-.porta-entrar {
-  margin-top: auto; padding-top: var(--e3);
-  display: flex; align-items: center; gap: 7px;
-  font-size: 12.5px; font-weight: 600; letter-spacing: .2px;
-  color: var(--cor-perfil);
-}
-.porta-entrar i {
-  font-style: normal; font-size: 16px; line-height: 1;
-  transition: transform .18s ease;
-}
-.porta:hover .porta-entrar i,
-.porta:focus-visible .porta-entrar i { transform: translateX(4px); }
+.porta > p { font-size: 13.5px; color: var(--tinta2); max-width: 30ch; }
 
-/* O ciclo escrito por extenso, em pastilhas ligadas. */
-.portao-fluxo {
-  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
-  gap: var(--e2); margin-top: var(--e5);
+.porta-acoes { margin-top: auto; padding-top: var(--e4); display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; }
+.porta-acoes .btn { background: var(--cor-perfil); border-color: var(--cor-perfil); width: 100%; }
+.porta-acoes .btn .seta { display: inline-block; margin-left: 2px; }
+.porta-secundaria {
+  background: none; border: 0; cursor: pointer;
+  font-size: 12.5px; font-weight: 600; color: var(--cor-perfil);
+  text-decoration: underline; text-underline-offset: 3px; text-decoration-style: dotted;
 }
-.portao-fluxo li {
-  font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; font-weight: 700;
-  color: var(--tinta2); background: var(--carta);
-  border: 1px solid var(--linha); border-radius: var(--r-pill);
-  padding: 6px 14px;
-}
-.portao-fluxo li + li::before {
-  content: ''; display: inline-block; vertical-align: middle;
-  width: 14px; height: 1.5px; background: var(--linha);
-  margin: 0 12px 2px -25px;
-}
+.porta-secundaria:hover { opacity: .8; }
 
 .portao-aviso {
   max-width: 760px; margin: var(--e5) auto 0; text-align: center;
@@ -373,8 +338,13 @@ ul, ol { list-style: none; }
 .principal {
   flex: 1; width: 100%; max-width: var(--largura);
   margin: 0 auto; padding: var(--e5) var(--e5) var(--e6);
-  display: flex; flex-direction: column; gap: var(--e4);
+  display: flex; flex-direction: column; gap: var(--e6);
 }
+/* #tela é só o alvo do innerHTML — sem isto, o gap acima nunca chega nos
+   blocos de verdade: eles ficam todos dentro de UM filho só (#tela), então
+   o gap não tem entre quem existir. `display:contents` faz o wrapper
+   desaparecer do layout, e os cartões viram filhos diretos do .principal. */
+#tela { display: contents; }
 
 .rodape {
   border-top: 1px solid var(--linha);
@@ -507,10 +477,10 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 .cartao.acao-viva.bom::before { background: var(--ok); }
 .cartao.destaque-erro { border-color: var(--erro-linha); }
 
-.colunas { display: grid; gap: var(--e4); align-items: start; }
+.colunas { display: grid; gap: var(--e5); align-items: start; }
 .colunas.dois-um { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); }
 .colunas.tres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.pilha { display: flex; flex-direction: column; gap: var(--e4); }
+.pilha { display: flex; flex-direction: column; gap: var(--e5); }
 .cartao.grudenta { position: sticky; top: 84px; }
 
 .texto { font-size: 13.5px; color: var(--tinta2); margin-bottom: var(--e4); }
@@ -559,7 +529,7 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 
 /* ============================================== 7. INDICADORES E GRÁFICOS */
 
-.kpis { display: grid; gap: var(--e3); grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.kpis { display: grid; gap: var(--e4); grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
 .kpi {
   background: var(--carta); border: 1px solid var(--linha); border-radius: var(--r);
@@ -629,12 +599,13 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 
 .legenda { flex: 1; min-width: 200px; display: flex; flex-direction: column; }
 .legenda li {
-  display: grid; grid-template-columns: 10px 1fr auto auto; align-items: center; gap: 10px;
+  display: grid; grid-template-columns: 10px 1fr auto auto auto; align-items: center; gap: 10px;
   padding: 8px 0; border-bottom: 1px dashed var(--linha2); font-size: 13px;
 }
 .legenda li:last-child { border-bottom: 0; }
 .legenda .ponto { width: 10px; height: 10px; border-radius: 3px; }
 .legenda .nome { color: var(--tinta2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.legenda .preco { font-size: 11.5px; color: var(--tinta3); font-weight: 500; }
 .legenda .valor { font-weight: 600; }
 .legenda .parte { font-size: 11.5px; color: var(--tinta3); min-width: 34px; text-align: right; }
 
@@ -661,7 +632,7 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 .micro-kpis b { display: block; font-size: 16px; font-weight: 600; }
 
 /* Ranking com barra proporcional. */
-.rank { display: flex; flex-direction: column; gap: var(--e3); }
+.rank { display: flex; flex-direction: column; gap: var(--e4); }
 .rank li { display: flex; gap: var(--e3); align-items: flex-start; }
 .rank .pos {
   width: 22px; height: 22px; flex: 0 0 auto; border-radius: var(--r-pill);
@@ -680,7 +651,7 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 
 /* ================================================== 8. LISTA DE DEMANDAS */
 
-.lista { display: flex; flex-direction: column; gap: 10px; }
+.lista { display: flex; flex-direction: column; gap: var(--e4); }
 
 /* O cartão da demanda: código, nome, contexto de um lado; situação e massa do outro.
    A fita da esquerda usa a cor do material — a mesma dos gráficos. */
@@ -993,7 +964,7 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 .comprovantes .sobre span { font-size: 11.5px; color: var(--tinta3); }
 .comprovantes .massa { font-size: 14px; font-weight: 600; }
 
-.geradores { display: flex; flex-direction: column; gap: 8px; }
+.geradores { display: flex; flex-direction: column; gap: var(--e4); }
 .linha-gerador {
   width: 100%; text-align: left; cursor: pointer;
   display: grid; grid-template-columns: 1fr auto; gap: var(--e4); align-items: center;
@@ -1021,7 +992,7 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
   color: var(--tinta3); font-weight: 700; padding: 0 var(--e3) 10px 0;
   border-bottom: 1.5px solid var(--linha); white-space: nowrap;
 }
-.tabela td { padding: 11px var(--e3) 11px 0; border-bottom: 1px solid var(--linha2); vertical-align: top; }
+.tabela td { padding: 15px var(--e3) 15px 0; border-bottom: 1px solid var(--linha2); vertical-align: top; }
 .tabela td small { display: block; font-size: 11px; color: var(--tinta3); }
 .tabela th.dir, .tabela td.dir { text-align: right; padding-right: var(--e3); }
 .tabela tbody tr { cursor: pointer; transition: var(--toque); }
@@ -1031,21 +1002,15 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 /* ================================= 14. MAPA E PONTOS */
 
 .mapa { display: flex; flex-direction: column; gap: var(--e3); }
-.mapa svg { width: 100%; height: auto; display: block; }
-.fundo-mapa { fill: var(--papel2); }
-.grade-mapa line { stroke: var(--linha); stroke-width: 1; stroke-dasharray: 3 6; }
-.rotulo-bairro {
-  font-size: 11px; fill: var(--tinta3); font-weight: 600;
-  paint-order: stroke; stroke: var(--papel2); stroke-width: 3px; stroke-linejoin: round;
+.mapa-leaflet {
+  width: 100%; height: 460px; border-radius: 18px; overflow: hidden;
+  background: var(--papel2); border: 1px solid var(--linha);
+  /* O Leaflet usa z-index interno de até 1000 (controles, popups). Isolar
+     cria um contexto de empilhamento próprio, então nada dele escapa por
+     cima da barra fixa do topo. */
+  isolation: isolate; position: relative; z-index: 0;
 }
-.marca-mapa { cursor: pointer; }
-.marca-mapa .halo { fill: currentColor; opacity: .1; transition: var(--toque); }
-.marca-mapa .ponto { fill: currentColor; stroke: #fff; stroke-width: 2; }
-.marca-mapa.ok { color: var(--ok); }
-.marca-mapa.alerta { color: var(--alerta); }
-.marca-mapa.erro { color: var(--erro); }
-.marca-mapa.marca { color: var(--teal); }
-.marca-mapa:hover .halo, .marca-mapa:focus-visible .halo { opacity: .28; }
+.mapa-leaflet .leaflet-popup-content b { display: block; margin-bottom: 3px; }
 .mapa-legenda {
   display: flex; gap: var(--e4); flex-wrap: wrap; align-items: center;
   font-size: 11.5px; color: var(--tinta2);
@@ -1071,8 +1036,8 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 
 /* ====================== 15. RECUPERAÇÃO: COLETAR NÃO É RECICLAR */
 
-.recuperacao { display: flex; flex-direction: column; gap: 10px; }
-.barra-dupla { display: flex; height: 20px; border-radius: var(--r-pill); overflow: hidden; background: var(--linha2); }
+.recuperacao { display: flex; flex-direction: column; gap: var(--e3); }
+.barra-dupla { display: flex; height: 26px; border-radius: var(--r-pill); overflow: hidden; background: var(--linha2); box-shadow: inset 0 1px 3px rgba(31, 61, 46, .08); }
 .barra-dupla .recuperado { width: var(--p); background: linear-gradient(90deg, var(--lima), var(--verde)); }
 .barra-dupla .rejeito { width: var(--p); background: repeating-linear-gradient(45deg,
   #b9c3bd, #b9c3bd 5px, #c9d2cd 5px, #c9d2cd 10px); }
@@ -1097,11 +1062,83 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 
 .faixa-acao { margin-left: auto; }
 
+/* ============================== 15B. VISÃO GERAL DA PREFEITURA */
+
+.painel-topo { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--e4); flex-wrap: wrap; }
+.painel-topo h1 { font-size: 25px; font-weight: 600; letter-spacing: -.4px; }
+.painel-topo p { font-size: 13.5px; color: var(--tinta2); margin-top: 4px; }
+.painel-topo-acoes { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.chip {
+  font-size: 12.5px; color: var(--tinta2); background: var(--carta);
+  border: 1px solid var(--linha); border-radius: var(--r-pill); padding: 8px 14px;
+}
+
+.painel-kpis { display: grid; gap: var(--e5); grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.painel-kpi .cartao-corpo { display: flex; flex-direction: column; gap: 10px; padding: var(--e4); }
+.painel-icone {
+  width: 40px; height: 40px; border-radius: var(--r-pill); display: grid; place-items: center;
+  background: var(--cor-icone); color: #fff; flex: 0 0 auto;
+}
+.painel-icone svg { width: 19px; height: 19px; }
+.painel-kpi-rotulo { font-size: 12px; color: var(--tinta3); margin-top: 2px; }
+.painel-kpi-valor { font-size: 22px; font-weight: 600; letter-spacing: -.3px; }
+.painel-kpi-sub { font-size: 11.5px; color: var(--tinta3); }
+.painel-kpi-pe { display: flex; align-items: center; justify-content: space-between; gap: var(--e2); margin-top: 2px; }
+.painel-kpi-delta { font-size: 12px; font-weight: 600; display: flex; align-items: baseline; gap: 4px; white-space: nowrap; }
+.painel-kpi-delta.sobe { color: var(--ok); }
+.painel-kpi-delta.desce { color: var(--erro); }
+.painel-kpi-delta small { font-weight: 500; color: var(--tinta3); }
+.centelha { width: 56px; height: 20px; flex: 0 0 auto; opacity: .9; }
+
+.colunas.painel-linha { grid-template-columns: 1.15fr 1fr .85fr; }
+
+.conformidade-linha { display: flex; align-items: stretch; gap: 8px; }
+.conformidade .eixo-y {
+  display: flex; flex-direction: column; justify-content: space-between; font-size: 10px; color: var(--tinta3);
+  padding: 2px 0; text-align: right; flex: 0 0 auto;
+}
+.conformidade .eixo-y.direita { text-align: left; color: var(--ouro-fundo); }
+.conformidade .eixo-y.esquerda { color: var(--ok); }
+.conformidade .meio { flex: 1; min-width: 0; }
+.conformidade svg { width: 100%; height: 170px; overflow: visible; }
+.conformidade .grade { stroke: var(--linha2); stroke-width: .5; }
+.conformidade .area { stroke: none; }
+.conformidade .linha { fill: none; stroke-width: 1.6; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+.conformidade .linha.verde { stroke: var(--ok); }
+.conformidade .linha.ouro { stroke: var(--ouro-fundo); }
+.conformidade .ponto-linha { vector-effect: non-scaling-stroke; }
+.conformidade .ponto-linha.verde { fill: var(--ok); }
+.conformidade .ponto-linha.ouro { fill: var(--ouro-fundo); }
+.conformidade-legenda { display: flex; flex-direction: column; gap: 5px; margin-top: var(--e3); font-size: 11.5px; color: var(--tinta2); }
+.conformidade-legenda span { display: inline-flex; align-items: center; gap: 7px; }
+.conformidade-eixo { display: flex; justify-content: space-between; margin-top: 8px; font-size: 10.5px; color: var(--tinta3); }
+
+.indicadores-painel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e5); }
+.indicador-painel { display: flex; flex-direction: column; gap: 6px; }
+.indicador-topo { display: flex; align-items: center; gap: 10px; }
+.indicador-topo .painel-icone { width: 28px; height: 28px; }
+.indicador-topo .painel-icone svg { width: 14px; height: 14px; }
+.indicador-rotulo { font-size: 12px; color: var(--tinta2); }
+.indicador-valor { font-size: 19px; font-weight: 600; letter-spacing: -.2px; }
+.indicador-sub { font-size: 11px; color: var(--tinta3); }
+
+.painel-rodape {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--e3); flex-wrap: wrap;
+  padding: var(--e3) var(--e4); border-radius: var(--r); background: var(--carta2);
+  border: 1px solid var(--linha2); font-size: 11.5px; color: var(--tinta3);
+}
+.painel-rodape span { display: inline-flex; align-items: center; gap: 8px; }
+.painel-rodape-marca { display: inline-flex; }
+.painel-rodape .painel-icone { width: 22px; height: 22px; border-radius: 6px; }
+.painel-rodape .painel-icone svg { width: 12px; height: 12px; }
+
 /* ============================================================ 16. TELAS */
 
 @media (max-width: 1080px) {
-  .colunas.dois-um, .colunas.tres { grid-template-columns: minmax(0, 1fr); }
-  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .colunas.dois-um, .colunas.tres, .colunas.painel-linha { grid-template-columns: minmax(0, 1fr); }
+  .kpis, .painel-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .indicadores-painel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .portao-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cartao.grudenta { position: static; }
   .principal { padding: var(--e4) var(--e4) var(--e6); }
@@ -1139,9 +1176,13 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 @media (max-width: 720px) {
   body { font-size: 14.5px; }
   h2, .cabecalho h2 { font-size: 21px; }
-  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .kpis, .painel-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .indicadores-painel { grid-template-columns: minmax(0, 1fr); }
   .kpi { padding: var(--e3); }
   .kpi .val { font-size: 24px; }
+  .painel-topo { flex-direction: column; align-items: flex-start; }
+  .painel-topo-acoes { width: 100%; }
+  .painel-rodape { flex-direction: column; align-items: flex-start; }
   .portao-grade { grid-template-columns: minmax(0, 1fr); }
   .portao-marca h1 { font-size: 26px; letter-spacing: 9px; text-indent: 9px; }
   .form { grid-template-columns: minmax(0, 1fr); }

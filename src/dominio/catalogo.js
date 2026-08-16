@@ -60,8 +60,10 @@ const RESIDUOS = [
 /* ------------------------------------------------------------- cooperativa */
 
 /* A cooperativa não é um usuário: é a estrutura que organiza catadores.
-   Em Porto Velho a demonstração usa a CATANORTE, que concentra a coleta
-   seletiva conveniada. Catador autônomo existe e não pertence a nenhuma. */
+   Em Porto Velho a demonstração usa a CATANORTE como a principal — concentra a
+   coleta seletiva conveniada e a maior equipe — mais quatro cooperativas
+   menores, para o painel municipal ter mais de uma linha para comparar.
+   Catador autônomo existe e não pertence a nenhuma. */
 const COOPERATIVAS = [
   {
     id: 'coop-01',
@@ -72,6 +74,42 @@ const COOPERATIVAS = [
     ponto: 'pt-galpao',
     contrato: 'Termo de cooperação 034/2025 · coleta seletiva conveniada',
     galpao: 'dst-01'
+  },
+  {
+    id: 'coop-02',
+    nome: 'COOCAMAR',
+    razao: 'Cooperativa dos Catadores de Materiais Recicláveis',
+    fundada: '2015-09-02',
+    bairro: 'Embratel',
+    ponto: 'pt-07',
+    contrato: 'Termo de cooperação 019/2024 · coleta seletiva conveniada'
+  },
+  {
+    id: 'coop-03',
+    nome: 'COOPRECICLA PVH',
+    razao: 'Cooperativa de Reciclagem de Porto Velho',
+    fundada: '2017-02-14',
+    bairro: 'Caiari',
+    ponto: 'pt-09',
+    contrato: 'Termo de cooperação 027/2024 · coleta seletiva conveniada'
+  },
+  {
+    id: 'coop-04',
+    nome: 'COOPVERDE',
+    razao: 'Cooperativa Verde de Trabalhadores em Materiais Recicláveis',
+    fundada: '2019-06-30',
+    bairro: 'Cidade Nova',
+    ponto: 'pt-12',
+    contrato: 'Termo de cooperação 041/2025 · coleta seletiva conveniada'
+  },
+  {
+    id: 'coop-05',
+    nome: 'COOPAMAZÔNIA',
+    razao: 'Cooperativa Amazônia de Catadores de Materiais Recicláveis',
+    fundada: '2020-11-05',
+    bairro: 'Areal',
+    ponto: 'pt-02',
+    contrato: 'Termo de cooperação 052/2025 · coleta seletiva conveniada'
   }
 ];
 
@@ -82,7 +120,15 @@ const CATADORES = [
   { id: 'cat-02', nome: 'Antônio Ribeiro', cooperativa: 'coop-01', desde: '2019-11-27', metaSemanal: 1800, veiculo: 'Caminhonete da cooperativa', zona: 'Zona Leste' },
   { id: 'cat-03', nome: 'Célio Barbosa',   cooperativa: 'coop-01', desde: '2022-06-09', metaSemanal: 1500, veiculo: 'Carroça motorizada', zona: 'Centro' },
   { id: 'cat-04', nome: 'Rosa Menezes',    cooperativa: 'coop-01', desde: '2023-01-15', metaSemanal: 1500, veiculo: 'Triciclo elétrico', zona: 'Zona Norte' },
-  { id: 'cat-05', nome: 'Maria Duarte',    cooperativa: null,      desde: '2022-08-02', metaSemanal: 900,  veiculo: 'Carroça própria', zona: 'Centro' }
+  { id: 'cat-05', nome: 'Maria Duarte',    cooperativa: null,      desde: '2022-08-02', metaSemanal: 900,  veiculo: 'Carroça própria', zona: 'Centro' },
+  { id: 'cat-06', nome: 'Edilene Farias',  cooperativa: 'coop-02', desde: '2020-04-19', metaSemanal: 1200, veiculo: 'Triciclo elétrico', zona: 'Zona Norte' },
+  { id: 'cat-07', nome: 'Vanderlei Souza', cooperativa: 'coop-02', desde: '2021-08-22', metaSemanal: 1200, veiculo: 'Carroça motorizada', zona: 'Zona Norte' },
+  { id: 'cat-08', nome: 'Iracema Pantoja', cooperativa: 'coop-03', desde: '2018-12-03', metaSemanal: 1100, veiculo: 'Triciclo elétrico', zona: 'Centro' },
+  { id: 'cat-09', nome: 'Raimundo Costa',  cooperativa: 'coop-03', desde: '2022-02-17', metaSemanal: 1100, veiculo: 'Carroça própria', zona: 'Centro' },
+  { id: 'cat-10', nome: 'Deuzimar Alves',  cooperativa: 'coop-04', desde: '2020-10-08', metaSemanal: 900,  veiculo: 'Triciclo elétrico', zona: 'Zona Norte' },
+  { id: 'cat-11', nome: 'Josenilde Reis',  cooperativa: 'coop-04', desde: '2023-05-14', metaSemanal: 900,  veiculo: 'Carroça motorizada', zona: 'Zona Norte' },
+  { id: 'cat-12', nome: 'Adenilson Melo',  cooperativa: 'coop-05', desde: '2021-01-27', metaSemanal: 800,  veiculo: 'Carroça própria', zona: 'Zona Sul' },
+  { id: 'cat-13', nome: 'Cleonice Farias', cooperativa: 'coop-05', desde: '2023-09-10', metaSemanal: 800,  veiculo: 'Triciclo elétrico', zona: 'Zona Sul' }
 ];
 
 /* -------------------------------------------------------- pontos de coleta */
@@ -91,24 +137,29 @@ const CATADORES = [
    leitura territorial do sistema. NÃO são dados do geoportal da Prefeitura:
    substituir esta tabela por uma camada oficial não muda nenhuma outra linha
    do sistema — todo o resto lê o ponto pelo id. */
+/* Latitude e longitude conferidas pelo geocodificador do OpenStreetMap
+   (Nominatim) para cada bairro real — agora que o mapa mostra rua de
+   verdade, o pino precisa cair perto do bairro de verdade. Ainda não é dado
+   do geoportal da Prefeitura, é só o centro do bairro no mapa aberto. */
 const PONTOS = [
-  { id: 'pt-01', bairro: 'Nova Porto Velho',        zona: 'Zona Sul',    lat: -8.7690, lng: -63.8890, acesso: 'Doca lateral · 6h às 11h' },
-  { id: 'pt-02', bairro: 'Areal',                   zona: 'Zona Sul',    lat: -8.7700, lng: -63.8990, acesso: 'Pátio dos fundos · 7h às 12h' },
-  { id: 'pt-03', bairro: 'Agenor de Carvalho',      zona: 'Zona Leste',  lat: -8.7480, lng: -63.8710, acesso: 'Expurgo · acesso controlado' },
-  { id: 'pt-04', bairro: 'Flodoaldo Pontes Pinto',  zona: 'Zona Leste',  lat: -8.7580, lng: -63.8620, acesso: 'Doca de carga · 8h às 17h' },
-  { id: 'pt-05', bairro: 'Centro',                  zona: 'Centro',      lat: -8.7619, lng: -63.9039, acesso: 'Calçada lateral · após 18h' },
-  { id: 'pt-06', bairro: 'Candeias do Jamari',      zona: 'Região metropolitana', lat: -8.7930, lng: -63.6980, acesso: 'Portaria de carga · 24h' },
-  { id: 'pt-07', bairro: 'Embratel',                zona: 'Zona Norte',  lat: -8.7420, lng: -63.8830, acesso: 'Depósito interno · 8h às 16h' },
-  { id: 'pt-08', bairro: 'Olaria',                  zona: 'Centro',      lat: -8.7660, lng: -63.8930, acesso: 'Estacionamento · 7h às 19h' },
-  { id: 'pt-09', bairro: 'Caiari',                  zona: 'Centro',      lat: -8.7580, lng: -63.9080, acesso: 'Portaria · 6h às 10h' },
-  { id: 'pt-10', bairro: 'Industrial',              zona: 'Zona Sul',    lat: -8.7900, lng: -63.8850, acesso: 'Balança da entrada · 24h' },
-  { id: 'pt-11', bairro: 'São João Bosco',          zona: 'Centro',      lat: -8.7550, lng: -63.8890, acesso: 'Doca coberta · 7h às 13h' },
-  { id: 'pt-12', bairro: 'Cidade Nova',             zona: 'Zona Norte',  lat: -8.7250, lng: -63.8760, acesso: 'Pátio externo · 8h às 18h' },
+  { id: 'pt-01', bairro: 'Nova Porto Velho',        zona: 'Zona Sul',    lat: -8.7644, lng: -63.8779, acesso: 'Doca lateral · 6h às 11h' },
+  { id: 'pt-02', bairro: 'Areal',                   zona: 'Zona Sul',    lat: -8.7735, lng: -63.8973, acesso: 'Pátio dos fundos · 7h às 12h' },
+  { id: 'pt-03', bairro: 'Agenor de Carvalho',      zona: 'Zona Leste',  lat: -8.7605, lng: -63.8684, acesso: 'Expurgo · acesso controlado' },
+  { id: 'pt-04', bairro: 'Flodoaldo Pontes Pinto',  zona: 'Zona Leste',  lat: -8.7476, lng: -63.8694, acesso: 'Doca de carga · 8h às 17h' },
+  { id: 'pt-05', bairro: 'Centro',                  zona: 'Centro',      lat: -8.7647, lng: -63.9041, acesso: 'Calçada lateral · após 18h' },
+  { id: 'pt-06', bairro: 'Candeias do Jamari',      zona: 'Região metropolitana', lat: -8.7950, lng: -63.7019, acesso: 'Portaria de carga · 24h' },
+  { id: 'pt-07', bairro: 'Embratel',                zona: 'Zona Norte',  lat: -8.7510, lng: -63.8819, acesso: 'Depósito interno · 8h às 16h' },
+  { id: 'pt-08', bairro: 'Olaria',                  zona: 'Centro',      lat: -8.7556, lng: -63.9054, acesso: 'Estacionamento · 7h às 19h' },
+  { id: 'pt-09', bairro: 'Caiari',                  zona: 'Centro',      lat: -8.7614, lng: -63.9064, acesso: 'Portaria · 6h às 10h' },
+  { id: 'pt-10', bairro: 'Industrial',              zona: 'Zona Sul',    lat: -8.7367, lng: -63.8841, acesso: 'Balança da entrada · 24h' },
+  { id: 'pt-11', bairro: 'São João Bosco',          zona: 'Centro',      lat: -8.7481, lng: -63.8980, acesso: 'Doca coberta · 7h às 13h' },
+  /* Cidade Nova fica na Zona Sul de Porto Velho, não na Zona Norte — corrigido junto com a coordenada. */
+  { id: 'pt-12', bairro: 'Cidade Nova',             zona: 'Zona Sul',    lat: -8.8102, lng: -63.8781, acesso: 'Pátio externo · 8h às 18h' },
   /* Estruturas do ciclo, não geradores. */
-  { id: 'pt-galpao', bairro: 'Industrial',          zona: 'Zona Sul',    lat: -8.7880, lng: -63.8790, acesso: 'Galpão da CATANORTE' },
+  { id: 'pt-galpao', bairro: 'Industrial',          zona: 'Zona Sul',    lat: -8.7390, lng: -63.8815, acesso: 'Galpão da CATANORTE' },
   { id: 'pt-aterro', bairro: 'Vila Princesa',       zona: 'Região metropolitana', lat: -8.8330, lng: -63.9560, acesso: 'Aterro sanitário municipal' },
-  { id: 'pt-recicl', bairro: 'Candeias do Jamari',  zona: 'Região metropolitana', lat: -8.7960, lng: -63.7050, acesso: 'Indústria recicladora' },
-  { id: 'pt-usina',  bairro: 'Distrito Industrial', zona: 'Zona Sul',    lat: -8.8020, lng: -63.8720, acesso: 'Unidade de transformação' }
+  { id: 'pt-recicl', bairro: 'Candeias do Jamari',  zona: 'Região metropolitana', lat: -8.7970, lng: -63.7040, acesso: 'Indústria recicladora' },
+  { id: 'pt-usina',  bairro: 'Distrito Industrial', zona: 'Zona Sul',    lat: -8.8142, lng: -63.7394, acesso: 'Unidade de transformação' }
 ];
 
 /* ------------------------------------------------------------- geradores */

@@ -6,9 +6,17 @@
 <title>SAMAÚMA — Sistema de Grandes Geradores e Inclusão Produtiva | Porto Velho/RO</title>
 <meta name="description" content="Protótipo demonstrativo: o gerador declara, o catador coleta, o destinatário recebe e confirma, a Prefeitura acompanha. O ciclo fecha em comprovante.">
 <meta name="theme-color" content="#1f6b4a">
+<meta name="color-scheme" content="light">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="assets/logo.png">
-<link rel="stylesheet" href="styles.css?v=20260816a">
+<!-- Mapa real (Leaflet + OpenStreetMap): única dependência externa do site,
+     usada só no mapa da Prefeitura. Precisa de internet para carregar os
+     tiles — o resto do sistema continua funcionando sem ela. -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<link rel="stylesheet" href="styles.css?v=20260815z">
 </head>
 <body>
 <a href="#conteudo" class="pular">Ir para o conteúdo principal</a>
@@ -33,8 +41,8 @@
 <section class="portao" id="portao" role="dialog" aria-modal="true" aria-labelledby="portaoTitulo">
   <div class="portao-caixa">
     <header class="portao-marca">
-      <h1 id="portaoTitulo">SAMAÚMA</h1>
-      <p class="assinatura">Sistema de Grandes Geradores e Inclusão Produtiva · Porto Velho/RO</p>
+      <span data-marca="190" data-forma="completa"></span>
+      <h1 id="portaoTitulo" class="oculto">SAMAÚMA — Sistema de Grandes Geradores e Inclusão Produtiva</h1>
     </header>
 
     <p class="portao-lead">
@@ -44,12 +52,8 @@
 
     <div class="portao-grade" id="portaoGrade"><!-- perfis montados por telas/entrada.js --></div>
 
-    <ol class="portao-fluxo">
-      <li>Demanda</li><li>Aceite</li><li>Coleta</li><li>Transporte</li><li>Recebimento</li><li>Comprovação</li>
-    </ol>
-
     <p class="portao-aviso">
-      <b>AMBIENTE DEMONSTRATIVO.</b> Organizações, pessoas, documentos, coordenadas e valores são fictícios
+      Organizações, pessoas, documentos, coordenadas e valores são fictícios
       ou aproximados. O protótipo não acessa sistemas oficiais nem o geoportal, não movimenta dinheiro e não
       representa contratação, decisão administrativa ou procedimento homologado pela Prefeitura de Porto Velho.
     </p>
@@ -112,34 +116,33 @@
 <div class="recado" id="recado" role="status" aria-live="polite"></div>
 
 <!-- Domínio: tabelas, regras, armazém e indicadores. Não conhece a tela. -->
-<script src="src/dominio/catalogo.js?v=20260816a"></script>
-<script src="src/dominio/formato.js?v=20260816a"></script>
-<script src="src/dominio/demanda.js?v=20260816a"></script>
-<script src="src/dominio/gerador.js?v=20260816a"></script>
-<script src="src/dominio/sessao.js?v=20260816a"></script>
-<script src="src/dominio/semente.js?v=20260816a"></script>
-<script src="src/dominio/store.js?v=20260816a"></script>
-<script src="src/dominio/indicadores.js?v=20260816a"></script>
+<script src="src/dominio/catalogo.js?v=20260815z"></script>
+<script src="src/dominio/formato.js?v=20260815z"></script>
+<script src="src/dominio/demanda.js?v=20260815z"></script>
+<script src="src/dominio/gerador.js?v=20260815z"></script>
+<script src="src/dominio/sessao.js?v=20260815z"></script>
+<script src="src/dominio/semente.js?v=20260815z"></script>
+<script src="src/dominio/store.js?v=20260815z"></script>
+<script src="src/dominio/indicadores.js?v=20260815z"></script>
 
 <!-- Interface: peças reutilizáveis. Não conhece nenhuma tela em particular. -->
-<script src="src/ui/componentes.js?v=20260816a"></script>
-<script src="src/ui/graficos.js?v=20260816a"></script>
-<script src="src/ui/mapa.js?v=20260816a"></script>
-<script src="src/ui/listas.js?v=20260816a"></script>
+<script src="src/ui/componentes.js?v=20260815z"></script>
+<script src="src/ui/graficos.js?v=20260815z"></script>
+<script src="src/ui/mapa.js?v=20260815z"></script>
+<script src="src/ui/listas.js?v=20260815z"></script>
 
 <!-- Serviços: exportação. -->
-<script src="src/servicos/relatorio.js?v=20260816a"></script>
+<script src="src/servicos/relatorio.js?v=20260815z"></script>
 
 <!-- Telas: uma por área do sistema. -->
-<script src="src/telas/entrada.js?v=20260816a"></script>
-<script src="src/telas/gerador.js?v=20260816a"></script>
-<script src="src/telas/catador.js?v=20260816a"></script>
-<script src="src/telas/destinatario.js?v=20260816a"></script>
-<script src="src/telas/prefeitura.js?v=20260816a"></script>
-<script src="src/telas/demanda.js?v=20260816a"></script>
-<script src="src/telas/comprovante.js?v=20260816a"></script>
+<script src="src/telas/entrada.js?v=20260815z"></script>
+<script src="src/telas/gerador.js?v=20260815z"></script>
+<script src="src/telas/destinatario.js?v=20260815z"></script>
+<script src="src/telas/prefeitura.js?v=20260815z"></script>
+<script src="src/telas/demanda.js?v=20260815z"></script>
+<script src="src/telas/comprovante.js?v=20260815z"></script>
 
 <!-- Aplicação: estado da sessão, roteamento e ações. -->
-<script src="src/app.js?v=20260816a"></script>
+<script src="src/app.js?v=20260815z"></script>
 </body>
 </html>

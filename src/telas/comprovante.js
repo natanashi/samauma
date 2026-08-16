@@ -10,7 +10,7 @@ function comprovanteHtml(demanda) {
 
   return `<div class="comprovante" id="comprovante">
     <div class="cabeca">
-      <img src="assets/logo.png" alt="SAMAÚMA" class="marca-arquivo" onerror="this.style.display='none'">
+      <img src="${LOGO_URL}" alt="SAMAÚMA" class="marca-arquivo" onerror="this.style.display='none'">
       <div class="org">PREFEITURA DE PORTO VELHO · SAMAÚMA</div>
       <h2>Comprovante de destinação</h2>
       <div class="cod mono">${esc(demanda.comprovante.codigo)}</div>
