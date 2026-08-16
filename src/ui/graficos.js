@@ -57,12 +57,17 @@ function graficoRosca(itens, { centro = '', legenda = 'kg' } = {}) {
     return arco;
   }).join('');
 
-  const linhas = itens.map(item => `<li>
+  const linhas = itens.map(item => {
+    const residuo = Catalogo.residuo(item.id);
+    const preco = residuo ? residuo.preco : 0;
+    return `<li>
     <span class="ponto" style="background:${item.cor || '#8a9690'}"></span>
     <span class="nome">${esc(item.nome)}</span>
+    <span class="preco num">${legenda === 'renda' || !preco ? '' : esc(Fmt.reais(preco)) + '/kg'}</span>
     <span class="valor num">${legenda === 'renda' ? esc(Fmt.reais(item.renda)) : esc(Fmt.kg(item.kg))}</span>
     <span class="parte num">${esc(Fmt.percentual(item.parte, 0))}</span>
-  </li>`).join('');
+  </li>`;
+  }).join('');
 
   return `<div class="composicao">
     <div class="rosca">

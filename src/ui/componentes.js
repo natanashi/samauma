@@ -7,7 +7,11 @@ const esc = escapar;
 
 /* ------------------------------------------------------------------ marca */
 
-/* A marca é o arquivo `assets/logo.png`. Enquanto ele não existir, o símbolo
+/* Pasta onde o logotipo oficial deve ser salvo, com este nome exato.
+   Único ponto que sabe esse caminho — todo o resto do código lê LOGO_URL. */
+const LOGO_URL = 'assets/logo.png';
+
+/* A marca é o arquivo apontado por LOGO_URL. Enquanto ele não existir, o símbolo
    desenhado em SVG assume o lugar — a interface nunca fica com imagem quebrada.
    `forma` escolhe entre o logotipo inteiro e só o símbolo, recortado por CSS. */
 function marca(tamanho = 44, forma = 'simbolo') {
@@ -18,7 +22,7 @@ function marca(tamanho = 44, forma = 'simbolo') {
     ? '<b>SAMAÚMA</b><small>Sistema de Grandes Geradores e Inclusão Produtiva</small>'
     : '';
   return `<span class="${completa ? 'marca-completa' : 'marca-simbolo'}" style="--tam:${tamanho}px">
-    <img src="assets/logo.png" alt="SAMAÚMA"
+    <img src="${LOGO_URL}" alt="SAMAÚMA"
       onerror="this.hidden=true;this.nextElementSibling.hidden=false">
     <span class="marca-desenho" hidden>${simbolo()}${assinatura}</span>
   </span>`;
@@ -118,7 +122,7 @@ function situacaoGerador(situacao) {
 function filtros(todas, grupos, atual, rotulos) {
   return `<div class="filtros">${rotulos.map(([chave, rotulo]) => {
     const n = todas.filter(grupos[chave]).length;
-    return `<button class="${atual === chave ? 'on' : ''}" data-acao="filtro" data-filtro="${chave}">
+    return `<button class="${atual === chave ? 'on' : ''}" data-acao="filtro" data-filtro="${chave}" aria-pressed="${atual === chave}">
       ${esc(rotulo)}<span class="n num">${n}</span></button>`;
   }).join('')}</div>`;
 }

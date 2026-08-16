@@ -22,7 +22,7 @@ const MODULOS = [
   'src/dominio/store.js', 'src/dominio/indicadores.js',
   'src/ui/componentes.js', 'src/ui/graficos.js', 'src/ui/mapa.js', 'src/ui/listas.js',
   'src/servicos/relatorio.js',
-  'src/telas/entrada.js', 'src/telas/gerador.js', 'src/telas/catador.js',
+  'src/telas/entrada.js', 'src/telas/gerador.js',
   'src/telas/destinatario.js', 'src/telas/prefeitura.js', 'src/telas/demanda.js',
   'src/telas/comprovante.js'
 ];
@@ -56,8 +56,7 @@ const [Store, Demanda, Fmt, Painel, Catalogo, Regulatorio, Sessao, Relatorio, ST
    'TOLERANCIA'].map(pegar);
 
 ['telaEntrada', 'telaGeradorPainel', 'telaGeradorDemandas', 'telaGeradorDocumentos',
- 'telaGeradorRelatorios', 'telaNovaDemanda', 'telaCatadorDia', 'telaCatadorDisponiveis',
- 'telaCatadorMinhas', 'telaCatadorPainel', 'telaDestinoPainel', 'telaDestinoFila',
+ 'telaGeradorRelatorios', 'telaNovaDemanda', 'telaDestinoPainel', 'telaDestinoFila',
  'telaDestinoRecebidas', 'telaDestinoRelatorios', 'telaPrefeituraPainel', 'telaPrefeituraMapa',
  'telaPrefeituraGeradores', 'telaGeradorFicha', 'telaProcessos', 'telaDemanda',
  'comprovanteHtml', 'marca', 'mapaPontos']
@@ -341,27 +340,16 @@ run('gerador · demandas', () => contexto.telaGeradorDemandas(est('gerador')));
 run('gerador · documentos', () => contexto.telaGeradorDocumentos());
 run('gerador · relatórios', () => contexto.telaGeradorRelatorios());
 run('gerador · nova demanda', () => contexto.telaNovaDemanda());
-run('catador · meu dia', () => contexto.telaCatadorDia());
-run('catador · disponíveis', () => contexto.telaCatadorDisponiveis());
-run('catador · minhas coletas', () => contexto.telaCatadorMinhas(est('catador')));
-run('catador · meu painel', () => contexto.telaCatadorPainel());
-run('destinatário · painel', () => contexto.telaDestinoPainel());
-run('destinatário · fila', () => contexto.telaDestinoFila());
-run('destinatário · recebidas', () => contexto.telaDestinoRecebidas(est('destinatario')));
-run('destinatário · relatórios', () => contexto.telaDestinoRelatorios());
+run('cooperativa · painel', () => contexto.telaDestinoPainel());
+run('cooperativa · fila', () => contexto.telaDestinoFila());
+run('cooperativa · recebidas', () => contexto.telaDestinoRecebidas(est('cooperativa')));
+run('cooperativa · relatórios', () => contexto.telaDestinoRelatorios());
 run('prefeitura · painel', () => contexto.telaPrefeituraPainel());
 run('prefeitura · mapa', () => contexto.telaPrefeituraMapa());
 run('prefeitura · geradores', () => contexto.telaPrefeituraGeradores(est('prefeitura')));
 run('prefeitura · ficha do gerador', () => contexto.telaGeradorFicha(est('prefeitura', { geradorId: 'ger-05' })));
 run('prefeitura · processos', () => contexto.telaProcessos(est('prefeitura')));
 
-run('painel do catador autônomo também renderiza', () => {
-  Sessao.entrarComoCatador('cat-05');
-  const html = contexto.telaCatadorPainel();
-  if (!html.includes('autônoma') && !html.includes('autônomo')) throw new Error('não identifica o vínculo');
-  Sessao.entrarComoCatador('cat-01');
-  return html;
-});
 run('painel do aterro também renderiza', () => {
   Sessao.entrarComoDestino('dst-04');
   const html = contexto.telaDestinoPainel();
@@ -369,11 +357,14 @@ run('painel do aterro também renderiza', () => {
   Sessao.entrarComoDestino('dst-01');
   return html;
 });
-run('mapa desenha um círculo por gerador com coordenada', () => {
+run('mapa monta o contêiner do Leaflet com todos os geradores com coordenada', () => {
   const html = contexto.mapaPontos(Painel.geradores());
-  const marcas = (html.match(/class="ponto"/g) || []).length;
-  if (marcas !== GERADORES.length) throw new Error(`${marcas} marcas para ${GERADORES.length} geradores`);
-  return marcas + ' marcas';
+  if (!html.includes('id="mapaLeaflet"')) throw new Error('sem contêiner do mapa');
+  const comCoordenada = pegar('_mapaLeafletDados');
+  if (!comCoordenada || comCoordenada.itens.length !== GERADORES.length) {
+    throw new Error(`${comCoordenada ? comCoordenada.itens.length : 0} pontos para ${GERADORES.length} geradores`);
+  }
+  return comCoordenada.itens.length + ' pontos preparados (marcadores reais são do Leaflet, fora deste teste)';
 });
 
 titulo('detalhe em todas as situações, para os quatro perfis');
@@ -388,7 +379,7 @@ Object.entries(porSituacao).forEach(([status, d]) => {
 titulo('cada perfil só age no que é dele');
 run('carga a caminho traz o formulário de recebimento', () => {
   const carga = Store.aCaminhoDe('dst-01')[0];
-  const html = contexto.telaDemanda(est('destinatario', { demandaId: carga.id }));
+  const html = contexto.telaDemanda(est('cooperativa', { demandaId: carga.id }));
   ['campoRecebido', 'campoRejeito', 'campoDestinoFinal'].forEach(campo => {
     if (!html.includes(campo)) throw new Error('faltou ' + campo);
   });
@@ -397,18 +388,10 @@ run('carga a caminho traz o formulário de recebimento', () => {
 run('carga de outra unidade não traz formulário', () => {
   const outra = Store.todas().find(d => d.status === 'COLETADA' && d.destino.id !== 'dst-01');
   if (!outra) return 'sem carga de outra unidade';
-  const html = contexto.telaDemanda(est('destinatario', { demandaId: outra.id }));
+  const html = contexto.telaDemanda(est('cooperativa', { demandaId: outra.id }));
   if (html.includes('campoRecebido')) throw new Error('formulário na unidade errada');
   return 'ok';
 });
-run('coleta de outro catador não traz execução', () => {
-  const outra = Store.todas().find(d => d.status === 'EM_COLETA' && d.catador && d.catador.id !== 'cat-01');
-  if (!outra) return 'sem coleta de outro catador';
-  const html = contexto.telaDemanda(est('catador', { demandaId: outra.id }));
-  if (html.includes('campoPeso')) throw new Error('execução exibida para o catador errado');
-  return 'ok';
-});
-
 titulo('comprovante');
 const comprovada = Store.todas().find(d => d.status === 'COMPROVADA');
 run('comprovanteHtml', () => contexto.comprovanteHtml(comprovada));

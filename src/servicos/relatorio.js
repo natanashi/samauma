@@ -242,7 +242,7 @@ const Relatorio = {
 <title>${escapar(escopo.titulo)} · ${escapar(escopo.quem)}</title>
 <style>${ESTILO_RELATORIO}</style></head><body>
 <header class="folha-cabeca">
-  <img src="assets/logo.png" alt="SAMAÚMA" class="marca-arquivo" onerror="this.style.display='none'">
+  <img src="${LOGO_URL}" alt="SAMAÚMA" class="marca-arquivo" onerror="this.style.display='none'">
   <div>
     <div class="org">PREFEITURA DE PORTO VELHO · SAMAÚMA</div>
     <h1>${escapar(escopo.titulo)}</h1>
@@ -287,8 +287,12 @@ ${processos}
     doc.close();
 
     const mandarImprimir = () => {
-      quadro.contentWindow.focus();
-      quadro.contentWindow.print();
+      try {
+        quadro.contentWindow.focus();
+        quadro.contentWindow.print();
+      } catch (erro) {
+        App.recado('Não foi possível abrir a impressão: ' + erro.message);
+      }
     };
     if (doc.readyState === 'complete') setTimeout(mandarImprimir, 60);
     else quadro.onload = () => setTimeout(mandarImprimir, 60);

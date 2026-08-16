@@ -138,7 +138,9 @@ const Semente = {
     };
 
     /* Histórico comprovado dos últimos doze dias.
-       catadorIndice: 0 João, 1 Antônio, 2 Célio, 3 Rosa (CATANORTE), 4 Maria (autônoma). */
+       catadorIndice: 0 João, 1 Antônio, 2 Célio, 3 Rosa (CATANORTE), 4 Maria (autônoma),
+       5 Edilene, 6 Vanderlei (COOCAMAR), 7 Iracema, 8 Raimundo (COOPRECICLA PVH),
+       9 Deuzimar, 10 Josenilde (COOPVERDE), 11 Adenilson, 12 Cleonice (COOPAMAZÔNIA). */
     const historico = [
       { criadaEm: -12, geradorIndice: 1, residuo: 'papelao', estimadoKg: 640, catadorIndice: 1 },
       { criadaEm: -12, geradorIndice: 3, residuo: 'rejeito', estimadoKg: 2400, catadorIndice: 2 },
@@ -168,7 +170,24 @@ const Semente = {
       { criadaEm: -1, geradorIndice: 0, residuo: 'papel', estimadoKg: 320, catadorIndice: 2 },
       { criadaEm: 0, geradorIndice: 1, residuo: 'papelao', estimadoKg: 520, catadorIndice: 1 },
       { criadaEm: 0, geradorIndice: 3, residuo: 'papel', estimadoKg: 280, catadorIndice: 3 },
-      { criadaEm: 0, geradorIndice: 0, residuo: 'metal', estimadoKg: 150, catadorIndice: 0 }
+      { criadaEm: 0, geradorIndice: 0, residuo: 'metal', estimadoKg: 150, catadorIndice: 0 },
+
+      /* As quatro cooperativas menores: equipes pequenas, volume real e proporcional. */
+      { criadaEm: -11, geradorIndice: 7, residuo: 'papelao', estimadoKg: 420, catadorIndice: 5 },
+      { criadaEm: -9, geradorIndice: 10, residuo: 'plastico', estimadoKg: 310, catadorIndice: 6 },
+      { criadaEm: -7, geradorIndice: 9, residuo: 'papel', estimadoKg: 260, catadorIndice: 5 },
+      { criadaEm: -4, geradorIndice: 7, residuo: 'metal', estimadoKg: 140, catadorIndice: 6 },
+      { criadaEm: -2, geradorIndice: 10, residuo: 'papelao', estimadoKg: 380, catadorIndice: 5 },
+
+      { criadaEm: -10, geradorIndice: 11, residuo: 'papel', estimadoKg: 230, catadorIndice: 7 },
+      { criadaEm: -6, geradorIndice: 8, residuo: 'vidro', estimadoKg: 190, catadorIndice: 8 },
+      { criadaEm: -3, geradorIndice: 11, residuo: 'plastico', estimadoKg: 250, catadorIndice: 7 },
+
+      { criadaEm: -8, geradorIndice: 6, residuo: 'papel', estimadoKg: 170, catadorIndice: 9 },
+      { criadaEm: -5, geradorIndice: 2, residuo: 'papelao', estimadoKg: 200, catadorIndice: 10 },
+
+      { criadaEm: -6, geradorIndice: 5, residuo: 'metal', estimadoKg: 90, catadorIndice: 11 },
+      { criadaEm: -2, geradorIndice: 4, residuo: 'oleo', estimadoKg: 60, catadorIndice: 12 }
     ];
     historico.forEach(config => avancar(nova({ ...config, prazoEm: config.criadaEm + 2 }), 'COMPROVADA', config));
 

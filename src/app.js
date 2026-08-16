@@ -12,13 +12,9 @@ const TELAS = {
     relatorios: () => telaGeradorRelatorios(),
     nova: () => telaNovaDemanda()
   },
-  catador: {
-    dia: () => telaCatadorDia(),
-    disponiveis: () => telaCatadorDisponiveis(),
-    minhas: estado => telaCatadorMinhas(estado),
-    painel: () => telaCatadorPainel()
-  },
-  destinatario: {
+  /* A cooperativa é quem recebe — as mesmas telas de sempre do destinatário,
+     só que com o nome que a organização usa no dia a dia. */
+  cooperativa: {
     painel: () => telaDestinoPainel(),
     fila: () => telaDestinoFila(),
     recebidas: estado => telaDestinoRecebidas(estado),
@@ -53,8 +49,9 @@ const App = {
   /* ------------------------------------------------------------- navegação */
 
   entrar(perfil, catadorId, destinoId) {
-    if (perfil === 'catador' && catadorId) Sessao.entrarComoCatador(catadorId);
-    if (perfil === 'destinatario' && destinoId) Sessao.entrarComoDestino(destinoId);
+    /* A cooperativa entra com os dois ao mesmo tempo — coleta e recebe. */
+    if (catadorId) Sessao.entrarComoCatador(catadorId);
+    if (destinoId) Sessao.entrarComoDestino(destinoId);
     Sessao.perfil = perfil;
 
     this.estado = { perfil, aba: PERFIS[perfil].abas[0].id, demandaId: null, geradorId: null, filtro: null };
@@ -119,6 +116,7 @@ const App = {
       : geradorId ? telaGeradorFicha(this.estado)
         : (telas[aba] || telas[perfilAtual.abas[0].id])(this.estado);
     document.getElementById('tela').innerHTML = tela;
+    inicializarMapaLeaflet(id => this.abrirGerador(id));
 
     const form = document.getElementById('formDemanda');
     if (form) form.addEventListener('submit', evento => this.criarDemanda(evento));
@@ -130,11 +128,7 @@ const App = {
   contexto() {
     switch (this.estado.perfil) {
       case 'gerador': return Sessao.cadastroGerador.nome;
-      case 'catador': {
-        const coop = Sessao.cooperativa;
-        return Sessao.catador.nome + (coop ? ' · ' + coop.nome : ' · autônomo');
-      }
-      case 'destinatario': return Sessao.destino.nome;
+      case 'cooperativa': return Sessao.destino.nome;
       default: return 'Secretaria de Meio Ambiente';
     }
   },
@@ -146,14 +140,7 @@ const App = {
       const minhas = Store.doGerador(Sessao.gerador);
       return { demandas: minhas.filter(d => EM_CURSO.includes(d.status) || d.status === 'CRIADA').length };
     }
-    if (perfil === 'catador') {
-      return {
-        dia: Store.doDia(Sessao.catador.id).length,
-        disponiveis: Store.disponiveis().length,
-        minhas: Store.doCatador(Sessao.catador.id).filter(d => d.status !== 'COMPROVADA').length
-      };
-    }
-    if (perfil === 'destinatario') {
+    if (perfil === 'cooperativa') {
       return { fila: Store.aCaminhoDe(Sessao.destino.id).length };
     }
     return {
@@ -167,7 +154,7 @@ const App = {
     const botoes = perfilAtual.abas.map(a => {
       const n = contadores[a.id];
       const ativa = this.estado.aba === a.id || (this.estado.aba === 'nova' && a.id === 'demandas');
-      return `<button class="${ativa ? 'on' : ''}" data-acao="aba" data-aba="${a.id}">
+      return `<button class="${ativa ? 'on' : ''}" data-acao="aba" data-aba="${a.id}" ${ativa ? 'aria-current="page"' : ''}>
         <span>${a.rotulo}</span>${n ? `<span class="n num">${n}</span>` : ''}</button>`;
     }).join('');
     document.getElementById('abas').innerHTML = botoes;
@@ -306,6 +293,7 @@ const App = {
       };
       imagem.src = leitor.result;
     };
+    leitor.onerror = () => this.recado('Não foi possível ler a foto. Tente outro arquivo.');
     leitor.readAsDataURL(arquivo);
   },
 

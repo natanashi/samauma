@@ -7,45 +7,26 @@ const PERFIS = {
   gerador: {
     id: 'gerador',
     nome: 'Gerador',
-    papel: 'QUEM GERA O RESÍDUO',
     cor: '#2a6fa8',
-    resumo: 'Declara o que precisa destinar, acompanha a coleta e responde pela regularidade.',
-    itens: ['Situação regulatória e PGRS', 'Próxima coleta e histórico', 'Comprovantes, selo e relatório mensal'],
+    resumo: 'Declara o que precisa destinar e acompanha a coleta.',
     abas: [
       { id: 'painel', rotulo: 'Painel' },
       { id: 'demandas', rotulo: 'Demandas' },
       { id: 'documentos', rotulo: 'Documentos' },
       { id: 'relatorios', rotulo: 'Relatórios' }
     ],
-    entradas: [{ rotulo: 'Entrar como Mercado Ipê Roxo', nota: 'grande gerador · Nova Porto Velho' }]
+    entradas: [{ rotulo: 'Entrar como gerador' }]
   },
 
-  catador: {
-    id: 'catador',
-    nome: 'Catador',
-    papel: 'QUEM EXECUTA A COLETA',
+  /* A cooperativa é quem recebe: pesa na balança, separa o que é rejeito e
+     confirma o destino do material — o antigo perfil "Destinatário", só com
+     o nome que a organização usa no dia a dia. Foco só no recebimento e no
+     rastreio; nada de tela de coleta aqui. */
+  cooperativa: {
+    id: 'cooperativa',
+    nome: 'Cooperativa',
     cor: '#c98f2a',
-    resumo: 'Recebe e escolhe demandas, coleta, pesa e registra o atendimento.',
-    itens: ['Coletas de hoje e próxima coleta', 'Endereço, tipo e volume estimado', 'Valor gerado, histórico e comprovantes'],
-    abas: [
-      { id: 'dia', rotulo: 'Meu dia' },
-      { id: 'disponiveis', rotulo: 'Disponíveis' },
-      { id: 'minhas', rotulo: 'Minhas coletas' },
-      { id: 'painel', rotulo: 'Meu painel' }
-    ],
-    entradas: [
-      { rotulo: 'Entrar como João Silva', nota: 'cooperado da CATANORTE', catador: 'cat-01' },
-      { rotulo: 'Entrar como Maria Duarte', nota: 'catadora autônoma', catador: 'cat-05', secundaria: true }
-    ]
-  },
-
-  destinatario: {
-    id: 'destinatario',
-    nome: 'Destinatário',
-    papel: 'QUEM RECEBE E FECHA O CICLO',
-    cor: '#2a8c7a',
-    resumo: 'Recebe a carga, pesa na balança e declara o destino dado ao material.',
-    itens: ['Recebimentos de hoje e cargas aguardadas', 'Peso, origem e data/hora', 'Destino do material e comprovantes'],
+    resumo: 'Recebe a carga, pesa e confirma o destino do material.',
     abas: [
       { id: 'painel', rotulo: 'Painel' },
       { id: 'fila', rotulo: 'A caminho' },
@@ -53,48 +34,50 @@ const PERFIS = {
       { id: 'relatorios', rotulo: 'Relatórios' }
     ],
     entradas: [
-      { rotulo: 'Entrar como Galpão CATANORTE', nota: 'central de triagem · papel, papelão e plástico' },
-      { rotulo: 'Entrar como Aterro Sanitário', nota: 'disposição final · rejeito', destino: 'dst-04', secundaria: true }
+      { rotulo: 'Entrar como cooperativa', destino: 'dst-01' },
+      { rotulo: 'ou como aterro sanitário', destino: 'dst-04', secundaria: true }
     ]
   },
 
   prefeitura: {
     id: 'prefeitura',
     nome: 'Prefeitura',
-    papel: 'QUEM ACOMPANHA E FISCALIZA',
     cor: '#1f6b4a',
-    resumo: 'Enxerga o município inteiro: quem gera, quem coleta, quem recebe e o que virou prova.',
-    itens: ['Mapa dos grandes geradores', 'Geradores que precisam de atenção', 'Indicadores ambientais, sociais e financeiros'],
+    resumo: 'Acompanha o ciclo e monitora os indicadores do município.',
     abas: [
       { id: 'painel', rotulo: 'Painel' },
       { id: 'mapa', rotulo: 'Mapa' },
       { id: 'geradores', rotulo: 'Geradores' },
       { id: 'processos', rotulo: 'Processos' }
     ],
-    entradas: [{ rotulo: 'Entrar como Prefeitura', nota: 'Secretaria Municipal de Meio Ambiente' }]
+    entradas: [{ rotulo: 'Entrar como prefeitura' }]
   }
 };
 
-/* Ordem do ciclo: quem gera, quem coleta, quem recebe, quem fiscaliza. */
-const ORDEM_PERFIS = ['gerador', 'catador', 'destinatario', 'prefeitura'];
+/* Ordem do ciclo: quem gera, quem recebe (cooperativa), quem fiscaliza. */
+const ORDEM_PERFIS = ['gerador', 'cooperativa', 'prefeitura'];
+
+/* Um ícone de traço fino por perfil — nada de biblioteca ou fonte remota,
+   mesma regra do resto do desenho. */
+const ICONES_PERFIL = {
+  gerador: '<path d="M4 10v9.5h16V10"/><path d="M2.5 10 12 3.2 21.5 10"/><path d="M9.3 19.5v-6h5.4v6"/>',
+  cooperativa: '<path d="M2.7 7.8h10.6v8.8H2.7z"/><path d="M13.3 11h3.9l3.1 3v2.6h-7z"/><circle cx="7" cy="18.3" r="1.7"/><circle cx="17" cy="18.3" r="1.7"/>',
+  prefeitura: '<path d="M3 9.6 12 4.3l9 5.3"/><path d="M4.2 9.6v9.4M8.6 9.6v9.4M15.4 9.6v9.4M19.8 9.6v9.4"/><path d="M2.5 20.5h19"/>'
+};
 
 function telaEntrada() {
-  return ORDEM_PERFIS.map((chave, i) => {
+  return ORDEM_PERFIS.map(chave => {
     const p = PERFIS[chave];
     const entradas = p.entradas.map(e =>
-      `<button class="btn ${e.secundaria ? 'sec' : ''}" data-acao="perfil" data-perfil="${p.id}"
+      `<button class="${e.secundaria ? 'porta-secundaria' : 'btn'}" data-acao="perfil" data-perfil="${p.id}"
         ${e.catador ? `data-catador="${e.catador}"` : ''}${e.destino ? `data-destino="${e.destino}"` : ''}>
-        <span>${esc(e.rotulo)}</span>${e.nota ? `<small>${esc(e.nota)}</small>` : ''}
+        ${esc(e.rotulo)}${e.secundaria ? '' : ' <span class="seta">→</span>'}
       </button>`).join('');
 
     return `<article class="porta" style="--cor-perfil:${p.cor}">
-      <div class="porta-topo">
-        <span class="ordem num">${i + 1}</span>
-        <span class="papel">${esc(p.papel)}</span>
-      </div>
+      <span class="porta-icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICONES_PERFIL[p.id]}</svg></span>
       <h2>${esc(p.nome)}</h2>
       <p>${esc(p.resumo)}</p>
-      <ul>${p.itens.map(item => `<li>${esc(item)}</li>`).join('')}</ul>
       <div class="porta-acoes">${entradas}</div>
     </article>`;
   }).join('');
