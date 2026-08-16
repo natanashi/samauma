@@ -1,7 +1,9 @@
 /* SAMAÚMA — entrada.
-   As quatro portas na ordem do ciclo, com o que cada usuário tem acesso e por
-   onde ele entra. A definição dos perfis mora aqui porque é o que a entrada
-   apresenta e o que a moldura usa para montar as abas. */
+   As quatro portas na ordem do ciclo. A entrada é por categoria de uso, nunca
+   por pessoa ou organização: quem entra escolhe o papel que exerce, e o sistema
+   abre a área correspondente com o cadastro demonstrativo daquele papel.
+   A definição dos perfis mora aqui porque é o que a entrada apresenta e o que a
+   moldura usa para montar as abas. */
 
 const PERFIS = {
   gerador: {
@@ -16,8 +18,7 @@ const PERFIS = {
       { id: 'demandas', rotulo: 'Demandas' },
       { id: 'documentos', rotulo: 'Documentos' },
       { id: 'relatorios', rotulo: 'Relatórios' }
-    ],
-    entradas: [{ rotulo: 'Entrar como Mercado Ipê Roxo', nota: 'grande gerador · Nova Porto Velho' }]
+    ]
   },
 
   catador: {
@@ -32,10 +33,6 @@ const PERFIS = {
       { id: 'disponiveis', rotulo: 'Disponíveis' },
       { id: 'minhas', rotulo: 'Minhas coletas' },
       { id: 'painel', rotulo: 'Meu painel' }
-    ],
-    entradas: [
-      { rotulo: 'Entrar como João Silva', nota: 'cooperado da CATANORTE', catador: 'cat-01' },
-      { rotulo: 'Entrar como Maria Duarte', nota: 'catadora autônoma', catador: 'cat-05', secundaria: true }
     ]
   },
 
@@ -51,10 +48,6 @@ const PERFIS = {
       { id: 'fila', rotulo: 'A caminho' },
       { id: 'recebidas', rotulo: 'Recebidas' },
       { id: 'relatorios', rotulo: 'Relatórios' }
-    ],
-    entradas: [
-      { rotulo: 'Entrar como Galpão CATANORTE', nota: 'central de triagem · papel, papelão e plástico' },
-      { rotulo: 'Entrar como Aterro Sanitário', nota: 'disposição final · rejeito', destino: 'dst-04', secundaria: true }
     ]
   },
 
@@ -70,24 +63,21 @@ const PERFIS = {
       { id: 'mapa', rotulo: 'Mapa' },
       { id: 'geradores', rotulo: 'Geradores' },
       { id: 'processos', rotulo: 'Processos' }
-    ],
-    entradas: [{ rotulo: 'Entrar como Prefeitura', nota: 'Secretaria Municipal de Meio Ambiente' }]
+    ]
   }
 };
 
 /* Ordem do ciclo: quem gera, quem coleta, quem recebe, quem fiscaliza. */
 const ORDEM_PERFIS = ['gerador', 'catador', 'destinatario', 'prefeitura'];
 
+/* Cada porta é inteira clicável: o cartão é o botão. Sem nome de pessoa e sem
+   organização no rótulo — a área abre com o cadastro demonstrativo do papel. */
 function telaEntrada() {
   return ORDEM_PERFIS.map((chave, i) => {
     const p = PERFIS[chave];
-    const entradas = p.entradas.map(e =>
-      `<button class="btn ${e.secundaria ? 'sec' : ''}" data-acao="perfil" data-perfil="${p.id}"
-        ${e.catador ? `data-catador="${e.catador}"` : ''}${e.destino ? `data-destino="${e.destino}"` : ''}>
-        <span>${esc(e.rotulo)}</span>${e.nota ? `<small>${esc(e.nota)}</small>` : ''}
-      </button>`).join('');
-
-    return `<article class="porta" style="--cor-perfil:${p.cor}">
+    return `<article class="porta" style="--cor-perfil:${p.cor}"
+      data-acao="perfil" data-perfil="${p.id}" role="button" tabindex="0"
+      aria-label="Entrar na área ${esc(p.nome)}">
       <div class="porta-topo">
         <span class="ordem num">${i + 1}</span>
         <span class="papel">${esc(p.papel)}</span>
@@ -95,7 +85,7 @@ function telaEntrada() {
       <h2>${esc(p.nome)}</h2>
       <p>${esc(p.resumo)}</p>
       <ul>${p.itens.map(item => `<li>${esc(item)}</li>`).join('')}</ul>
-      <div class="porta-acoes">${entradas}</div>
+      <span class="porta-entrar">Entrar nesta área<i aria-hidden="true">›</i></span>
     </article>`;
   }).join('');
 }

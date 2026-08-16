@@ -224,11 +224,16 @@ ul, ol { list-style: none; }
 .portao-marca h1 {
   font-size: 34px; font-weight: 500;
   letter-spacing: 14px; text-indent: 14px;
-  margin-top: var(--e3);
   color: var(--tinta);
 }
+/* O fio do ciclo no lugar do logotipo: a identidade em 2 px, sem imagem. */
+.portao-marca h1::after {
+  content: ''; display: block;
+  width: 96px; height: 2px; margin: 12px auto 0;
+  border-radius: var(--r-pill); background: var(--ciclo);
+}
 .portao-marca .assinatura {
-  font-size: 12.5px; color: var(--tinta2); letter-spacing: .3px; margin-top: 6px;
+  font-size: 12.5px; color: var(--tinta2); letter-spacing: .3px; margin-top: 12px;
 }
 .portao-marca .tri { justify-content: center; }
 
@@ -260,6 +265,10 @@ ul, ol { list-style: none; }
   background: var(--cor-perfil);
 }
 .porta:hover { transform: translateY(-3px); box-shadow: var(--sombra); border-color: var(--cor-perfil); }
+.porta:focus-visible {
+  outline: 2px solid var(--cor-perfil); outline-offset: 3px;
+  transform: translateY(-3px); box-shadow: var(--sombra); border-color: var(--cor-perfil);
+}
 
 .porta-topo { display: flex; align-items: center; gap: var(--e2); }
 .porta .ordem {
@@ -279,11 +288,19 @@ ul, ol { list-style: none; }
   width: 6px; height: 6px; border-radius: var(--r-pill);
   border: 1.5px solid var(--cor-perfil);
 }
-.porta-acoes { margin-top: auto; padding-top: var(--e3); display: flex; flex-direction: column; gap: 6px; }
-.porta-acoes .btn { background: var(--cor-perfil); border-color: var(--cor-perfil); flex-direction: column; gap: 1px; padding: 9px 14px; }
-.porta-acoes .btn small { font-weight: 500; font-size: 11px; opacity: .85; }
-.porta-acoes .btn.sec { background: #fff; color: var(--cor-perfil); }
-.porta-acoes .btn.sec small { color: var(--tinta3); opacity: 1; }
+/* A entrada é a própria porta: um convite discreto no rodapé do cartão. */
+.porta-entrar {
+  margin-top: auto; padding-top: var(--e3);
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12.5px; font-weight: 600; letter-spacing: .2px;
+  color: var(--cor-perfil);
+}
+.porta-entrar i {
+  font-style: normal; font-size: 16px; line-height: 1;
+  transition: transform .18s ease;
+}
+.porta:hover .porta-entrar i,
+.porta:focus-visible .porta-entrar i { transform: translateX(4px); }
 
 /* O ciclo escrito por extenso, em pastilhas ligadas. */
 .portao-fluxo {
