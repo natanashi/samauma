@@ -1346,3 +1346,16 @@ body.somente-comprovante .app { display: none; }
 .codigo-destaque b { display: block; font-size: 34px; margin: 6px 0 4px; }
 .codigo-destaque small { color: var(--tinta2); font-size: 12px; }
 .cartao-codigo .acoes-form { justify-content: center; margin-top: var(--e3); }
+
+/* O acesso vem antes das areas de demonstracao: quem tem conta nao deve
+   precisar rolar a pagina para achar onde entrar. */
+.portao-acesso { margin-top: var(--e5); margin-bottom: var(--e2); }
+.btn.grande { padding: 13px 26px; font-size: 14px; }
+.portao-ou {
+  display: flex; align-items: center; gap: var(--e3);
+  max-width: 640px; margin: var(--e5) auto var(--e4);
+}
+.portao-ou::before, .portao-ou::after {
+  content: ''; flex: 1; height: 1px; background: var(--linha);
+}
+.portao-ou span { white-space: nowrap; }

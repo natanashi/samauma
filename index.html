@@ -16,7 +16,7 @@
   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<link rel="stylesheet" href="styles.css?v=20260817d">
+<link rel="stylesheet" href="styles.css?v=20260817e">
 </head>
 <body>
 <a href="#conteudo" class="pular">Ir para o conteúdo principal</a>
@@ -50,16 +50,16 @@
       A Prefeitura acompanha. O ciclo só fecha quando existe prova.
     </p>
 
-    <div class="portao-grade" id="portaoGrade"><!-- perfis montados por telas/entrada.js --></div>
-
     <div class="portao-acesso" id="portaoAcesso">
-      <button class="btn" data-acao="login">Entrar na minha conta</button>
-      <button class="btn sec" data-acao="cadastrar">Criar cadastro</button>
+      <button class="btn grande" data-acao="login">Entrar na minha conta</button>
+      <button class="btn sec grande" data-acao="cadastrar">Criar cadastro</button>
       <p>Já tem código de acesso? Entre. Ainda não participa? Cadastre seu estabelecimento,
         sua coleta ou sua unidade receptora e comece a usar no mesmo acesso.</p>
     </div>
 
-    <p class="portao-ou" id="portaoOu">ou conheça o sistema pelas áreas de demonstração</p>
+    <p class="portao-ou" id="portaoOu"><span>ou conheça o sistema pelas áreas de demonstração</span></p>
+
+    <div class="portao-grade" id="portaoGrade"><!-- perfis montados por telas/entrada.js --></div>
 
     <p class="portao-aviso">
       Organizações, pessoas, documentos, coordenadas e valores são fictícios
@@ -125,40 +125,40 @@
 <div class="recado" id="recado" role="status" aria-live="polite"></div>
 
 <!-- Domínio: tabelas, regras, armazém e indicadores. Não conhece a tela. -->
-<script src="src/dominio/catalogo.js?v=20260817d"></script>
-<script src="src/dominio/conta.js?v=20260817d"></script>
-<script src="src/dominio/cadastro.js?v=20260817d"></script>
-<script src="src/dominio/formato.js?v=20260817d"></script>
-<script src="src/dominio/demanda.js?v=20260817d"></script>
-<script src="src/dominio/gerador.js?v=20260817d"></script>
-<script src="src/dominio/sessao.js?v=20260817d"></script>
-<script src="src/dominio/semente.js?v=20260817d"></script>
-<script src="src/dominio/store.js?v=20260817d"></script>
-<script src="src/dominio/indicadores.js?v=20260817d"></script>
+<script src="src/dominio/catalogo.js?v=20260817e"></script>
+<script src="src/dominio/conta.js?v=20260817e"></script>
+<script src="src/dominio/cadastro.js?v=20260817e"></script>
+<script src="src/dominio/formato.js?v=20260817e"></script>
+<script src="src/dominio/demanda.js?v=20260817e"></script>
+<script src="src/dominio/gerador.js?v=20260817e"></script>
+<script src="src/dominio/sessao.js?v=20260817e"></script>
+<script src="src/dominio/semente.js?v=20260817e"></script>
+<script src="src/dominio/store.js?v=20260817e"></script>
+<script src="src/dominio/indicadores.js?v=20260817e"></script>
 
 <!-- Interface: peças reutilizáveis. Não conhece nenhuma tela em particular. -->
-<script src="src/ui/componentes.js?v=20260817d"></script>
-<script src="src/ui/graficos.js?v=20260817d"></script>
-<script src="src/ui/mapa.js?v=20260817d"></script>
-<script src="src/ui/listas.js?v=20260817d"></script>
+<script src="src/ui/componentes.js?v=20260817e"></script>
+<script src="src/ui/graficos.js?v=20260817e"></script>
+<script src="src/ui/mapa.js?v=20260817e"></script>
+<script src="src/ui/listas.js?v=20260817e"></script>
 
 <!-- Serviços: exportação. -->
-<script src="src/servicos/relatorio.js?v=20260817d"></script>
-<script src="src/servicos/integracoes.js?v=20260817d"></script>
+<script src="src/servicos/relatorio.js?v=20260817e"></script>
+<script src="src/servicos/integracoes.js?v=20260817e"></script>
 
 <!-- Telas: uma por área do sistema. -->
-<script src="src/telas/entrada.js?v=20260817d"></script>
-<script src="src/telas/cadastro.js?v=20260817d"></script>
-<script src="src/telas/acesso.js?v=20260817d"></script>
-<script src="src/telas/gerador.js?v=20260817d"></script>
-<script src="src/telas/catador.js?v=20260817d"></script>
-<script src="src/telas/destinatario.js?v=20260817d"></script>
-<script src="src/telas/prefeitura.js?v=20260817d"></script>
-<script src="src/telas/demanda.js?v=20260817d"></script>
-<script src="src/telas/comprovante.js?v=20260817d"></script>
-<script src="src/telas/metodologia.js?v=20260817d"></script>
+<script src="src/telas/entrada.js?v=20260817e"></script>
+<script src="src/telas/cadastro.js?v=20260817e"></script>
+<script src="src/telas/acesso.js?v=20260817e"></script>
+<script src="src/telas/gerador.js?v=20260817e"></script>
+<script src="src/telas/catador.js?v=20260817e"></script>
+<script src="src/telas/destinatario.js?v=20260817e"></script>
+<script src="src/telas/prefeitura.js?v=20260817e"></script>
+<script src="src/telas/demanda.js?v=20260817e"></script>
+<script src="src/telas/comprovante.js?v=20260817e"></script>
+<script src="src/telas/metodologia.js?v=20260817e"></script>
 
 <!-- Aplicação: estado da sessão, roteamento e ações. -->
-<script src="src/app.js?v=20260817d"></script>
+<script src="src/app.js?v=20260817e"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 /* Cache do protótipo. Sem dependências externas: o app inteiro cabe nestes arquivos. */
-const CACHE = 'samauma-2026-v50';
-const VERSAO = '?v=20260817d';
+const CACHE = 'samauma-2026-v51';
+const VERSAO = '?v=20260817e';
 
 const SHELL = [
   './',
