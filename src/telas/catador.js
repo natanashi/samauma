@@ -213,13 +213,9 @@ function telaCatadorPainel() {
         corpo: graficoRosca(p.materiais, { legenda: 'renda', centro: `<b class="num">${esc(Fmt.reais(p.renda))}</b><span>gerados</span>` })
       })}
       ${cartao({
-        titulo: p.cooperativa ? 'Minha posição na equipe' : 'Catadores no município',
-        sub: p.cooperativa ? p.cooperativa.nome : 'por massa comprovada',
-        corpo: ranking(
-          (p.cooperativa ? equipe.equipe : p.ranking).map(c => ({
-            ...c, nota: c.id === Sessao.catador.id ? 'você' : (c.vinculo || 'cooperado')
-          })),
-          { destacar: Sessao.catador.id })
+        titulo: p.cooperativa ? 'Minha posição na equipe' : 'Minha posição no município',
+        sub: p.cooperativa ? p.cooperativa.nome : 'entre os catadores com coleta comprovada',
+        corpo: blocoPosicao(p, equipe)
       })}
     </div>
 
@@ -245,4 +241,29 @@ function telaCatadorPainel() {
       sub: 'Bairros com mais massa entregue por você',
       corpo: ranking(p.bairros.map(b => ({ ...b, nota: b.n + ' coleta(s)' })))
     })}`;
+}
+
+/* A posição do catador sem expor os colegas.
+   Ranking nominal entre pessoas, numa cooperativa pequena, é constrangimento —
+   e é dado pessoal de terceiro na tela de quem não responde por ele. O catador
+   vê onde está e como se compara com a média; a lista com nomes fica com a
+   coordenação, no painel da organização. */
+function blocoPosicao(p, equipe) {
+  const grupo = p.cooperativa ? equipe.equipe : p.ranking;
+  const total = grupo.length || 1;
+  const posicao = p.posicao || total;
+  const media = grupo.reduce((soma, c) => soma + (c.massa || 0), 0) / total;
+  const diferenca = media ? ((p.massa - media) / media) * 100 : null;
+  const melhores = Math.max(0, Math.round(((total - posicao) / total) * 100));
+
+  return `${kpis([
+      kpi('Sua posição', `${posicao}º`, `entre ${total} catador(es) com coleta comprovada`, { tom: 'marca' }),
+      kpi('Sua massa', Fmt.toneladas(p.massa), 'comprovada no período'),
+      kpi('Média do grupo', Fmt.toneladas(media), 'massa por catador'),
+      kpi('Comparação', Fmt.variacao(diferenca), 'sua massa contra a média', { tom: diferenca >= 0 ? 'ok' : '' })
+    ])}
+    <div class="barra-capacidade" role="img" aria-label="Você está à frente de ${melhores}% do grupo">
+      <i class="${melhores >= 50 ? '' : 'alerta'}" style="width:${melhores}%"></i>
+    </div>
+    <p class="fonte-dado" style="margin-top:8px">Você está à frente de ${melhores}% do grupo. Os nomes e os números de cada colega ficam com a coordenação da organização, não nesta tela.</p>`;
 }
