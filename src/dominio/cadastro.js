@@ -132,7 +132,8 @@ const Cadastro = {
       pgrs: dados.pgrsNumero
         ? { numero: dados.pgrsNumero.trim(), validade: Number(dados.pgrsValidade) || 365 }
         : null,
-      cadastradoAqui: true
+      cadastradoAqui: true,
+      codigo: Conta.gerarCodigo('gerador')
     };
     PONTOS.push(ponto);
     GERADORES.push(gerador);
@@ -151,7 +152,8 @@ const Cadastro = {
       metaSemanal: Number(dados.metaSemanal),
       veiculo: dados.veiculo.trim(),
       zona: dados.zona,
-      cadastradoAqui: true
+      cadastradoAqui: true,
+      codigo: Conta.gerarCodigo('catador')
     };
     CATADORES.push(catador);
     this.registros.catadores.push(catador);
@@ -179,7 +181,8 @@ const Cadastro = {
       destinoFinal: dados.destinoFinal.trim(),
       triagem: !dados.aceita.includes('rejeito'),
       aterro: dados.tipoUnidade === 'Disposição final',
-      cadastradoAqui: true
+      cadastradoAqui: true,
+      codigo: Conta.gerarCodigo('destino')
     };
     PONTOS.push(ponto);
     DESTINOS.push(destino);

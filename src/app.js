@@ -52,7 +52,11 @@ const App = {
     /* Atalho para a apresentação: ?perfil=destinatario abre direto na área dele. */
     const busca = new URLSearchParams(location.search);
     const atalho = busca.get('perfil');
-    if (PERFIS[atalho]) this.entrar(atalho, busca.get('catador'), busca.get('destino'));
+    if (PERFIS[atalho]) { this.entrar(atalho, busca.get('catador'), busca.get('destino')); return; }
+
+    /* Sessão de quem já tinha entrado: quem fechou a aba volta onde estava. */
+    const conta = Conta.retomar();
+    if (conta) this.entrarComConta(conta, { silencioso: true });
   },
 
   /* -------------------------------------------------------------- cadastro */
@@ -66,19 +70,77 @@ const App = {
 
   fecharCadastro() {
     this.estado.cadastro = null;
-    document.getElementById('portaoGrade').className = 'portao-grade';
-    document.getElementById('portaoGrade').innerHTML = telaEntrada();
-    document.getElementById('portaoCadastro').hidden = false;
+    this.estado.login = null;
+    this.estado.contaNova = null;
+    const grade = document.getElementById('portaoGrade');
+    grade.className = 'portao-grade';
+    grade.innerHTML = telaEntrada();
+    document.getElementById('portaoAcesso').hidden = false;
+    document.getElementById('portaoOu').hidden = false;
   },
 
   renderizarCadastro() {
+    this.renderizarAcesso(telaCadastro(this.estado), 'formCadastro', evento => this.enviarCadastro(evento));
+  },
+
+  /* Uma só porta de renderização para cadastro, login e código: as três telas
+     ocupam o mesmo lugar do portão e escondem as áreas de demonstração. */
+  renderizarAcesso(html, idDoForm, aoEnviar) {
     const grade = document.getElementById('portaoGrade');
     grade.className = 'portao-grade modo-cadastro';
-    grade.innerHTML = telaCadastro(this.estado);
-    document.getElementById('portaoCadastro').hidden = true;
-    const form = document.getElementById('formCadastro');
-    if (form) form.addEventListener('submit', evento => this.enviarCadastro(evento));
-    grade.querySelector('input, select')?.focus();
+    grade.innerHTML = html;
+    document.getElementById('portaoAcesso').hidden = true;
+    document.getElementById('portaoOu').hidden = true;
+    const form = idDoForm && document.getElementById(idDoForm);
+    if (form && aoEnviar) form.addEventListener('submit', aoEnviar);
+    grade.querySelector('input, select, button.btn')?.focus();
+  },
+
+  /* ----------------------------------------------------------------- login */
+
+  abrirLogin() {
+    this.estado.cadastro = null;
+    this.estado.login = { valor: '', erro: '', lembrar: false };
+    this.renderizarAcesso(telaLogin(this.estado), 'formLogin', evento => this.enviarLogin(evento));
+  },
+
+  enviarLogin(evento) {
+    evento.preventDefault();
+    const valor = (document.getElementById('loginIdentificador') || {}).value || '';
+    const { conta, erro } = Conta.entrar(valor);
+    if (erro) {
+      this.estado.login = { valor, erro, lembrar: (this.estado.login || {}).lembrar };
+      this.renderizarAcesso(telaLogin(this.estado), 'formLogin', ev => this.enviarLogin(ev));
+      return;
+    }
+    this.entrarComConta(conta);
+  },
+
+  /* Abre a área do papel da conta, com o cadastro certo já na sessão. */
+  entrarComConta(conta, { silencioso = false } = {}) {
+    if (!conta) return;
+    Conta.atual = conta;
+    Conta._gravar({ tipo: conta.tipo, id: conta.registro.id });
+    this.estado.cadastro = null;
+    this.estado.login = null;
+    this.estado.contaNova = null;
+
+    if (conta.tipo === 'gerador') { Sessao.gerador = conta.registro.id; this.entrar('gerador'); }
+    if (conta.tipo === 'catador') this.entrar('catador', conta.registro.id);
+    if (conta.tipo === 'destino') this.entrar('cooperativa', null, conta.registro.id);
+    if (!silencioso) this.recado(`Bem-vindo de volta, ${conta.registro.nome}.`);
+  },
+
+  sairDaConta() {
+    Conta.sair();
+    this.sair();
+    this.fecharCadastro();
+    this.recado('Sessão encerrada.');
+  },
+
+  copiarCodigo(codigo) {
+    if (navigator.clipboard) navigator.clipboard.writeText(codigo).catch(() => {});
+    this.recado(`Código ${codigo} copiado.`);
   },
 
   /* Lê o formulário, devolve os erros no lugar de cada campo e, dando certo,
@@ -115,15 +177,11 @@ const App = {
       return;
     }
 
+    const papel = { gerador: 'Gerador', catador: 'Catador', destino: 'Unidade receptora' }[tipo];
     this.estado.cadastro = null;
-    document.getElementById('portaoCadastro').hidden = false;
-    document.getElementById('portaoGrade').className = 'portao-grade';
-    document.getElementById('portaoGrade').innerHTML = telaEntrada();
-
-    if (tipo === 'gerador') { Sessao.gerador = registro.id; this.entrar('gerador'); }
-    if (tipo === 'catador') this.entrar('catador', registro.id);
-    if (tipo === 'destino') this.entrar('cooperativa', null, registro.id);
-    this.recado(`${registro.nome} cadastrado. Você já está no sistema.`);
+    this.estado.contaNova = { tipo, perfil: tipo === 'destino' ? 'cooperativa' : tipo, registro };
+    this.renderizarAcesso(telaCodigoCriado(registro, papel), null, null);
+    this.recado(`${registro.nome} cadastrado. Guarde o código ${registro.codigo}.`);
   },
 
   /* ------------------------------------------------------------- navegação */
@@ -188,6 +246,13 @@ const App = {
     const perfilAtual = PERFIS[perfil];
     document.getElementById('quemNome').textContent = perfilAtual.nome;
     document.getElementById('quemOnde').textContent = this.contexto();
+    /* Com conta, sai-se da conta; sem conta, troca-se de área de demonstração. */
+    const botaoSessao = document.querySelector('[data-acao="trocar"], [data-acao="sair-conta"]');
+    if (botaoSessao) {
+      const comConta = !!Conta.atual;
+      botaoSessao.dataset.acao = comConta ? 'sair-conta' : 'trocar';
+      botaoSessao.textContent = comConta ? 'Sair' : 'Trocar perfil';
+    }
     document.documentElement.style.setProperty('--perfil', perfilAtual.cor);
     this.renderizarAbas(perfilAtual);
 
@@ -505,6 +570,14 @@ A ficha original fica arquivada e vinculada ao evento digital. Documento demonst
       switch (acao) {
         case 'perfil': this.entrar(perfil, catador, destino); break;
         case 'cadastrar': this.abrirCadastro(null); break;
+        case 'login': this.abrirLogin(); break;
+        case 'login-lembrar':
+          this.estado.login = { ...(this.estado.login || {}), lembrar: !(this.estado.login || {}).lembrar };
+          this.renderizarAcesso(telaLogin(this.estado), 'formLogin', evento => this.enviarLogin(evento));
+          break;
+        case 'codigo-continuar': this.entrarComConta(this.estado.contaNova); break;
+        case 'codigo-copiar': this.copiarCodigo(alvo.dataset.codigo); break;
+        case 'sair-conta': this.sairDaConta(); break;
         case 'cadastro-tipo': this.abrirCadastro(alvo.dataset.tipo || null); break;
         case 'cadastro-sair': this.fecharCadastro(); break;
         case 'trocar': this.sair(); break;

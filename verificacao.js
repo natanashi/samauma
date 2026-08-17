@@ -17,12 +17,12 @@ contexto.window = contexto;
 vm.createContext(contexto);
 
 const MODULOS = [
-  'src/dominio/catalogo.js', 'src/dominio/cadastro.js', 'src/dominio/formato.js', 'src/dominio/demanda.js',
+  'src/dominio/catalogo.js', 'src/dominio/conta.js', 'src/dominio/cadastro.js', 'src/dominio/formato.js', 'src/dominio/demanda.js',
   'src/dominio/gerador.js', 'src/dominio/sessao.js', 'src/dominio/semente.js',
   'src/dominio/store.js', 'src/dominio/indicadores.js',
   'src/ui/componentes.js', 'src/ui/graficos.js', 'src/ui/mapa.js', 'src/ui/listas.js',
   'src/servicos/relatorio.js', 'src/servicos/integracoes.js',
-  'src/telas/entrada.js', 'src/telas/cadastro.js', 'src/telas/gerador.js', 'src/telas/catador.js',
+  'src/telas/entrada.js', 'src/telas/cadastro.js', 'src/telas/acesso.js', 'src/telas/gerador.js', 'src/telas/catador.js',
   'src/telas/destinatario.js', 'src/telas/prefeitura.js', 'src/telas/demanda.js',
   'src/telas/comprovante.js', 'src/telas/metodologia.js'
 ];
@@ -50,17 +50,17 @@ const run = (nome, fn) => {
    não como propriedades do objeto global — busca-se cada uma explicitamente. */
 const pegar = nome => vm.runInContext(nome, contexto);
 const [Store, Demanda, Fmt, Painel, Catalogo, Regulatorio, Sessao, Relatorio, STATUS, SITUACOES, PERFIS,
-  DESTINOS, CATADORES, GERADORES, PONTOS, COOPERATIVAS, RESIDUOS, TOLERANCIA, Cadastro] =
+  DESTINOS, CATADORES, GERADORES, PONTOS, COOPERATIVAS, RESIDUOS, TOLERANCIA, Cadastro, Conta] =
   ['Store', 'Demanda', 'Fmt', 'Painel', 'Catalogo', 'Regulatorio', 'Sessao', 'Relatorio', 'STATUS',
    'SITUACOES', 'PERFIS', 'DESTINOS', 'CATADORES', 'GERADORES', 'PONTOS', 'COOPERATIVAS', 'RESIDUOS',
-   'TOLERANCIA', 'Cadastro'].map(pegar);
+   'TOLERANCIA', 'Cadastro', 'Conta'].map(pegar);
 
 ['telaEntrada', 'telaGeradorPainel', 'telaGeradorDemandas', 'telaGeradorDocumentos',
  'telaGeradorRelatorios', 'telaNovaDemanda',
  'telaCatadorDia', 'telaCatadorDisponiveis', 'telaCatadorMinhas', 'telaCatadorPainel', 'telaDestinoPainel', 'telaDestinoFila',
  'telaDestinoRecebidas', 'telaDestinoRelatorios', 'telaPrefeituraPainel', 'telaPrefeituraMapa',
  'telaPrefeituraGeradores', 'telaGeradorFicha', 'telaProcessos', 'telaDemanda',
- 'comprovanteHtml', 'marca', 'mapaPontos', 'telaMetodologia', 'telaCadastro']
+ 'comprovanteHtml', 'marca', 'mapaPontos', 'telaMetodologia', 'telaCadastro', 'telaLogin', 'telaCodigoCriado']
   .forEach(nome => { contexto[nome] = pegar(nome); });
 
 const titulo = t => console.log('\n== ' + t + ' ==');
@@ -535,6 +535,96 @@ run('cadastro limpo volta ao catalogo original', () => {
   Cadastro.limpar();
   if (Cadastro.total() !== 0) throw new Error('sobrou registro apos limpar');
   return `catalogo com ${antes.g} geradores, ${antes.c} catadores e ${antes.d} unidades nesta sessao`;
+});
+
+titulo('acesso: codigo, login e sessao');
+
+run('cadastro gera codigo de acesso legivel', () => {
+  const { registro } = Cadastro.criar('catador', {
+    nome: 'Catadora do Teste de Acesso', cooperativa: '', veiculo: 'Carroca',
+    zona: 'Centro', metaSemanal: 800
+  });
+  if (!registro.codigo) throw new Error('cadastro sem codigo');
+  if (!/^CAT-[ACDEFGHJKLMNPQRTUVWXY2346789]{4}$/.test(registro.codigo)) {
+    throw new Error('formato inesperado: ' + registro.codigo);
+  }
+  if (/[01IOS5]/.test(registro.codigo.split('-')[1])) throw new Error('codigo com caractere ambiguo');
+  return registro.codigo;
+});
+
+run('codigo nao se repete entre contas', () => {
+  const codigos = Conta.contas().map(c => c.registro.codigo);
+  if (new Set(codigos).size !== codigos.length) throw new Error('codigo repetido');
+  return codigos.length + ' conta(s), nenhum codigo repetido';
+});
+
+run('login entra com o codigo, em qualquer caixa', () => {
+  const alvo = Conta.contas()[0];
+  const { conta, erro } = Conta.entrar(alvo.registro.codigo.toLowerCase());
+  if (erro) throw new Error(erro);
+  if (conta.registro.id !== alvo.registro.id) throw new Error('entrou na conta errada');
+  return conta.registro.nome;
+});
+
+run('gerador tambem entra pelo CNPJ', () => {
+  const { registro } = Cadastro.criar('gerador', {
+    nome: 'Mercado do Teste de Acesso', cnpj: '11.222.333/0001-81', ramo: 'Supermercado',
+    volumeMes: 2000, ponto: 'pt-03', acesso: 'Portaria lateral', pgrsNumero: 'PGRS 2026/1000', pgrsValidade: 200
+  });
+  const { conta, erro } = Conta.entrar('11222333000181');
+  if (erro) throw new Error(erro);
+  if (conta.registro.id !== registro.id) throw new Error('CNPJ levou a outra conta');
+  return registro.nome + ' via CNPJ';
+});
+
+run('codigo inexistente e recusado com motivo', () => {
+  const { conta, erro } = Conta.entrar('CAT-ZZZZ');
+  if (conta) throw new Error('aceitou codigo inexistente');
+  if (!erro) throw new Error('recusou sem explicar');
+  return erro;
+});
+
+run('sessao e retomada depois de fechar', () => {
+  const alvo = Conta.contas()[0];
+  Conta.entrar(alvo.registro.codigo);
+  Conta.atual = null;
+  const retomada = Conta.retomar();
+  if (!retomada || retomada.registro.id !== alvo.registro.id) throw new Error('sessao nao voltou');
+  return retomada.registro.nome;
+});
+
+run('sair encerra a sessao', () => {
+  Conta.sair();
+  if (Conta.atual) throw new Error('conta continuou ativa');
+  if (Conta.retomar()) throw new Error('sessao sobreviveu ao logout');
+  return 'sessao encerrada';
+});
+
+run('recuperacao lista as contas deste navegador', () => {
+  const lista = Conta.lembretes();
+  if (!lista.length) throw new Error('nenhuma conta para lembrar');
+  if (lista.some(l => !l.codigo || !l.nome || !l.papel)) throw new Error('lembrete incompleto');
+  return lista.length + ' conta(s) recuperavel(is)';
+});
+
+run('telas de acesso renderizam', () => {
+  const login = contexto.telaLogin({ login: { valor: '', erro: '', lembrar: true } });
+  const comErro = contexto.telaLogin({ login: { valor: 'X', erro: 'Codigo nao encontrado.', lembrar: false } });
+  const codigo = contexto.telaCodigoCriado(Conta.contas()[0].registro, 'Catador');
+  if (!comErro.includes('erro-campo')) throw new Error('erro nao aparece no login');
+  if (!codigo.includes('codigo-acesso')) throw new Error('codigo nao aparece em destaque');
+  return `login ${login.length} · com erro ${comErro.length} · codigo ${codigo.length} chars`;
+});
+
+run('nenhuma senha e pedida ou guardada', () => {
+  const arquivos = ['src/dominio/conta.js', 'src/telas/acesso.js', 'src/telas/cadastro.js', 'src/dominio/cadastro.js'];
+  /* Comentário explicando por que não há senha não conta como campo de senha:
+     limpa-se o texto antes de procurar. */
+  const semComentarios = texto => texto.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  const suspeitos = arquivos.filter(a =>
+    /type="password"|\bsenha\s*[:=]|\bpassword\s*[:=]/i.test(semComentarios(fs.readFileSync(a, 'utf8'))));
+  if (suspeitos.length) throw new Error('campo de senha em ' + suspeitos.join(', '));
+  return 'acesso por codigo, sem campo de senha';
 });
 
 titulo('escape de HTML');
