@@ -10,6 +10,25 @@
    Acima disso a demanda vira pendência e a Prefeitura precisa conciliar. */
 const TOLERANCIA = 0.05;
 
+/* Piso absoluto da tolerância. Cinco por cento de uma carga de 120 kg são 6 kg —
+   menos que a variação de uma balança de plataforma. Sem um mínimo em quilos, o
+   sistema abriria pendência por diferença que nenhuma balança consegue negar. */
+const TOLERANCIA_MINIMA_KG = 10;
+
+/* Por onde o registro de campo entrou. Muda quem assina a evidência: no terminal
+   e no registro assistido, quem executou e quem digitou são pessoas diferentes,
+   e a trilha precisa dizer isso. */
+const CANAIS = {
+  compartilhado: { nome: 'Aparelho da equipe', digitadoPor: null,
+    texto: 'A sessao pertence a rota. O aparelho e da cooperativa e passa de mao em mao.' },
+  pessoal: { nome: 'Celular pessoal', digitadoPor: null,
+    texto: 'So para quem quiser usar o proprio aparelho e tiver dados disponiveis.' },
+  terminal: { nome: 'Terminal do galpao', digitadoPor: 'Encarregado do galpao',
+    texto: 'A ficha de papel e digitada depois, no computador do galpao, preservando horario e autoria.' },
+  assistido: { nome: 'Registro assistido', digitadoPor: 'Encarregado da cooperativa',
+    texto: 'O encarregado digita por quem coletou. Quem executou e quem digitou ficam identificados separadamente.' }
+};
+
 /* Tarifa demonstrativa de disposição em aterro, por tonelada. Serve para
    dimensionar o custo que o município evita quando o material é recuperado. */
 const TARIFA_ATERRO = 96.50;

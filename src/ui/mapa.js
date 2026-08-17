@@ -28,7 +28,7 @@ function mapaPontos(itens, { titulo = 'Grandes geradores', legenda = 'situacao' 
       <span><i class="amostra ok"></i>regular</span>
       <span><i class="amostra alerta"></i>em regularização</span>
       <span><i class="amostra erro"></i>irregular</span>
-      <span class="mapa-nota">tamanho do círculo = massa destinada · ruas e rio são reais (OpenStreetMap) · coordenadas dos pontos são aproximadas</span>
+      <span class="mapa-nota">tamanho do círculo = massa destinada · ruas e rio do OpenStreetMap · limite municipal pela malha oficial do IBGE · coordenadas dos pontos ainda são aproximadas</span>
     </div>
   </div>`;
 }
@@ -50,6 +50,9 @@ function inicializarMapaLeaflet(aoClicar) {
     attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
     maxZoom: 18
   }).addTo(mapa);
+
+  /* Contorno do municipio pela malha oficial do IBGE. */
+  if (typeof desenharLimiteMunicipal === 'function') desenharLimiteMunicipal(mapa);
 
   const maiorMassa = Math.max(...itens.map(i => i.massa || 0), 1);
   const grupo = [];

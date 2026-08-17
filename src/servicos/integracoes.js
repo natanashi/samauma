@@ -8,6 +8,23 @@
 
 const API_CONTRATOS = 'https://api.portovelho.ro.gov.br/api/v1/contratos';
 
+/* Malha oficial do municipio, direto do IBGE: GeoJSON publico, sem chave e com
+   CORS liberado. E o contorno de Porto Velho desenhado por quem tem competencia
+   para defini-lo, em vez de uma linha inventada pelo prototipo. */
+const API_MALHA_IBGE = 'https://servicodados.ibge.gov.br/api/v3/malhas/municipios/1100205?formato=application/vnd.geo+json';
+
+/* Toda consulta externa desiste em oito segundos. Sem isso, uma API pendurada
+   deixa o cartao em "consultando" para sempre. */
+const LIMITE_ESPERA = 8000;
+
+function buscarComLimite(url, opcoes = {}) {
+  if (typeof AbortController === 'undefined') return fetch(url, opcoes);
+  const controle = new AbortController();
+  const relogio = setTimeout(() => controle.abort(), LIMITE_ESPERA);
+  return fetch(url, { ...opcoes, signal: controle.signal })
+    .finally(() => clearTimeout(relogio));
+}
+
 /* Palavras que identificam contrato ligado a resíduo e limpeza urbana. A busca
    é feita aqui porque a API não expõe filtro por texto do objeto. */
 const TERMOS_LIMPEZA = ['RESÍDUO', 'RESIDUO', 'LIMPEZA', 'COLETA', 'RECICL', 'VARRI', 'ATERRO', 'ENTULHO'];
@@ -37,7 +54,7 @@ function carregarContratosPMPV() {
   contratosEstado = 'carregando';
 
   const ano = new Date().getFullYear();
-  fetch(`${API_CONTRATOS}?ano=${ano}&por-pagina=100`, { headers: { Accept: 'application/json' } })
+  buscarComLimite(`${API_CONTRATOS}?ano=${ano}&por-pagina=100`, { headers: { Accept: 'application/json' } })
     .then(resposta => {
       if (!resposta.ok) throw new Error('resposta ' + resposta.status);
       return resposta.json();
@@ -67,8 +84,11 @@ function carregarContratosPMPV() {
       contratosEstado = 'erro';
       const atual = document.getElementById('integracaoContratos');
       if (!atual) return;
-      atual.innerHTML = aviso('Sem conexão com a API da Prefeitura agora',
-        `A consulta a api.portovelho.ro.gov.br não respondeu (${erro.message}). O restante do sistema continua funcionando: esta é a única parte que depende de rede.`,
+      const motivo = erro.name === 'AbortError'
+        ? 'a consulta passou de oito segundos e foi interrompida'
+        : erro.message;
+      atual.innerHTML = aviso('Sem resposta da API da Prefeitura agora',
+        `A consulta a api.portovelho.ro.gov.br nao completou (${motivo}). O restante do sistema continua funcionando: esta e a unica parte que depende de rede.`,
         'alerta');
     });
 }
@@ -92,4 +112,30 @@ function pintarContratos(alvo, dados) {
       ? `<div class="lista-def" style="margin-top:var(--e3)">${linhas}</div>`
       : aviso('Nenhum contrato de limpeza no recorte deste ano',
           'A consulta funcionou e trouxe os contratos do exercício; nenhum deles casa com os termos de resíduo e limpeza urbana.')}`;
+}
+
+/* --------------------------------------------------- malha oficial do IBGE */
+
+let malhaCache = null;
+
+/* Desenha o limite do municipio sobre o mapa. E consulta a fonte federal, nao
+   um contorno guardado aqui: se a malha mudar, o mapa acompanha. Falhar e
+   aceitavel — o mapa continua util sem o contorno. */
+function desenharLimiteMunicipal(mapa) {
+  if (typeof L === 'undefined' || !mapa) return;
+
+  const pintar = geo => {
+    const camada = L.geoJSON(geo, {
+      style: { color: '#1f6b4a', weight: 1.6, opacity: .75, fill: false, dashArray: '5 4' },
+      interactive: false
+    }).addTo(mapa);
+    camada.bindTooltip('Limite municipal de Porto Velho · malha oficial do IBGE', { sticky: true });
+  };
+
+  if (malhaCache) return pintar(malhaCache);
+
+  buscarComLimite(API_MALHA_IBGE)
+    .then(resposta => (resposta.ok ? resposta.json() : Promise.reject(new Error('malha ' + resposta.status))))
+    .then(geo => { malhaCache = geo; pintar(geo); })
+    .catch(() => { /* sem contorno, o mapa segue funcionando */ });
 }

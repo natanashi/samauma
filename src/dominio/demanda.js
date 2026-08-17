@@ -10,9 +10,16 @@ const Demanda = {
     return Math.abs(demanda.verificadoKg - demanda.coletadoKg) / demanda.coletadoKg * 100;
   },
 
+  /* Tolerancia combinada: percentual OU piso em quilos, o que for maior. Carga
+     pequena nao pode abrir pendencia por diferenca menor que a balanca resolve. */
+  toleranciaKg(demanda) {
+    if (demanda.coletadoKg == null) return null;
+    return Math.max(demanda.coletadoKg * TOLERANCIA, TOLERANCIA_MINIMA_KG);
+  },
+
   dentroDaTolerancia(demanda) {
-    const d = Demanda.divergencia(demanda);
-    return d != null && d <= TOLERANCIA * 100;
+    if (demanda.coletadoKg == null || demanda.verificadoKg == null) return false;
+    return Math.abs(demanda.verificadoKg - demanda.coletadoKg) <= Demanda.toleranciaKg(demanda);
   },
 
   /* Massa que efetivamente voltou ao ciclo produtivo. O que a triagem separou
