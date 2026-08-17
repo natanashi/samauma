@@ -17,12 +17,12 @@ contexto.window = contexto;
 vm.createContext(contexto);
 
 const MODULOS = [
-  'src/dominio/catalogo.js', 'src/dominio/formato.js', 'src/dominio/demanda.js',
+  'src/dominio/catalogo.js', 'src/dominio/cadastro.js', 'src/dominio/formato.js', 'src/dominio/demanda.js',
   'src/dominio/gerador.js', 'src/dominio/sessao.js', 'src/dominio/semente.js',
   'src/dominio/store.js', 'src/dominio/indicadores.js',
   'src/ui/componentes.js', 'src/ui/graficos.js', 'src/ui/mapa.js', 'src/ui/listas.js',
   'src/servicos/relatorio.js', 'src/servicos/integracoes.js',
-  'src/telas/entrada.js', 'src/telas/gerador.js', 'src/telas/catador.js',
+  'src/telas/entrada.js', 'src/telas/cadastro.js', 'src/telas/gerador.js', 'src/telas/catador.js',
   'src/telas/destinatario.js', 'src/telas/prefeitura.js', 'src/telas/demanda.js',
   'src/telas/comprovante.js', 'src/telas/metodologia.js'
 ];
@@ -50,17 +50,17 @@ const run = (nome, fn) => {
    não como propriedades do objeto global — busca-se cada uma explicitamente. */
 const pegar = nome => vm.runInContext(nome, contexto);
 const [Store, Demanda, Fmt, Painel, Catalogo, Regulatorio, Sessao, Relatorio, STATUS, SITUACOES, PERFIS,
-  DESTINOS, CATADORES, GERADORES, PONTOS, COOPERATIVAS, RESIDUOS, TOLERANCIA] =
+  DESTINOS, CATADORES, GERADORES, PONTOS, COOPERATIVAS, RESIDUOS, TOLERANCIA, Cadastro] =
   ['Store', 'Demanda', 'Fmt', 'Painel', 'Catalogo', 'Regulatorio', 'Sessao', 'Relatorio', 'STATUS',
    'SITUACOES', 'PERFIS', 'DESTINOS', 'CATADORES', 'GERADORES', 'PONTOS', 'COOPERATIVAS', 'RESIDUOS',
-   'TOLERANCIA'].map(pegar);
+   'TOLERANCIA', 'Cadastro'].map(pegar);
 
 ['telaEntrada', 'telaGeradorPainel', 'telaGeradorDemandas', 'telaGeradorDocumentos',
  'telaGeradorRelatorios', 'telaNovaDemanda',
  'telaCatadorDia', 'telaCatadorDisponiveis', 'telaCatadorMinhas', 'telaCatadorPainel', 'telaDestinoPainel', 'telaDestinoFila',
  'telaDestinoRecebidas', 'telaDestinoRelatorios', 'telaPrefeituraPainel', 'telaPrefeituraMapa',
  'telaPrefeituraGeradores', 'telaGeradorFicha', 'telaProcessos', 'telaDemanda',
- 'comprovanteHtml', 'marca', 'mapaPontos', 'telaMetodologia']
+ 'comprovanteHtml', 'marca', 'mapaPontos', 'telaMetodologia', 'telaCadastro']
   .forEach(nome => { contexto[nome] = pegar(nome); });
 
 const titulo = t => console.log('\n== ' + t + ' ==');
@@ -440,6 +440,101 @@ run('nenhuma demanda fica sem dono', () => {
   });
   if (orfas.length) throw new Error(orfas.length + ' demanda(s) apontam para perfil inexistente');
   return Store.demandas.length + ' demandas com dono definido';
+});
+
+titulo('cadastro de participantes');
+
+run('CNPJ invalido e recusado', () => {
+  if (Cadastro.cnpjValido('11.111.111/1111-11')) throw new Error('aceitou sequencia repetida');
+  if (Cadastro.cnpjValido('12.345.678/0001-00')) throw new Error('aceitou digito verificador errado');
+  return 'dois casos recusados';
+});
+
+run('CNPJ valido e aceito', () => {
+  if (!Cadastro.cnpjValido('11.222.333/0001-81')) throw new Error('recusou CNPJ valido');
+  return '11.222.333/0001-81';
+});
+
+run('formulario incompleto devolve erro por campo', () => {
+  const { registro, erros } = Cadastro.criar('gerador', { nome: 'ab' });
+  if (registro) throw new Error('criou registro invalido');
+  const campos = Object.keys(erros);
+  if (!campos.includes('nome') || !campos.includes('cnpj')) throw new Error('faltou apontar campo');
+  return campos.length + ' campo(s) apontado(s)';
+});
+
+run('nome repetido e recusado', () => {
+  const { erros } = Cadastro.criar('catador', {
+    nome: CATADORES[0].nome, veiculo: 'Carroca', zona: 'Centro', metaSemanal: 900
+  });
+  if (!erros.nome) throw new Error('aceitou nome duplicado');
+  return erros.nome;
+});
+
+run('gerador cadastrado entra no catalogo e publica demanda', () => {
+  const { registro, erros } = Cadastro.criar('gerador', {
+    nome: 'Mercado do Teste Automatizado', cnpj: '11.222.333/0001-81', ramo: 'Supermercado',
+    volumeMes: 3000, ponto: 'pt-01', acesso: 'Doca lateral, das 7h as 12h', pgrsNumero: 'PGRS 2026/9999',
+    pgrsValidade: 300
+  });
+  if (!registro) throw new Error('nao criou: ' + JSON.stringify(erros));
+  if (!Catalogo.gerador(registro.id)) throw new Error('nao entrou no catalogo');
+  const d = Store.criar({ geradorId: registro.id, residuo: 'papelao', estimadoKg: 400, prazo: new Date().toISOString() });
+  Store.publicar(d.id);
+  const situacao = Regulatorio.situacao(registro, Store.doGerador(registro.id));
+  return `${registro.id} · ${Store.doGerador(registro.id).length} demanda(s) · ${situacao.rotulo}`;
+});
+
+run('catador cadastrado aceita e executa coleta', () => {
+  const { registro } = Cadastro.criar('catador', {
+    nome: 'Catadora do Teste Automatizado', cooperativa: 'coop-01',
+    veiculo: 'Triciclo eletrico', zona: 'Zona Sul', metaSemanal: 1000
+  });
+  if (!registro) throw new Error('nao criou o catador');
+  const aberta = Store.disponiveis()[0];
+  Store.aceitar(aberta.id, registro);
+  Store.iniciarColeta(aberta.id);
+  Store.registrarPeso(aberta.id, 380, 'terminal');
+  Store.finalizarColeta(aberta.id);
+  const d = Store.obter(aberta.id);
+  if (d.catador.id !== registro.id) throw new Error('coleta nao ficou com o catador cadastrado');
+  return `${registro.id} · ${d.status} · autor: ${d.eventos.find(e => e.titulo === 'Peso registrado').autor}`;
+});
+
+run('unidade cadastrada recebe carga e fecha o ciclo', () => {
+  const { registro, erros } = Cadastro.criar('destino', {
+    nome: 'Triagem do Teste Automatizado', tipoUnidade: 'Central de triagem', licenca: 'LO 9999/2026',
+    capacidadeDiaria: 4000, ponto: 'pt-02', destinoFinal: 'Reciclagem, com rejeito ao aterro',
+    aceita: ['papelao', 'papel']
+  });
+  if (!registro) throw new Error('nao criou: ' + JSON.stringify(erros));
+  const emTransito = Store.demandas.find(d => d.status === 'COLETADA');
+  emTransito.destino = { id: registro.id, nome: registro.nome };
+  Store.receber(emTransito.id, { kg: emTransito.coletadoKg, rejeitoKg: 20 });
+  const f = Store.obter(emTransito.id);
+  if (!['COMPROVADA', 'PENDENCIA'].includes(f.status)) throw new Error('recebimento nao concluiu');
+  return `${registro.id} · ${f.status} · ${Fmt.kg(Demanda.reciclado(f))} recuperados`;
+});
+
+run('tela de cadastro renderiza nos tres papeis', () => {
+  const vazia = contexto.telaCadastro({ cadastro: { tipo: null } });
+  const tamanhos = ['gerador', 'catador', 'destino'].map(tipo =>
+    contexto.telaCadastro({ cadastro: { tipo, dados: {}, erros: {} } }).length);
+  if (tamanhos.some(t => t < 500)) throw new Error('formulario vazio demais');
+  return `escolha ${vazia.length} · formularios ${tamanhos.join(', ')} chars`;
+});
+
+run('erro aparece junto do campo na tela', () => {
+  const html = contexto.telaCadastro({ cadastro: { tipo: 'gerador', dados: { nome: 'x' }, erros: { cnpj: 'CNPJ invalido: confira os 14 digitos.' } } });
+  if (!html.includes('erro-campo') || !html.includes('CNPJ invalido')) throw new Error('erro nao apareceu no formulario');
+  return 'erro exibido no campo';
+});
+
+run('cadastro limpo volta ao catalogo original', () => {
+  const antes = { g: GERADORES.length, c: CATADORES.length, d: DESTINOS.length };
+  Cadastro.limpar();
+  if (Cadastro.total() !== 0) throw new Error('sobrou registro apos limpar');
+  return `catalogo com ${antes.g} geradores, ${antes.c} catadores e ${antes.d} unidades nesta sessao`;
 });
 
 titulo('escape de HTML');

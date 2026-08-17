@@ -54,7 +54,13 @@ const Semente = {
 
     const avancar = (demanda, ate, config) => {
       const dia = config.criadaEm;
-      const marca = (h, m) => dataRelativa(dia, h, m);
+      /* Evento do dia corrente nunca pode ter carimbo no futuro: quem abre a
+         demonstracao de manha veria "ha -1 dia" no painel do gerador. */
+      const agora = new Date().toISOString();
+      const marca = (h, m) => {
+        const quando = dataRelativa(dia, h, m);
+        return dia === 0 && quando > agora ? agora : quando;
+      };
       const unidade = Catalogo.destino(demanda.destino.id);
       const gerador = Catalogo.gerador(demanda.gerador.id);
       const operador = Catalogo.operador(gerador);

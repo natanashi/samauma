@@ -12,6 +12,28 @@ const NATUREZAS = [
   ['parametro', 'Parâmetro de trabalho', 'Valor de referência adotado para a demonstração, a ser substituído por medição local.']
 ];
 
+/* De onde vem cada dado que nao nasce aqui dentro, e o que impede o resto de
+   entrar. Publicar a lista completa — inclusive o que nao deu — e a parte
+   honesta da transparencia. */
+const FONTES_EXTERNAS = [
+  ['API de Contratos da Prefeitura', 'api.portovelho.ro.gov.br', 'ligada',
+   'Contratos municipais do exercicio, consultados ao vivo no painel da Prefeitura. JSON publico, sem chave, com CORS liberado.'],
+  ['Malha municipal do IBGE', 'servicodados.ibge.gov.br', 'ligada',
+   'Limite oficial de Porto Velho desenhado no mapa, em GeoJSON, direto da fonte federal.'],
+  ['OpenStreetMap', 'tile.openstreetmap.org', 'ligada',
+   'Ruas, rio e referencias do mapa base. E a unica parte do sistema que exige internet.'],
+  ['Portal de Dados Abertos do Municipio', 'dados.portovelho.ro.gov.br', 'bloqueada',
+   'A API CKAN responde e traz empenhos, liquidacoes e pagamentos, mas nao envia cabecalho de CORS: o navegador nao consegue ler direto. Exige um servico intermediario, que o prototipo nao tem.'],
+  ['GeoPortal da Prefeitura', 'geoportal.portovelho.ro.gov.br', 'pendente',
+   'Nao foi localizado endereco publico de servico geografico padrao (WFS ou REST). Depende de indicacao da SMTI para trocar as coordenadas aproximadas pela camada oficial.'],
+  ['SNIS — Serie Historica', 'app4.mdr.gov.br', 'pendente',
+   'Linha de base municipal de residuos. Consulta publica por formulario; sem interface programavel.'],
+  ['SINIR / MTR nacional', 'mtr.sinir.gov.br', 'pendente',
+   'Manifesto e certificado de destinacao, quando exigiveis. Requer credenciamento de gerador, transportador e destinador.'],
+  ['SEI municipal', 'processo administrativo', 'pendente',
+   'Numero do processo, tipo documental e dossie. Requer homologacao da unidade gestora e da SMTI.']
+];
+
 const BASE_LEGAL = [
   ['Decreto Municipal nº 15.603, de 26/11/2018',
    'Cria o Cadastro de Grandes Geradores de Resíduos Sólidos de Porto Velho, considera grande gerador quem produz volume superior a 100 litros por dia e veda a coleta pública acima de 200 litros por dia, atribuindo ao gerador o custo de coleta, transporte e destinação. Institui a obrigatoriedade de apresentação do PGRS no licenciamento ambiental.'],
@@ -56,7 +78,7 @@ function telaMetodologia() {
         titulo: 'Regras de decisão',
         sub: 'Os limiares que o sistema aplica',
         corpo: pares([
-          ['Tolerância entre campo e balança', Fmt.percentual(TOLERANCIA * 100, 0)],
+          ['Tolerância entre campo e balança', `${Fmt.percentual(TOLERANCIA * 100, 0)} ou ${Fmt.kg(TOLERANCIA_MINIMA_KG)}, o que for maior`],
           ['Acima da tolerância', 'abre pendência para a Prefeitura, sem penalidade automática'],
           ['Sem destinação comprovada', `${JANELA_DESTINACAO} dias rebaixam a situação do gerador`],
           ['PGRS vencendo', `alerta a partir de ${JANELA_PGRS} dias do vencimento`],
@@ -75,6 +97,22 @@ function telaMetodologia() {
       nota: `Tarifa de disposição em aterro adotada: ${Fmt.reais(TARIFA_ATERRO)} por tonelada. ` +
         'Estes valores sustentam apenas a demonstração. No piloto, o preço passa a vir da nota de venda da própria cooperativa, ' +
         'e a perda de triagem deixa de ser estimada por tabela para ser medida lote a lote, que é o dado correto.'
+    })}
+
+    ${cartao({
+      titulo: 'Fontes externas e o que consumimos de cada uma',
+      sub: 'Inclusive o que não foi possível ligar, e por quê',
+      corpo: `<div class="tabela-rolagem"><table class="tabela">
+        <thead><tr><th>Fonte</th><th>Endereço</th><th>Situação</th><th>O que entra ou o que falta</th></tr></thead>
+        <tbody>${FONTES_EXTERNAS.map(([nome, onde, estado, texto]) => `
+          <tr>
+            <td><b>${esc(nome)}</b></td>
+            <td><code>${esc(onde)}</code></td>
+            <td><span class="pino ${estado === 'ligada' ? 'ok' : estado === 'bloqueada' ? 'erro' : 'alerta'}">${estado}</span></td>
+            <td>${esc(texto)}</td>
+          </tr>`).join('')}</tbody>
+      </table></div>`,
+      nota: 'O sistema não copia dado de fonte oficial para dentro de si: consulta na hora e mostra a origem. Onde a consulta direta não é possível, a tela diz o motivo em vez de simular o número.'
     })}
 
     ${cartao({

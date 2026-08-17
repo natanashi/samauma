@@ -36,9 +36,11 @@ const TELAS = {
 };
 
 const App = {
-  estado: { perfil: null, aba: null, demandaId: null, geradorId: null, filtro: null },
+  estado: { perfil: null, aba: null, demandaId: null, geradorId: null, filtro: null, cadastro: null },
 
   iniciar() {
+    /* Antes do armazém: quem se cadastrou já precisa existir no catálogo. */
+    Cadastro.iniciar();
     Store.iniciar();
     document.getElementById('portaoGrade').innerHTML = telaEntrada();
     document.querySelectorAll('[data-marca]').forEach(alvo => {
@@ -51,6 +53,77 @@ const App = {
     const busca = new URLSearchParams(location.search);
     const atalho = busca.get('perfil');
     if (PERFIS[atalho]) this.entrar(atalho, busca.get('catador'), busca.get('destino'));
+  },
+
+  /* -------------------------------------------------------------- cadastro */
+
+  /* O cadastro vive na entrada, antes de qualquer perfil: quem chega aqui
+     ainda não é ninguém no sistema. */
+  abrirCadastro(tipo) {
+    this.estado.cadastro = { tipo: tipo || null, dados: {}, erros: {} };
+    this.renderizarCadastro();
+  },
+
+  fecharCadastro() {
+    this.estado.cadastro = null;
+    document.getElementById('portaoGrade').className = 'portao-grade';
+    document.getElementById('portaoGrade').innerHTML = telaEntrada();
+    document.getElementById('portaoCadastro').hidden = false;
+  },
+
+  renderizarCadastro() {
+    const grade = document.getElementById('portaoGrade');
+    grade.className = 'portao-grade modo-cadastro';
+    grade.innerHTML = telaCadastro(this.estado);
+    document.getElementById('portaoCadastro').hidden = true;
+    const form = document.getElementById('formCadastro');
+    if (form) form.addEventListener('submit', evento => this.enviarCadastro(evento));
+    grade.querySelector('input, select')?.focus();
+  },
+
+  /* Lê o formulário, devolve os erros no lugar de cada campo e, dando certo,
+     entra no sistema já como o participante recém-criado. */
+  enviarCadastro(evento) {
+    evento.preventDefault();
+    const tipo = this.estado.cadastro.tipo;
+    const valor = id => (document.getElementById(id) || {}).value || '';
+    const dados = { nome: valor('cadNome') };
+
+    if (tipo === 'gerador') Object.assign(dados, {
+      cnpj: valor('cadCnpj'), ramo: valor('cadRamo'), volumeMes: valor('cadVolume'),
+      ponto: valor('cadPonto'), acesso: valor('cadAcesso'), operador: valor('cadOperador'),
+      pgrsNumero: valor('cadPgrs'), pgrsValidade: valor('cadPgrsValidade')
+    });
+
+    if (tipo === 'catador') Object.assign(dados, {
+      cooperativa: valor('cadCooperativa'), veiculo: valor('cadVeiculo'),
+      zona: valor('cadZona'), metaSemanal: valor('cadMeta')
+    });
+
+    if (tipo === 'destino') Object.assign(dados, {
+      tipoUnidade: valor('cadTipoUnidade'), cooperativa: valor('cadCooperativa'),
+      licenca: valor('cadLicenca'), capacidadeDiaria: valor('cadCapacidade'),
+      ponto: valor('cadPonto'), destinoFinal: valor('cadDestinoFinal'), acesso: valor('cadAcesso'),
+      aceita: [...document.querySelectorAll('input[name="cadAceita"]:checked')].map(c => c.value)
+    });
+
+    const { registro, erros } = Cadastro.criar(tipo, dados);
+    if (!registro) {
+      this.estado.cadastro = { tipo, dados, erros };
+      this.renderizarCadastro();
+      this.recado('Confira os campos marcados.');
+      return;
+    }
+
+    this.estado.cadastro = null;
+    document.getElementById('portaoCadastro').hidden = false;
+    document.getElementById('portaoGrade').className = 'portao-grade';
+    document.getElementById('portaoGrade').innerHTML = telaEntrada();
+
+    if (tipo === 'gerador') { Sessao.gerador = registro.id; this.entrar('gerador'); }
+    if (tipo === 'catador') this.entrar('catador', registro.id);
+    if (tipo === 'destino') this.entrar('cooperativa', null, registro.id);
+    this.recado(`${registro.nome} cadastrado. Você já está no sistema.`);
   },
 
   /* ------------------------------------------------------------- navegação */
@@ -219,7 +292,7 @@ const App = {
         case 'peso': {
           const kg = Number(document.getElementById('campoPeso').value);
           if (!kg || kg <= 0) return this.recado('Informe um peso válido.');
-          Store.registrarPeso(id, kg);
+          Store.registrarPeso(id, kg, CANAL_REGISTRO);
           this.recado(`${Fmt.kg(kg)} registrados.`);
           break;
         }
@@ -406,6 +479,7 @@ A ficha original fica arquivada e vinculada ao evento digital. Documento demonst
 
   reiniciar() {
     Store.reiniciar();
+    Cadastro.limpar();
     this.estado.demandaId = null;
     this.estado.geradorId = null;
     this.estado.filtro = null;
@@ -430,6 +504,9 @@ A ficha original fica arquivada e vinculada ao evento digital. Documento demonst
 
       switch (acao) {
         case 'perfil': this.entrar(perfil, catador, destino); break;
+        case 'cadastrar': this.abrirCadastro(null); break;
+        case 'cadastro-tipo': this.abrirCadastro(alvo.dataset.tipo || null); break;
+        case 'cadastro-sair': this.fecharCadastro(); break;
         case 'trocar': this.sair(); break;
         case 'aba': this.irPara(aba); break;
         case 'nova': this.irPara('nova'); break;
@@ -444,7 +521,7 @@ A ficha original fica arquivada e vinculada ao evento digital. Documento demonst
         case 'canal':
           CANAL_REGISTRO = alvo.dataset.canal;
           this.renderizar();
-          this.recado('Canal de registro: ' + CANAIS_REGISTRO[CANAL_REGISTRO][0] + '.');
+          this.recado('Canal de registro: ' + CANAIS[CANAL_REGISTRO].nome + '.');
           break;
         case 'ficha': this.baixarFicha(); break;
         case 'comprovante': this.verComprovante(id); break;

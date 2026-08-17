@@ -10,18 +10,12 @@
    trabalhar: a sessão pertence à rota, não ao aparelho nem à pessoa. */
 let CANAL_REGISTRO = 'compartilhado';
 
-const CANAIS_REGISTRO = {
-  compartilhado: ['Aparelho da equipe', 'A sessão pertence à rota. O aparelho é da cooperativa e passa de mão em mão.'],
-  pessoal: ['Celular pessoal', 'Só para quem quiser usar o próprio aparelho e tiver dados disponíveis.'],
-  terminal: ['Terminal do galpão', 'A ficha de papel é digitada depois, no computador do galpão, preservando horário e autoria.'],
-  assistido: ['Registro assistido', 'O encarregado digita por quem coletou. Quem executou e quem digitou ficam identificados separadamente.']
-};
-
 function blocoCanais() {
-  const opcoes = Object.entries(CANAIS_REGISTRO).map(([id, [nome, texto]]) => `
+  const opcoes = Object.entries(CANAIS).map(([id, canal]) => `
     <button class="canal ${id === CANAL_REGISTRO ? 'on' : ''}" data-acao="canal" data-canal="${id}"
       aria-pressed="${id === CANAL_REGISTRO}">
-      <b>${esc(nome)}</b><span>${esc(texto)}</span>
+      <b>${esc(canal.nome)}</b><span>${esc(canal.texto)}</span>
+      ${canal.digitadoPor ? `<small class="fonte-dado">assina tambem: ${esc(canal.digitadoPor)}</small>` : ''}
     </button>`).join('');
 
   return cartao({
@@ -29,7 +23,7 @@ function blocoCanais() {
     sub: 'Quatro caminhos — nenhum deles exige celular próprio',
     corpo: `<div class="canais">${opcoes}</div>`,
     acao: `<button class="btn sec sm" data-acao="ficha">Baixar ficha de papel</button>`,
-    nota: 'Sem aparelho ou sem bateria, a coleta é anotada na ficha numerada e digitada depois pelo terminal do galpão. O trabalho nunca depende de o sistema estar na mão de quem cata.'
+    nota: 'O canal escolhido entra na trilha: quando alguem digita por outra pessoa, o evento guarda quem executou e quem registrou. Sem aparelho ou sem bateria, a coleta vai para a ficha numerada e e digitada depois no galpao.'
   });
 }
 

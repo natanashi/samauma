@@ -171,11 +171,18 @@ const Store = {
     return demanda;
   },
 
-  registrarPeso(id, kg) {
+  /* O canal por onde o registro entrou faz parte da evidencia: no terminal e no
+     registro assistido, quem coletou e quem digitou sao pessoas diferentes. */
+  registrarPeso(id, kg, canalId) {
     const demanda = this._exigir(id, 'EM_COLETA');
+    const canal = CANAIS[canalId] || CANAIS.compartilhado;
     demanda.coletadoKg = kg;
+    demanda.canalRegistro = canal.nome;
+    const autor = canal.digitadoPor ? `Catador · digitado por ${canal.digitadoPor}` : 'Catador';
     this._registrar(demanda, 'Peso registrado',
-      `${Fmt.kg(kg)} observados em campo · estimativa do gerador: ${Fmt.kg(demanda.estimadoKg)}.`, 'Catador');
+      `${Fmt.kg(kg)} observados em campo · estimativa do gerador: ${Fmt.kg(demanda.estimadoKg)}. ` +
+      `Registro por ${canal.nome.toLowerCase()}${canal.digitadoPor && demanda.catador ? ', executado por ' + demanda.catador.nome : ''}.`,
+      autor);
     this._gravar();
     return demanda;
   },
