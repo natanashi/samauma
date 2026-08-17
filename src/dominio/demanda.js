@@ -82,7 +82,7 @@ const Demanda = {
       case 'DISPONIVEL': return { perfil: 'catador',      texto: 'Aceitar a demanda' };
       case 'ACEITA':     return { perfil: 'catador',      texto: 'Iniciar a coleta' };
       case 'EM_COLETA':  return { perfil: 'catador',      texto: 'Registrar peso e foto' };
-      case 'COLETADA':   return { perfil: 'destinatario', texto: 'Receber a carga e pesar na balança' };
+      case 'COLETADA':   return { perfil: 'cooperativa',  texto: 'Receber a carga e pesar na balança' };
       case 'PENDENCIA':  return { perfil: 'prefeitura',   texto: 'Conciliar divergência' };
       default:           return { perfil: null,           texto: 'Ciclo concluído' };
     }

@@ -245,6 +245,8 @@ function telaPrefeituraPainel() {
 
     ${blocoPendencias()}
 
+    ${blocoIntegracaoContratos()}
+
     <div class="painel-rodape">
       <span>${iconePainel('grupo', 'var(--ok)')} Ambiente demonstrativo — dados fictícios para fins de apresentação.</span>
       <span class="painel-rodape-marca">Sistema SAMAÚMA · Desenvolvido para gestão inteligente de resíduos ${marca(28)}</span>

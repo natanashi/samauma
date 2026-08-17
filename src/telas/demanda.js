@@ -46,8 +46,84 @@ function ciclo(demanda) {
 /* Cada perfil só enxerga o que pode fazer. Nada de botão decorativo. */
 function acoesDoPerfil(demanda, perfil) {
   if (perfil === 'gerador') return acoesGerador(demanda);
+  if (perfil === 'catador') return acoesCatador(demanda);
   if (perfil === 'cooperativa') return acoesDestinatario(demanda);
   return acoesPrefeitura(demanda);
+}
+
+/* O catador aceita a demanda e executa a coleta. É o único ponto do sistema em
+   que a massa nasce de uma observação de campo, e não de uma balança. */
+function acoesCatador(demanda) {
+  if (demanda.status === 'DISPONIVEL') {
+    const ponto = Catalogo.ponto(demanda.ponto);
+    const valor = Demanda.valor({ ...demanda, verificadoKg: demanda.estimadoKg, rejeitoKg: 0 });
+    return cartao({
+      titulo: 'Aceitar esta demanda',
+      sub: `${demanda.km.toLocaleString('pt-BR')} km · prazo ${Fmt.prazo(demanda.prazo)}`,
+      classe: 'acao-viva',
+      corpo: `<div class="campos">
+          <div class="campo"><div class="rot">Endereço</div><div class="val">${esc(ponto.bairro)}<small>${esc(ponto.acesso)}</small></div></div>
+          <div class="campo"><div class="rot">Volume estimado</div><div class="val num">${Fmt.kg(demanda.estimadoKg)}<small>estimativa do gerador</small></div></div>
+          <div class="campo"><div class="rot">Valor estimado</div><div class="val num">${Fmt.reais(valor)}<small>demonstrativo, pelo peso estimado</small></div></div>
+          <div class="campo"><div class="rot">Entrega em</div><div class="val">${esc(demanda.destino.nome)}<small>ponto final do ciclo</small></div></div>
+        </div>
+        <div class="acoes-form"><button class="btn" data-acao="aceitar" data-id="${demanda.id}">Aceitar demanda</button></div>`
+    });
+  }
+
+  const minha = demanda.catador && demanda.catador.id === Sessao.catador.id;
+  if (!minha) return esperando(demanda);
+  if (['ACEITA', 'EM_COLETA'].includes(demanda.status)) return blocoExecucao(demanda);
+  if (demanda.status === 'COMPROVADA') return blocoComprovado(demanda);
+  return esperando(demanda);
+}
+
+/* Os quatro passos da coleta, em ordem, com o controle de cada um ao lado. */
+function blocoExecucao(demanda) {
+  const iniciada = demanda.status === 'EM_COLETA';
+  const pesada = demanda.coletadoKg != null;
+  const fotografada = !!demanda.foto;
+  const ponto = Catalogo.ponto(demanda.ponto);
+
+  const passo = (n, titulo, texto, estadoPasso, controle) => `
+    <li class="passo ${estadoPasso}">
+      <span class="n">${estadoPasso === 'feito' ? '✓' : n}</span>
+      <span class="texto"><b>${titulo}</b><span>${texto}</span></span>
+      <span class="controle">${controle || ''}</span>
+    </li>`;
+
+  return cartao({
+    titulo: 'Registrar a coleta',
+    sub: `${demanda.gerador.nome} · ${ponto.bairro} · ${ponto.acesso}`,
+    classe: 'acao-viva',
+    corpo: `<ol class="execucao">
+      ${passo(1, 'Iniciar coleta', iniciada ? 'Coleta em andamento.' : 'Confirme quando estiver a caminho do estabelecimento.',
+        iniciada ? 'feito' : 'ativo',
+        iniciada ? '' : `<button class="btn" data-acao="iniciar" data-id="${demanda.id}">Iniciar</button>`)}
+
+      ${passo(2, 'Registrar peso', pesada
+        ? `${Fmt.kg(demanda.coletadoKg)} registrados. Estimativa do gerador: ${Fmt.kg(demanda.estimadoKg)}.`
+        : `Informe a massa observada. O gerador estimou ${Fmt.kg(demanda.estimadoKg)}.`,
+        !iniciada ? '' : pesada ? 'feito' : 'ativo',
+        iniciada ? `<input type="number" id="campoPeso" min="1" value="${demanda.coletadoKg ?? demanda.estimadoKg}">
+          <button class="btn sec" data-acao="peso" data-id="${demanda.id}">${pesada ? 'Corrigir' : 'Salvar'}</button>` : '')}
+
+      ${passo(3, 'Adicionar foto', fotografada ? 'Evidência anexada à demanda.' : 'Registro fotográfico da carga (opcional, fortalece a prova).',
+        !iniciada ? '' : fotografada ? 'feito' : 'ativo',
+        iniciada ? `${fotografada
+            ? (demanda.foto.startsWith('data:')
+              ? `<img class="foto" src="${demanda.foto}" alt="Registro fotográfico da carga">`
+              : '<span class="foto-vazia">foto demonstrativa</span>')
+            : '<span class="foto-vazia">sem foto</span>'}
+          <input type="file" id="campoFoto" accept="image/*" capture="environment" hidden data-id="${demanda.id}">
+          <button class="btn sec" data-acao="foto" data-id="${demanda.id}">${fotografada ? 'Trocar' : 'Anexar'}</button>` : '')}
+
+      ${passo(4, 'Fechar a carga', `Ao finalizar, a carga segue para ${esc(demanda.destino.nome)}, que pesa e confirma.`,
+        pesada && iniciada ? 'ativo' : '',
+        `<button class="btn" data-acao="finalizar" data-id="${demanda.id}" ${pesada && iniciada ? '' : 'disabled'}>Enviar ao destino</button>`)}
+    </ol>`,
+    nota: 'O peso informado em campo nunca é sobrescrito. Se a balança do destino registrar outro valor, os dois ficam na trilha.'
+  });
 }
 
 function esperando(demanda) {
@@ -55,7 +131,7 @@ function esperando(demanda) {
   if (!proxima.perfil) return '';
   const dono = {
     gerador: 'o gerador', catador: 'o catador',
-    destinatario: 'quem recebe a carga', prefeitura: 'a Prefeitura', sistema: 'o sistema'
+    cooperativa: 'quem recebe a carga', prefeitura: 'a Prefeitura', sistema: 'o sistema'
   }[proxima.perfil];
   return cartao({ corpo: aviso(`Aguardando ${dono}`, proxima.texto + '.') });
 }

@@ -1,6 +1,6 @@
 /* Cache do protótipo. Sem dependências externas: o app inteiro cabe nestes arquivos. */
-const CACHE = 'samauma-2026-v44';
-const VERSAO = '?v=20260815z';
+const CACHE = 'samauma-2026-v46';
+const VERSAO = '?v=20260816c';
 
 const SHELL = [
   './',
@@ -24,13 +24,16 @@ const SHELL = [
   './src/ui/listas.js' + VERSAO,
 
   './src/servicos/relatorio.js' + VERSAO,
+  './src/servicos/integracoes.js' + VERSAO,
 
   './src/telas/entrada.js' + VERSAO,
   './src/telas/gerador.js' + VERSAO,
+  './src/telas/catador.js' + VERSAO,
   './src/telas/destinatario.js' + VERSAO,
   './src/telas/prefeitura.js' + VERSAO,
   './src/telas/demanda.js' + VERSAO,
   './src/telas/comprovante.js' + VERSAO,
+  './src/telas/metodologia.js' + VERSAO,
 
   './src/app.js' + VERSAO
 ];

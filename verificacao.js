@@ -21,10 +21,10 @@ const MODULOS = [
   'src/dominio/gerador.js', 'src/dominio/sessao.js', 'src/dominio/semente.js',
   'src/dominio/store.js', 'src/dominio/indicadores.js',
   'src/ui/componentes.js', 'src/ui/graficos.js', 'src/ui/mapa.js', 'src/ui/listas.js',
-  'src/servicos/relatorio.js',
-  'src/telas/entrada.js', 'src/telas/gerador.js',
+  'src/servicos/relatorio.js', 'src/servicos/integracoes.js',
+  'src/telas/entrada.js', 'src/telas/gerador.js', 'src/telas/catador.js',
   'src/telas/destinatario.js', 'src/telas/prefeitura.js', 'src/telas/demanda.js',
-  'src/telas/comprovante.js'
+  'src/telas/comprovante.js', 'src/telas/metodologia.js'
 ];
 
 for (const arquivo of MODULOS) {
@@ -56,10 +56,11 @@ const [Store, Demanda, Fmt, Painel, Catalogo, Regulatorio, Sessao, Relatorio, ST
    'TOLERANCIA'].map(pegar);
 
 ['telaEntrada', 'telaGeradorPainel', 'telaGeradorDemandas', 'telaGeradorDocumentos',
- 'telaGeradorRelatorios', 'telaNovaDemanda', 'telaDestinoPainel', 'telaDestinoFila',
+ 'telaGeradorRelatorios', 'telaNovaDemanda',
+ 'telaCatadorDia', 'telaCatadorDisponiveis', 'telaCatadorMinhas', 'telaCatadorPainel', 'telaDestinoPainel', 'telaDestinoFila',
  'telaDestinoRecebidas', 'telaDestinoRelatorios', 'telaPrefeituraPainel', 'telaPrefeituraMapa',
  'telaPrefeituraGeradores', 'telaGeradorFicha', 'telaProcessos', 'telaDemanda',
- 'comprovanteHtml', 'marca', 'mapaPontos']
+ 'comprovanteHtml', 'marca', 'mapaPontos', 'telaMetodologia']
   .forEach(nome => { contexto[nome] = pegar(nome); });
 
 const titulo = t => console.log('\n== ' + t + ' ==');
@@ -401,6 +402,44 @@ run('comprovante traz as medições, o destino e o que foi reciclado', () => {
    'Rejeito para aterro', 'Destino do material', 'Destinatário', 'Lote no destino']
     .forEach(t => { if (!html.includes(t)) throw new Error('faltou: ' + t); });
   return 'ok';
+});
+
+titulo('todo passo do ciclo tem botao para quem responde por ele');
+
+/* O defeito que este bloco existe para impedir: a acao continua no dominio e no
+   roteador, mas nenhuma tela oferece o botao — e a demanda trava sem que
+   nenhum teste de dominio perceba. */
+const PASSOS_DO_CICLO = [
+  ['CRIADA', 'gerador', 'publicar'],
+  ['DISPONIVEL', 'catador', 'aceitar'],
+  ['ACEITA', 'catador', 'iniciar'],
+  ['EM_COLETA', 'catador', 'peso'],
+  ['EM_COLETA', 'catador', 'finalizar'],
+  ['COLETADA', 'cooperativa', 'receber'],
+  ['PENDENCIA', 'prefeitura', 'conciliar']
+];
+
+PASSOS_DO_CICLO.forEach(([status, perfil, acao]) => {
+  run(`${status} · ${perfil} pode "${acao}"`, () => {
+    const d = Store.demandas.find(x => x.status === status);
+    if (!d) throw new Error('nenhuma demanda em ' + status + ' na semente');
+    if (perfil === 'catador') Sessao.entrarComoCatador(d.catador ? d.catador.id : CATADORES[0].id);
+    if (perfil === 'cooperativa') Sessao.entrarComoDestino(d.destino.id);
+    const html = contexto.telaDemanda(est(perfil, { demandaId: d.id }));
+    if (!html.includes(`data-acao="${acao}"`)) {
+      throw new Error(`sem botao ${acao} na tela de ${perfil} (${d.id})`);
+    }
+    return d.id;
+  });
+});
+
+run('nenhuma demanda fica sem dono', () => {
+  const orfas = Store.demandas.filter(d => {
+    const proxima = Demanda.proximaAcao(d);
+    return proxima.perfil && !['gerador', 'catador', 'cooperativa', 'prefeitura'].includes(proxima.perfil);
+  });
+  if (orfas.length) throw new Error(orfas.length + ' demanda(s) apontam para perfil inexistente');
+  return Store.demandas.length + ' demandas com dono definido';
 });
 
 titulo('escape de HTML');

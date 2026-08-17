@@ -1229,3 +1229,47 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 }
 
 body.somente-comprovante .app { display: none; }
+
+/* ============================ 17. METODOLOGIA E FONTES */
+
+.lista-def { display: flex; flex-direction: column; gap: var(--e3); }
+.lista-def .def { display: flex; flex-direction: column; gap: 4px; }
+.lista-def .def b { font-size: 13px; color: var(--tinta); }
+.lista-def .def p { font-size: 12.5px; color: var(--tinta2); line-height: 1.6; }
+.lista-def .def .pino { align-self: flex-start; }
+
+.ponto-cor {
+  display: inline-block; width: 9px; height: 9px; border-radius: var(--r-pill);
+  background: var(--cor); margin-right: 7px; vertical-align: middle;
+}
+
+@media (max-width: 860px) {
+  .lista-def .def p { font-size: 12px; }
+}
+
+/* Canais de registro do catador e capacidade da unidade receptora. */
+.canais { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e2); }
+.canais .canal {
+  display: flex; flex-direction: column; gap: 3px; text-align: left;
+  padding: 11px 13px; border: 1px solid var(--linha); border-radius: var(--r-m);
+  background: var(--carta); cursor: pointer; transition: var(--toque); font: inherit;
+}
+.canais .canal:hover { border-color: var(--cor-perfil, var(--raiz)); }
+.canais .canal.on {
+  border-color: var(--cor-perfil, var(--raiz));
+  box-shadow: inset 0 0 0 1px var(--cor-perfil, var(--raiz));
+  background: var(--carta2);
+}
+.canais .canal b { font-size: 12.5px; color: var(--tinta); }
+.canais .canal span { font-size: 11.5px; color: var(--tinta2); line-height: 1.5; }
+.canais .canal:focus-visible { outline: 2px solid var(--cor-perfil, var(--raiz)); outline-offset: 2px; }
+
+.barra-capacidade {
+  margin-top: var(--e3); height: 9px; border-radius: var(--r-pill);
+  background: var(--papel2); overflow: hidden;
+}
+.barra-capacidade i { display: block; height: 100%; border-radius: var(--r-pill); background: var(--ok); }
+.barra-capacidade i.alerta { background: var(--alerta); }
+.barra-capacidade i.erro { background: var(--erro); }
+
+@media (max-width: 700px) { .canais { grid-template-columns: 1fr; } }
