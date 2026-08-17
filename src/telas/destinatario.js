@@ -93,6 +93,7 @@ function telaDestinoFila() {
   return `
     ${cabecalho('Cargas a caminho', 'Confirme o peso da balança. É essa confirmação que fecha o ciclo e emite o comprovante.')}
     ${faixaDestino(p)}
+    ${blocoCapacidade(p)}
     ${p.aCaminho.length
       ? aviso('O que fazer com cada carga',
           'Abra a carga, informe a massa da balança e quanto do material é rejeito. O sistema compara com o peso do catador e emite o comprovante — ou abre pendência para a Prefeitura.')
@@ -181,4 +182,34 @@ function telaDestinoRelatorios() {
         corpo: listaComprovantes(p.comprovantes, { visao: 'destinatario' })
       })}
     </div>`;
+}
+
+/* Capacidade instalada contra o que está vindo. O gargalo da economia circular
+   não é software: é galpão, prensa e gente. Melhor descobrir antes da carga
+   chegar do que com o material parado no pátio. */
+function blocoCapacidade(p) {
+  const unidade = Catalogo.destino(Sessao.destino.id);
+  const capacidade = unidade.capacidadeDiaria || 0;
+  const aCaminho = somar(p.aCaminho, d => d.coletadoKg || d.estimadoKg || 0);
+  if (!capacidade) return '';
+
+  const ocupacao = (aCaminho / capacidade) * 100;
+  const tom = ocupacao >= 100 ? 'erro' : ocupacao >= 75 ? 'alerta' : 'ok';
+
+  return cartao({
+    titulo: 'Capacidade do dia',
+    sub: `${unidade.tipo} · licença ${unidade.licenca}`,
+    classe: tom === 'erro' ? 'acao-viva' : '',
+    corpo: `${kpis([
+        kpi('Capacidade diária', Fmt.kg(capacidade), 'declarada no cadastro da unidade'),
+        kpi('A caminho agora', Fmt.kg(aCaminho), `${p.aCaminho.length} carga(s) na fila`, { tom }),
+        kpi('Ocupação prevista', Fmt.percentual(ocupacao, 0), 'do que a unidade tria por dia', { tom })
+      ])}
+      <div class="barra-capacidade" role="img" aria-label="Ocupação prevista de ${Fmt.percentual(ocupacao, 0)}">
+        <i class="${tom}" style="width:${Math.min(100, ocupacao).toFixed(1)}%"></i>
+      </div>`,
+    nota: ocupacao >= 100
+      ? 'A fila já supera o que a unidade consegue triar em um dia. Aceitar mais carga agora significa material parado, contaminação e mais rejeito.'
+      : 'A capacidade é declarada pela própria unidade e deve ser medida no piloto: é ela que limita quanto trabalho o sistema pode prometer.'
+  });
 }
