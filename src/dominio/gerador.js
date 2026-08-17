@@ -32,7 +32,8 @@ const Regulatorio = {
     const ultima = comprovadas
       .map(d => new Date(d.comprovante.emitidoEm))
       .sort((a, b) => b - a)[0] || null;
-    const diasSemDestinar = ultima ? Math.floor((Date.now() - ultima) / 86400000) : null;
+    /* Comprovante carimbado mais tarde no mesmo dia nao pode virar dia negativo. */
+    const diasSemDestinar = ultima ? Math.max(0, Math.floor((Date.now() - ultima) / 86400000)) : null;
 
     let id = 'REGULAR';
     const rebaixar = (nivel, motivo) => {
