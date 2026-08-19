@@ -122,61 +122,62 @@ Nenhuma biblioteca, fonte ou ícone remoto.
 
 ## Estrutura
 
+O sistema foi migrado para **TypeScript + React + Next.js** (App Router). O app original em JavaScript
+puro, sem build, continua íntegro em **[`/legacy`](legacy/)** como referência — veja
+[`legacy/README` embutido no histórico do projeto] ou o próprio código para a versão anterior.
+
 ```text
-index.html                     shell e ordem de carga
-styles.css                     folha única e design system
-assets/logo.png                a marca (você fornece)
+app/                            rotas (Next.js App Router)
+  page.tsx                      entrada (portão): perfis de demonstração, entrar, cadastrar
+  cadastro/, entrar/            cadastro de participantes e login por código
+  gerador/, catador/,
+  cooperativa/, prefeitura/     uma pasta por perfil; cada aba é uma rota (`/gerador/painel`, ...);
+                                 `demandas/[id]` é o detalhe da demanda daquele perfil
+  globals.css                   folha única e design system (portado quase verbatim de `legacy/styles.css`)
+  manifest.ts                   manifesto PWA
 
-src/dominio/                   não conhece a tela
-  catalogo.js                  tabelas: resíduos, cooperativas, catadores, pontos, geradores, destinos
-  formato.js                   número, massa, dinheiro, data, prazo, escape e agrupamento
-  demanda.js                   regras da demanda: divergência, recuperação, valor, CO₂e, próxima ação
-  gerador.js                   situação regulatória, PGRS, aderência e selo
-  sessao.js                    quem está usando agora
-  semente.js                   dados demonstrativos
-  store.js                     armazém, transições de estado e consultas
-  indicadores.js               séries e painéis por perfil
+lib/dominio/                    não conhece a tela — portado de `legacy/src/dominio/*`
+lib/servicos/                   relatórios, integrações externas e comprovante — portado de `legacy/src/servicos/*`
+components/ui/                  marca, cartão, indicador, gráficos, listas — portado de `legacy/src/ui/*`
+components/demanda/             detalhe da demanda, compartilhado pelos quatro perfis
+components/layout/              moldura do perfil, inicialização do domínio, recado (toast)
+components/comprovante/         comprovante como sobreposição global
+components/mapa/                mapa Leaflet (client-side, carregado sob demanda)
+state/hooks.ts                  ponte entre os armazéns de domínio (localStorage) e o React
 
-src/ui/                        não conhece nenhuma tela em particular
-  componentes.js               marca, cartão, indicador, aviso, filtro, selo
-  graficos.js                  série, rosca, anel, ranking, barra de recuperação
-  mapa.js                      mapa de pontos e lista territorial
-  listas.js                    cartões de demanda, coleta, comprovante e gerador
-
-src/servicos/relatorio.js      escopos, CSV e documento imprimível
-
-src/telas/                     uma por área do sistema
-  entrada.js gerador.js catador.js destinatario.js prefeitura.js demanda.js comprovante.js
-
-src/app.js                     estado da sessão, roteamento e ações
-sw.js                          cache offline
-verificacao.js                 checagem do domínio, dos relatórios e das telas
+legacy/                         app anterior, sem build, preservado como referência e para rollback
 ```
 
-Sem dependências externas e sem build. O estado da demonstração fica no navegador (`localStorage`) e o
-botão **Reiniciar** devolve os dados iniciais.
+Não há backend: o estado da demonstração fica no navegador (`localStorage`), do mesmo jeito que na versão
+anterior. Nenhuma rota de servidor lê ou escreve dado nenhum — `npm run build` gera um app Next.js completo,
+mas cada perfil só existe no armazenamento do navegador de quem está usando.
 
 ## Executar localmente
 
 ```bash
-python -m http.server 4173
+npm install
+npm run dev
 ```
 
-Depois abra `http://localhost:4173`.
+Depois abra `http://localhost:3000`.
 
-Atalhos de apresentação: `?perfil=gerador`, `?perfil=catador`, `?perfil=destinatario`, `?perfil=prefeitura`.
-Para o catador autônomo: `?perfil=catador&catador=cat-05`. Para o aterro: `?perfil=destinatario&destino=dst-04`.
+Atalhos de apresentação: `?perfil=gerador`, `?perfil=catador`, `?perfil=cooperativa`, `?perfil=prefeitura`.
+Para o catador autônomo: `?perfil=catador&catador=cat-05`. Para o aterro: `?perfil=cooperativa&destino=dst-04`.
 
 ## Verificação
 
 ```bash
-node verificacao.js
+npm run build     # type-check + build de produção
+npm test          # cenários do domínio (Vitest), portados de legacy/verificacao.js
+npm run lint       # ESLint
+
+node legacy/verificacao.js    # o app antigo em /legacy continua com sua própria checagem
 ```
 
-Carrega os módulos na mesma ordem do `index.html` e roda mais de cem checagens: máquina de estados até o
-recebimento, ramo da pendência, carga direto para o aterro, rejeito maior que a carga, integridade da
-semente, as três situações regulatórias, os painéis de cada perfil, os cinco escopos de relatório, o CSV
-(colunas, escape e uma linha por demanda) e todas as telas em todas as situações, para os quatro perfis.
+Os testes cobrem a máquina de estados até o recebimento, o ramo da pendência, carga direto para o aterro,
+rejeito maior que a carga, integridade da semente, as três situações regulatórias e os painéis de cada
+perfil — o mesmo conjunto de garantias que `legacy/verificacao.js` já checava, agora como módulos TS
+importáveis em vez de um script rodado num sandbox `vm`.
 
 ## Aviso importante
 
@@ -189,4 +190,7 @@ decisão administrativa ou procedimento homologado pela Prefeitura de Porto Velh
 
 ## Publicação
 
-<https://natanashi.github.io/samauma/>
+O app antigo em `/legacy` continua publicado em <https://natanashi.github.io/samauma/> (arquivos estáticos,
+sem build). A versão em Next.js precisa de um host com servidor Node (`npm run build && npm start`) — GitHub
+Pages, por servir só estático, não roda esta versão como está. Escolher o provedor (Vercel ou outro) e
+configurar o deploy é uma decisão em aberto, feita à parte desta migração.

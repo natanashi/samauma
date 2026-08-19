@@ -8,12 +8,28 @@ on:
   pull_request:
 
 jobs:
-  verificar:
+  legado:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Rodar verificacao
+      - name: Rodar verificacao do app legado (/legacy)
+        working-directory: legacy
         run: node verificacao.js
+
+  next:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Testes do dominio
+        run: npm test
+      - name: Build do Next.js
+        run: npm run build
