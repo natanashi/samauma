@@ -10,6 +10,7 @@
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
+import { CabecalhoPublico } from '@/components/layout/CabecalhoPublico';
 import { FormularioPgrs } from '@/components/pgrs/FormularioPgrs';
 import { useDominioPronto } from '@/components/layout/Bootstrap';
 import { useRecado } from '@/components/layout/RecadoProvider';
@@ -78,6 +79,7 @@ function PaginaPgrsConteudo() {
   return (
     <section className="portao" role="dialog" aria-modal="true">
       <div className="portao-caixa">
+        <CabecalhoPublico />
         <div className="portao-grade modo-cadastro">
           <div className="cadastro-topo">
             <Link href={destinoVolta} className="voltar">{rotuloVolta}</Link>

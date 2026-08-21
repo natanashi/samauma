@@ -50,6 +50,7 @@ function TabelaEditavel<T extends { id: string }>({ colunas, linhas, aoMudarCamp
                 {colunas.map(c => (
                   <td key={String(c.chave)}>
                     <input type="text" value={String(linha[c.chave] ?? '')} placeholder={c.placeholder}
+                      aria-label={c.rotulo}
                       onChange={ev => aoMudarCampo(linha.id, c.chave, ev.target.value)} />
                   </td>
                 ))}

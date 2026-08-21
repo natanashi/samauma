@@ -8,8 +8,9 @@ import { STATUS } from '@/lib/dominio/catalogo';
 import { DemandaRegras as Demanda } from '@/lib/dominio/demanda';
 import { Fmt } from '@/lib/dominio/formato';
 import type { Demanda as TDemanda, Selo, Situacao } from '@/lib/dominio/tipos';
+import { arquivoPublico } from '@/lib/caminhos';
 
-export const LOGO_URL = '/logo.png';
+export const LOGO_URL = arquivoPublico('/logo.png');
 
 let simboloSeq = 0;
 

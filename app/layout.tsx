@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import { AppProviders } from '@/components/layout/AppProviders';
+import { arquivoPublico } from '@/lib/caminhos';
 import './globals.css';
 
 export const metadata: Metadata = {
   title: 'SAMAÚMA — Sistema de Grandes Geradores e Inclusão Produtiva | Porto Velho/RO',
   description: 'Protótipo demonstrativo: o gerador declara, o catador coleta, o destinatário recebe e confirma, a Prefeitura acompanha. O ciclo fecha em comprovante.',
-  icons: { icon: '/logo.png' }
+  icons: { icon: arquivoPublico('/logo.png') }
 };
 
 export const viewport: Viewport = {

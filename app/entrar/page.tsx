@@ -6,6 +6,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { CabecalhoPublico } from '@/components/layout/CabecalhoPublico';
 import { useDominioPronto } from '@/components/layout/Bootstrap';
 import { Aviso, Cartao } from '@/components/ui/Basicos';
 import { Conta } from '@/lib/dominio/conta';
@@ -43,6 +44,7 @@ export default function PaginaEntrar() {
   return (
     <section className="portao" role="dialog" aria-modal="true">
       <div className="portao-caixa">
+        <CabecalhoPublico />
         <div className="portao-grade modo-cadastro">
           <div className="cadastro-topo">
             <Link href="/" className="voltar">Voltar para a entrada</Link>

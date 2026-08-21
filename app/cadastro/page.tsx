@@ -7,6 +7,7 @@
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
+import { CabecalhoPublico } from '@/components/layout/CabecalhoPublico';
 import { Campo } from '@/components/cadastro/Campo';
 import { useDominioPronto } from '@/components/layout/Bootstrap';
 import { Aviso, Cartao } from '@/components/ui/Basicos';
@@ -173,6 +174,7 @@ function PaginaCadastroConteudo() {
     return (
       <section className="portao" role="dialog" aria-modal="true">
         <div className="portao-caixa">
+        <CabecalhoPublico />
           <div className="portao-grade modo-cadastro">
             <div className="cadastro-topo">
               <span className="cadastro-papel">CADASTRO CONCLUÍDO</span>

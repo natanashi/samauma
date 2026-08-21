@@ -1394,3 +1394,10 @@ body.somente-comprovante .app { display: none; }
 
 .pgrs-encontrado { display: flex; flex-direction: column; gap: 8px; }
 .pgrs-encontrado .acoes-form { margin-top: 0; }
+
+/* Marca das páginas públicas: menor que a da entrada e clicável, porque ali
+   ela também é o caminho de volta. */
+.marca-publica { margin-bottom: var(--e4); }
+.marca-publica a { display: inline-block; border-radius: var(--r-g); transition: var(--toque); }
+.marca-publica a:hover { transform: translateY(-2px); }
+.marca-publica a:focus-visible { outline: 2px solid var(--raiz); outline-offset: 6px; }
