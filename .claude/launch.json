@@ -3,9 +3,10 @@
   "configurations": [
     {
       "name": "samauma",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "4173"],
-      "port": 4173
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000,
+      "url": "http://localhost:3000/samauma"
     }
   ]
 }

@@ -1,5 +1,5 @@
 # Roda a verificacao do projeto a cada push e a cada pull request.
-# Se o ciclo quebrar de novo, quebra aqui antes de chegar na apresentacao.
+# Se o dominio ou o build quebrarem, quebra aqui antes de chegar na apresentacao.
 name: verificacao
 
 on:
@@ -8,17 +8,6 @@ on:
   pull_request:
 
 jobs:
-  legado:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Rodar verificacao do app legado (/legacy)
-        working-directory: legacy
-        run: node verificacao.js
-
   next:
     runs-on: ubuntu-latest
     steps:

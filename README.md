@@ -123,8 +123,8 @@ Nenhuma biblioteca, fonte ou ícone remoto.
 ## Estrutura
 
 O sistema foi migrado para **TypeScript + React + Next.js** (App Router). O app original em JavaScript
-puro, sem build, continua íntegro em **[`/legacy`](legacy/)** como referência — veja
-[`legacy/README` embutido no histórico do projeto] ou o próprio código para a versão anterior.
+puro, sem build, permanece recuperável no histórico do repositório (até o commit `b8c2020`),
+mas não faz mais parte do projeto: existe uma única versão oficial, esta.
 
 ```text
 app/                            rotas (Next.js App Router)
@@ -133,19 +133,18 @@ app/                            rotas (Next.js App Router)
   gerador/, catador/,
   cooperativa/, prefeitura/     uma pasta por perfil; cada aba é uma rota (`/gerador/painel`, ...);
                                  `demandas/[id]` é o detalhe da demanda daquele perfil
-  globals.css                   folha única e design system (portado quase verbatim de `legacy/styles.css`)
+  globals.css                   folha única e design system
   manifest.ts                   manifesto PWA
 
-lib/dominio/                    não conhece a tela — portado de `legacy/src/dominio/*`
-lib/servicos/                   relatórios, integrações externas e comprovante — portado de `legacy/src/servicos/*`
-components/ui/                  marca, cartão, indicador, gráficos, listas — portado de `legacy/src/ui/*`
+lib/dominio/                    regras, tabelas e armazém — não conhece a tela
+lib/servicos/                   relatórios, integrações externas e comprovante
+components/ui/                  marca, cartão, indicador, gráficos, listas
 components/demanda/             detalhe da demanda, compartilhado pelos quatro perfis
 components/layout/              moldura do perfil, inicialização do domínio, recado (toast)
 components/comprovante/         comprovante como sobreposição global
 components/mapa/                mapa Leaflet (client-side, carregado sob demanda)
 state/hooks.ts                  ponte entre os armazéns de domínio (localStorage) e o React
 
-legacy/                         app anterior, sem build, preservado como referência e para rollback
 ```
 
 Não há backend: o estado da demonstração fica no navegador (`localStorage`), do mesmo jeito que na versão
@@ -168,15 +167,14 @@ Para o catador autônomo: `?perfil=catador&catador=cat-05`. Para o aterro: `?per
 
 ```bash
 npm run build     # type-check + build de produção
-npm test          # cenários do domínio (Vitest), portados de legacy/verificacao.js
+npm test          # cenários do domínio (Vitest)
 npm run lint       # ESLint
 
-node legacy/verificacao.js    # o app antigo em /legacy continua com sua própria checagem
 ```
 
 Os testes cobrem a máquina de estados até o recebimento, o ramo da pendência, carga direto para o aterro,
 rejeito maior que a carga, integridade da semente, as três situações regulatórias e os painéis de cada
-perfil — o mesmo conjunto de garantias que `legacy/verificacao.js` já checava, agora como módulos TS
+perfil — as mesmas garantias de sempre, agora como módulos TS
 importáveis em vez de um script rodado num sandbox `vm`.
 
 ## Aviso importante
