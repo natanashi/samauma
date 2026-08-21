@@ -9,6 +9,7 @@
 
 import { CATADORES, Catalogo, COOPERATIVAS, DESTINOS, GERADORES, PONTOS } from './catalogo';
 import { Conta } from './conta';
+import { Pgrs, pgrsMinimamentePreenchido, soDigitos } from './pgrs';
 import type { Catador, DadosCadastro, Destino, Gerador, Ponto, RegistrosCadastro, TipoCadastro } from './tipos';
 
 function paraTexto(valor: unknown): string {
@@ -136,8 +137,15 @@ class CadastroParticipantes {
       lat: base.lat, lng: base.lng,
       acesso: paraTexto(dados.acesso).trim()
     };
+
+    /* Quem preencheu o gerador padrão de PGRS antes de se cadastrar, com o
+       mesmo CNPJ, tem o plano anexado aqui automaticamente. */
+    const rascunhoPgrs = Pgrs.obter(paraTexto(dados.cnpj));
+    const pgrsCompleto = rascunhoPgrs && pgrsMinimamentePreenchido(rascunhoPgrs) ? rascunhoPgrs : undefined;
+
+    const id = this._novoId('ger-c', GERADORES);
     const gerador: Gerador = {
-      id: this._novoId('ger-c', GERADORES),
+      id,
       nome: paraTexto(dados.nome).trim(),
       cnpj: this.formatarCnpj(paraTexto(dados.cnpj)),
       ramo: paraTexto(dados.ramo),
@@ -147,10 +155,13 @@ class CadastroParticipantes {
       operador: paraTexto(dados.operador) || null,
       pgrs: dados.pgrsNumero
         ? { numero: paraTexto(dados.pgrsNumero).trim(), validade: Number(dados.pgrsValidade) || 365 }
-        : null,
+        : pgrsCompleto
+          ? { numero: `PGRS ${new Date().getFullYear()}/${soDigitos(id).padStart(4, '0')}`, validade: 365 }
+          : null,
       cadastradoAqui: true,
       codigo: Conta.gerarCodigo('gerador')
     };
+    if (pgrsCompleto) gerador.pgrsCompleto = pgrsCompleto;
     PONTOS.push(ponto);
     GERADORES.push(gerador);
     this.registros.pontos.push(ponto);

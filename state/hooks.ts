@@ -10,6 +10,7 @@
 import { useSyncExternalStore } from 'react';
 import { Cadastro } from '@/lib/dominio/cadastro';
 import { Conta } from '@/lib/dominio/conta';
+import { Pgrs } from '@/lib/dominio/pgrs';
 import { Sessao } from '@/lib/dominio/sessao';
 import { Store } from '@/lib/dominio/store';
 
@@ -27,6 +28,10 @@ export function useContaVersao() {
 
 export function useCadastroVersao() {
   useSyncExternalStore(Cadastro.subscribe, Cadastro.getSnapshot, Cadastro.getSnapshot);
+}
+
+export function usePgrsVersao() {
+  useSyncExternalStore(Pgrs.subscribe, Pgrs.getSnapshot, Pgrs.getSnapshot);
 }
 
 /* Assina os quatro armazéns de uma vez — o que a maioria das telas precisa,

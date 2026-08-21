@@ -1136,7 +1136,7 @@ textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 /* ============================================================ 16. TELAS */
 
 @media (max-width: 1080px) {
-  .colunas.dois-um, .colunas.tres, .colunas.painel-linha { grid-template-columns: minmax(0, 1fr); }
+  .colunas.dois-um, .colunas.tres, .colunas.painel-linha, .colunas.duas { grid-template-columns: minmax(0, 1fr); }
   .kpis, .painel-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .indicadores-painel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .portao-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1359,3 +1359,38 @@ body.somente-comprovante .app { display: none; }
   content: ''; flex: 1; height: 1px; background: var(--linha);
 }
 .portao-ou span { white-space: nowrap; }
+
+/* Escolha inicial do cadastro de gerador: fazer o PGRS agora ou pular —
+   duas opções lado a lado, do mesmo tamanho, sem porta "principal" imposta. */
+.colunas.duas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* Gerador de PGRS: cada seção do plano é um cartão numerado, com tabelas
+   editáveis para as partes que no modelo impresso são listas de linhas. */
+.pgrs-secoes { display: flex; flex-direction: column; gap: var(--e4); }
+.pgrs-subtitulo {
+  font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px;
+  color: var(--tinta2); margin: var(--e4) 0 var(--e3); padding-top: var(--e3);
+  border-top: 1px solid var(--linha2);
+}
+.pgrs-subtitulo:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.pgrs-grupo-titulo {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px;
+  color: var(--tinta3); margin: var(--e3) 0 8px;
+}
+.pgrs-grupo-titulo:first-child { margin-top: 0; }
+
+.tabela-editavel { margin-bottom: var(--e3); }
+.tabela-editavel table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.tabela-editavel th {
+  text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: .8px;
+  color: var(--tinta3); font-weight: 700; padding: 0 10px 9px 0; border-bottom: 1.5px solid var(--linha);
+}
+.tabela-editavel td { padding: 10px 10px 10px 0; vertical-align: top; border-bottom: 1px solid var(--linha2); }
+.tabela-editavel tr:last-child td { border-bottom: 0; }
+.tabela-editavel td.acao { width: 1%; white-space: nowrap; vertical-align: middle; }
+.tabela-editavel input[type=text] { padding: 8px 10px; font-size: 13px; }
+.tabela-editavel .btn.sm { padding: 7px 11px; }
+.tabela-editavel > .btn.sm { margin-top: 4px; }
+
+.pgrs-encontrado { display: flex; flex-direction: column; gap: 8px; }
+.pgrs-encontrado .acoes-form { margin-top: 0; }

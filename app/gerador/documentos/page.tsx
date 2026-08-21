@@ -2,13 +2,17 @@
 
 /* Portado de `telaGeradorDocumentos` em `src/telas/gerador.js`. */
 
+import Link from 'next/link';
 import { Aviso, Cabecalho, Cartao, Exportar, Pares, SeloDestinacao } from '@/components/ui/Basicos';
 import { useExportar } from '@/components/relatorio/useExportar';
 import { ListaComprovantes } from '@/components/ui/Listas';
 import { Catalogo } from '@/lib/dominio/catalogo';
 import { Fmt } from '@/lib/dominio/formato';
 import { Painel } from '@/lib/dominio/indicadores';
+import { soDigitos } from '@/lib/dominio/pgrs';
 import { Sessao } from '@/lib/dominio/sessao';
+import { baixarDocxPgrs } from '@/lib/servicos/pgrsDocx';
+import { baixarPdfPgrs } from '@/lib/servicos/pgrsPdf';
 import { useDominio } from '@/state/hooks';
 import { useComprovante } from '@/components/comprovante/ComprovanteProvider';
 
@@ -18,6 +22,7 @@ export default function PaginaGeradorDocumentos() {
   const { aoCsv, aoPdf } = useExportar();
   const p = Painel.gerador(Sessao.gerador);
   const plano = p.situacao.pgrs;
+  const pgrsCompleto = p.cadastro.pgrsCompleto;
 
   return (
     <>
@@ -39,6 +44,13 @@ export default function PaginaGeradorDocumentos() {
               ]} />
               <div className="acoes-form">
                 <button className="btn sec" onClick={() => aoPdf('gerador', { id: Sessao.gerador })}>Baixar dossiê em PDF</button>
+                {pgrsCompleto && (
+                  <>
+                    <button className="btn sec" onClick={() => baixarPdfPgrs(pgrsCompleto)}>Baixar PGRSS completo (PDF)</button>
+                    <button className="btn sec" onClick={() => baixarDocxPgrs(pgrsCompleto)}>Baixar PGRSS completo (Word)</button>
+                    <Link href={`/pgrs/gerar?cnpj=${soDigitos(p.cadastro.cnpj)}&retorno=documentos`} className="btn fantasma">Corrigir PGRS</Link>
+                  </>
+                )}
                 <span className="ajuda">O dossiê reúne situação, massa destinada e a lista de processos.</span>
               </div>
             </>

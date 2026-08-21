@@ -72,6 +72,8 @@ function PaginaEntradaConteudo() {
           <Link href="/cadastro" className="btn sec grande">Criar cadastro</Link>
           <p>Já tem código de acesso? Entre. Ainda não participa? Cadastre seu estabelecimento,
             sua coleta ou sua unidade receptora e comece a usar no mesmo acesso.</p>
+          <p>É um grande gerador de resíduo de serviço de saúde? <Link href="/pgrs/gerar">Monte o PGRS completo</Link> antes
+            de se cadastrar — ele fica salvo pelo CNPJ e é anexado automaticamente ao cadastro.</p>
         </div>
 
         <p className="portao-ou"><span>ou conheça o sistema pelas áreas de demonstração</span></p>

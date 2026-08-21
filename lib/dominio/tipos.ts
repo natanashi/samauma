@@ -1,5 +1,7 @@
 /* SAMAÚMA — tipos do domínio. */
 
+import type { DadosPgrs } from './pgrs';
+
 export type StatusId =
   | 'CRIADA' | 'DISPONIVEL' | 'ACEITA' | 'EM_COLETA' | 'COLETADA' | 'PENDENCIA' | 'COMPROVADA';
 
@@ -76,6 +78,7 @@ export interface Gerador {
   volumeMes: number;
   operador: string | null;
   pgrs: Pgrs | null;
+  pgrsCompleto?: DadosPgrs;
   cadastradoAqui?: boolean;
   codigo?: string;
 }

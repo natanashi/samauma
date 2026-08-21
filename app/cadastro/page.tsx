@@ -13,11 +13,13 @@ import { Aviso, Cartao } from '@/components/ui/Basicos';
 import { COOPERATIVAS, RESIDUOS } from '@/lib/dominio/catalogo';
 import { Cadastro } from '@/lib/dominio/cadastro';
 import { Conta } from '@/lib/dominio/conta';
+import { Fmt } from '@/lib/dominio/formato';
 import { pontosDeCadastro, RAMOS, TIPOS_CADASTRO, TIPOS_UNIDADE, zonasDeCadastro } from '@/lib/dominio/formularios';
 import { ICONES_PERFIL, PERFIS } from '@/lib/dominio/perfis';
+import { Pgrs, soDigitos } from '@/lib/dominio/pgrs';
 import { Sessao } from '@/lib/dominio/sessao';
 import type { Catador, Destino, Gerador, TipoCadastro } from '@/lib/dominio/tipos';
-import { useCadastroVersao } from '@/state/hooks';
+import { useCadastroVersao, usePgrsVersao } from '@/state/hooks';
 
 type ValorCampo = string | string[];
 type Dados = Record<string, ValorCampo | undefined>;
@@ -26,6 +28,22 @@ type AoMudar = (campo: string, valor: ValorCampo) => void;
 
 function Opcoes({ lista }: { lista: string[] }) {
   return <>{lista.map(v => <option key={v} value={v}>{v}</option>)}</>;
+}
+
+function StatusPgrsCompleto({ cnpj }: { cnpj: string }) {
+  usePgrsVersao();
+  const chave = soDigitos(cnpj);
+  const rascunho = chave ? Pgrs.obter(chave) : null;
+  if (!rascunho) return null;
+  return (
+    <div className="largo pgrs-encontrado">
+      <Aviso titulo="PGRS completo encontrado para este CNPJ"
+        texto={`Vai ser anexado automaticamente ao concluir o cadastro · rascunho de ${Fmt.dataHora(rascunho.atualizadoEm)}.`} />
+      <div className="acoes-form">
+        <Link href={`/pgrs/gerar?cnpj=${chave}&retorno=cadastro`} className="btn sec sm">Corrigir PGRS antes de concluir</Link>
+      </div>
+    </div>
+  );
 }
 
 function FormularioGerador({ d, e, aoMudar }: { d: Dados; e: Record<string, string>; aoMudar: AoMudar }) {
@@ -59,6 +77,7 @@ function FormularioGerador({ d, e, aoMudar }: { d: Dados; e: Record<string, stri
         controle={<input type="text" id="cadPgrs" value={d.pgrsNumero || ''} onChange={ev => aoMudar('pgrsNumero', ev.target.value)} placeholder="PGRS 2026/0001" />} />
       <Campo id="cadPgrsValidade" rotulo="Dias até o vencimento do PGRS" erro={e.pgrsValidade} ajuda="Menos de 90 dias já aparece como alerta de regularização."
         controle={<input type="number" id="cadPgrsValidade" step={30} value={d.pgrsValidade ?? 365} onChange={ev => aoMudar('pgrsValidade', ev.target.value)} />} />
+      <StatusPgrsCompleto cnpj={typeof d.cnpj === 'string' ? d.cnpj : ''} />
     </>
   );
 }
@@ -136,13 +155,16 @@ function FormularioDestino({ d, e, aoMudar }: { d: Dados; e: Record<string, stri
 function PaginaCadastroConteudo() {
   const pronto = useDominioPronto();
   useCadastroVersao();
+  usePgrsVersao();
   const router = useRouter();
   const busca = useSearchParams();
   const tipo = busca.get('tipo') as TipoCadastro | null;
+  const cnpjQuery = busca.get('cnpj');
 
-  const [dados, setDados] = useState<Dados>({});
+  const [dados, setDados] = useState<Dados>(() => (tipo === 'gerador' && cnpjQuery) ? { cnpj: Cadastro.formatarCnpj(cnpjQuery) } : {});
   const [erros, setErros] = useState<Record<string, string>>({});
   const [concluido, setConcluido] = useState<{ registro: Registro; papel: string; tipoConta: TipoCadastro } | null>(null);
+  const [pulouPgrs, setPulouPgrs] = useState(false);
 
   if (!pronto) return null;
 
@@ -241,6 +263,44 @@ function PaginaCadastroConteudo() {
     if (!registro) { setErros(novosErros); return; }
     const papel = ({ gerador: 'Gerador', catador: 'Catador', destino: 'Unidade receptora' } as Record<TipoCadastro, string>)[tipo!];
     setConcluido({ registro, papel, tipoConta: tipo! });
+  }
+
+  if (tipo === 'gerador' && !dados.cnpj && !pulouPgrs) {
+    return (
+      <section className="portao" role="dialog" aria-modal="true">
+        <div className="portao-caixa">
+          <div className="portao-grade modo-cadastro">
+            <div className="cadastro-topo" style={{ ['--cor-perfil' as string]: t.cor }}>
+              <button className="voltar" onClick={() => router.push('/cadastro')}>Escolher outro papel</button>
+              <span className="cadastro-papel">{t.papel}</span>
+              <h2>Cadastro de gerador</h2>
+              <p>Se o estabelecimento é um grande gerador de resíduo de serviço de saúde, monte o PGRS completo
+                agora — ou pule esta etapa e cadastre o essencial primeiro.</p>
+            </div>
+            <div className="colunas duas">
+              <Cartao classe="acao-viva" titulo="Fazer o PGRS agora" sub="Recomendado para clínicas, hospitais e laboratórios"
+                corpo={
+                  <>
+                    <p className="texto">Preenche identificação, classificação e manejo dos resíduos num formulário completo.
+                      Ao voltar aqui, o plano já vem anexado ao CNPJ informado — pronto em PDF e Word.</p>
+                    <button className="btn" type="button" onClick={() => router.push('/pgrs/gerar?retorno=cadastro')}>
+                      Preencher PGRS completo
+                    </button>
+                  </>
+                } />
+              <Cartao titulo="Pular esta etapa" sub="Dá para enviar depois, em Documentos"
+                corpo={
+                  <>
+                    <p className="texto">Segue direto para os dados do estabelecimento. Sem PGRS, a situação regulatória
+                      começa como irregular — o sistema explica o motivo.</p>
+                    <button className="btn sec" type="button" onClick={() => setPulouPgrs(true)}>Pular e continuar cadastro</button>
+                  </>
+                } />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (
