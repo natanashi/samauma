@@ -1,3 +1,6 @@
+/* Exportacao estatica: o manifesto vira arquivo no build. */
+export const dynamic = 'force-static';
+
 import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
